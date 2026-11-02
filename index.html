@@ -187,6 +187,8 @@
   .total b { color: var(--calc-total); }
   .daily { background: var(--calc-tint); }
   .daily { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .daily { transition: opacity .35s ease; }
+  .daily.is-hidden { visibility: hidden; opacity: 0; }
   .coffee { flex: none; display: block; width: 34px; height: 34px; }
   .coffee svg { width: 34px; height: 34px; display: block; }
   .coffee.pop { animation: coffee-pop .7s cubic-bezier(.34,1.56,.64,1) both; transform-origin: 50% 80%; }
@@ -392,15 +394,15 @@
           <div class="field">
             <label for="units-num"><span lang="ar">عدد الوحدات</span><span lang="en">Number of units</span></label>
             <div class="units-row">
-              <input type="range" id="units-range" min="1" max="600" value="100" aria-label="Units">
-              <input type="number" id="units-num" min="1" max="100000" value="100" inputmode="numeric" required>
+              <input type="range" id="units-range" min="1" max="600" value="1" aria-label="Units">
+              <input type="number" id="units-num" min="1" max="100000" value="1" inputmode="numeric" required>
             </div>
           </div>
           <div class="total">
             <b id="total-price">—</b>
             <span><span lang="ar">في السنة</span><span lang="en">per year</span></span>
           </div>
-          <p class="daily" id="daily"></p>
+          <p class="daily is-hidden" id="daily"></p>
           <p class="pitch"><span lang="ar">دفعة وحدة تغطي السنة كاملة: العقود، التحصيل، الصيانة والتجديدات. أرخص من موظف يلاحق كل هذا، ومنصتنا ما تطلع إجازة.</span><span lang="en">One payment covers the whole year: contracts, rent collection, maintenance and renewals. Cheaper than hiring someone to chase all of it, and our platform never takes a day off.</span></p>
         </div>
       </div>
@@ -444,12 +446,14 @@
       ar: {
         sar: 'ريال',
         daily: '{daily} ريال يوميًا لمكتبك بالكامل.',
+        dailyTiny: 'أقل من ريال يوميًا لمكتبك بالكامل.',
         coffee: ' أقل من سعر كوب قهوة',
         title: 'عقدي | Aqdi'
       },
       en: {
         sar: 'SAR',
         daily: '{daily} SAR a day for your whole office.',
+        dailyTiny: 'Less than 1 SAR a day for your whole office.',
         coffee: ' Less than a cup of coffee',
         title: 'Aqdi | عقدي'
       }
@@ -527,7 +531,7 @@
       document.getElementById('total-price').textContent = NUM.format(total) + ' ' + t.sar;
       var dailyEl = document.getElementById('daily');
       var cheap = daily <= 20;
-      dailyEl.textContent = fill(t.daily, { daily: NUM.format(daily) }) + (cheap ? t.coffee : '');
+      dailyEl.textContent = (daily < 1 ? t.dailyTiny : fill(t.daily, { daily: NUM.format(daily) })) + (cheap ? t.coffee : '');
       if (cheap && showCup) {
         var cup = document.createElement('span');
         cup.className = 'coffee';
@@ -544,6 +548,7 @@
       cupTimer = setTimeout(function () {
         showCup = true;
         renderPrice();
+        document.getElementById('daily').classList.remove('is-hidden');
         var cup = document.querySelector('#daily .coffee');
         if (cup) cup.classList.add('pop');
       }, 450);
