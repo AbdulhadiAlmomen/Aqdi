@@ -43,12 +43,31 @@ A new maintenance request is auto-assigned to the maintenance staff for that uni
 
 One yearly payment, based on the total number of units the office manages across all its buildings. Billed yearly, like the leases themselves. This matches the industry: US platforms like Entrata, AppFolio and Yardi all charge per unit, usually on an annual agreement.
 
+The office's billing year starts the day it signs up and is separate from its tenants' lease dates. Leases start all through the year, so billing never follows them. The unit count comes straight from the system on renewal day. It stays accurate because a unit has to be in Aqdi for the office to rent it, collect on it or log repairs for it.
+
 - **What counts:** every unit in the system, rented or vacant. Not contracts, which change all year.
 - **Minimum:** none. An office with 3 units pays for 3 units. Onboarding must be self-serve so small offices can set up without help.
 - **Volume rate:** a lower per-unit price above a threshold (e.g. above 100 units).
-- **Growth mid-year:** units added during the year are free until renewal. At renewal, the office pays for its new total.
+- **Growth mid-year:** units added during the year are free until renewal. At renewal, the office pays for its new total. Units removed mid-year are not refunded, but lower next year's bill.
 - **Tenants:** always free.
 - **Prices:** working proposal is 50 SAR per unit per year for the first 100 units, 40 SAR for units 101–300, 30 SAR above 300 (100 units = 5,000 SAR, 300 units = 13,000 SAR), applied like tax brackets. Not final until tested with real offices. The website shows a calculator where an office enters its unit count and sees the yearly price.
+
+## Onboarding: moving offices in
+
+If moving in is painful, offices won't switch, however good the app is. Getting their data in fast is a core feature, not an extra.
+
+**Minimum to get value on day one:** unit, tenant name, phone number, lease end date, rent amount. That alone gives renewal reminders and rent tracking. Photos, contract files and deposits can be added later.
+
+**Ways in, from least to most effort for the office:**
+
+1. **Done for them (first offices).** The office sends notebook photos, an Excel file or Ejar PDFs, and the Aqdi team enters the data by hand. Used for the first 10–20 offices, and to learn what real data looks like.
+2. **Ejar PDF upload (first upgrade after MVP).** The office uploads its Ejar contract PDFs; Aqdi reads each one and fills in unit, tenant, phone, dates and rent. The office reviews and confirms before saving.
+3. **Excel import (MVP).** A ready Arabic template: building, unit, tenant name, phone, lease start, lease end, rent. Upload shows a preview with errors highlighted before anything is saved.
+4. **Manual entry (MVP).** Fast forms for adding one unit or tenant at a time.
+
+**Tenants join by WhatsApp link (MVP).** When the office adds a tenant, Aqdi sends a WhatsApp link. The tenant opens it, enters the OTP code and is in. No app download, nothing for the office to explain.
+
+**Start small is fine.** An office can move one building first and add the rest later.
 
 ## App structure and entry flow
 
@@ -149,6 +168,7 @@ Two more tables support the structure above: **Building assignment** (staff user
 
 Design the data model so these can be added without a rewrite, but don't build them yet.
 
+- Ejar PDF upload that reads contracts and fills in the data (first upgrade after MVP)
 - Real Ejar API integration for contract registration and status
 - Buy-now-pay-later rent splitting with Tabby or Tamara
 - Digital contract signing inside the app
@@ -175,8 +195,8 @@ A suggested stack, open to change if there's a good reason:
 Build in this order, and get each phase working before moving on:
 
 1. Project setup, i18n with Arabic RTL, auth with phone OTP (mocked SMS), roles and office scoping
-2. Office admin: buildings, units, tenants, contracts
-3. Tenant portal: login, my contract, announcements
+2. Office admin: buildings, units, tenants, contracts, plus Excel import with preview
+3. Tenant portal: login, my contract, announcements, tenant invite by WhatsApp link (mocked)
 4. Invoices generated from contracts, payments with a mock gateway, receipts
 5. Maintenance requests, staff assignment, staff job view
 6. Renewal reminders and offers, notification system (mock WhatsApp and SMS, real in-app)
