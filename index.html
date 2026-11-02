@@ -209,6 +209,42 @@
   .s-paid { background: #e2eedf; color: #2f6b3c; }
   .s-progress { background: #fbecd3; color: #a2600f; }
   .s-renew { background: #f8e1da; color: #a83f2a; }
+
+  /* For offices / for tenants */
+  .audience { padding-top: 8px; }
+  .audience-grid { display: grid; gap: 20px; }
+  @media (min-width: 760px) { .audience-grid { grid-template-columns: 1fr 1fr; } }
+  .audience-card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; }
+  .eyebrow { display: block; font-size: 14px; font-weight: 700; color: var(--brass); margin-bottom: 8px; }
+  .audience-card h3 { margin: 0 0 18px; font-size: 24px; line-height: 1.45; }
+  .audience-card .rules li { font-size: 16px; }
+
+  /* Contract import */
+  .import { padding-top: 24px; }
+  .steps { list-style: none; margin: 0 0 32px; padding: 0; display: grid; gap: 16px; counter-reset: step; }
+  @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+  .steps li { display: flex; gap: 14px; align-items: flex-start; }
+  .steps .dot { width: 34px; height: 34px; font-size: 15px; font-weight: 700; }
+  .steps strong { display: block; font-size: 17px; }
+  .steps span span { color: var(--ink-2); font-size: 15px; }
+  .review { background: var(--surface); border-radius: 22px; box-shadow: var(--shadow); padding: 20px; }
+  .review-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .review-head .fake-btn { padding: 8px 18px; font-size: 14px; pointer-events: none; }
+  .rv { display: grid; grid-template-columns: 1.2fr .9fr 1.7fr 1fr; gap: 12px; align-items: center; padding: 12px 14px; font-size: 14px; line-height: 1.5; border-top: 1px solid var(--line); }
+  .rv-head { border-top: none; font-size: 12px; font-weight: 700; color: var(--ink-3); padding-bottom: 8px; }
+  .rv .num-cell { font-variant-numeric: tabular-nums; }
+  .confirm { display: inline-block; line-height: 1.4; background: #fbecd3; color: #7a4a0c; border-radius: 10px; padding: 6px 10px; margin: -6px -10px; }
+  .confirm small { display: block; font-size: 11px; font-weight: 700; color: #a2600f; }
+  @media (max-width: 640px) {
+    .rv-head { display: none; }
+    .rv { grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+    .rv > span::before { display: block; font-size: 11px; color: var(--ink-3); }
+    html[lang="ar"] .rv > span::before { content: attr(data-label-ar); }
+    html[lang="en"] .rv > span::before { content: attr(data-label-en); }
+    .confirm { margin: 0; }
+  }
+  .import-note { margin: 20px 0 0; font-size: 17px; color: var(--ink-2); }
+  .import-note strong { color: var(--ink); }
 </style>
 </head>
 <body>
@@ -239,8 +275,8 @@
           <span lang="en">Leases, payments and maintenance, all in one place.</span>
         </h1>
         <p class="lede">
-          <span lang="ar">عقدي يجمع كل المباني والوحدات والمستأجرين في لوحة واحدة لمكتب العقار، مع بوابة خاصة للمستأجر يطّلع فيها على عقده، يدفع إيجاره ويطلب الصيانة.</span>
-          <span lang="en">Aqdi brings every building, unit and tenant into one dashboard for real estate offices, with a portal where tenants can view their contract, pay rent and request maintenance.</span>
+          <span lang="ar">المكتب يرفع عقوده من منصة إيجار، وعقدي ينقل كل المعلومات خلال دقائق. والمستأجر يجد عقده، دفعاته وطلبات الصيانة في مكان واحد.</span>
+          <span lang="en">Offices upload their Ejar contracts and Aqdi sets everything up in minutes. Tenants get one place to see their contract, pay rent and request repairs.</span>
         </p>
         <div class="cta-row">
           <a href="#features" class="btn btn-primary">
@@ -293,6 +329,88 @@
       </div>
     </header>
   </div>
+
+  <section class="audience">
+    <div class="wrap">
+      <div class="audience-grid">
+        <div class="audience-card">
+          <span class="eyebrow"><span lang="ar">للمكاتب</span><span lang="en">For offices</span></span>
+          <h3><span lang="ar">جهّز مكتبك خلال دقائق بدل أيام.</span><span lang="en">Set up in minutes, not days.</span></h3>
+          <ul class="rules">
+            <li><span class="dot">✓</span><span><span lang="ar">ارفع ملفات عقودك من إيجار بصيغة PDF.</span><span lang="en">Upload your Ejar contract PDFs.</span></span></li>
+            <li><span class="dot">✓</span><span><span lang="ar">يقرأ عقدي بالذكاء الاصطناعي بيانات كل مستأجر ووحدة، والتواريخ ومبلغ الإيجار.</span><span lang="en">AI reads every tenant, unit, date and rent amount.</span></span></li>
+            <li><span class="dot">✓</span><span><span lang="ar">تؤكد أنت أي معلومة لم يتأكد منها.</span><span lang="en">You confirm anything it's unsure of.</span></span></li>
+            <li><span class="dot">✓</span><span><span lang="ar">ثم تتابع الإيجار والتجديدات والصيانة لكل مبانيك من لوحة واحدة.</span><span lang="en">Then one dashboard for rent, renewals and repairs across all your buildings.</span></span></li>
+          </ul>
+        </div>
+        <div class="audience-card">
+          <span class="eyebrow"><span lang="ar">للمستأجرين</span><span lang="en">For tenants</span></span>
+          <h3><span lang="ar">كل ما يخص سكنك في مكان واحد.</span><span lang="en">Everything about your home in one place.</span></h3>
+          <ul class="rules">
+            <li><span class="dot">✓</span><span><span lang="ar">اطّلع على عقدك وتاريخ التجديد.</span><span lang="en">See your contract and renewal date.</span></span></li>
+            <li><span class="dot">✓</span><span><span lang="ar">ادفع إيجارك من جوالك.</span><span lang="en">Pay rent from your phone.</span></span></li>
+            <li><span class="dot">✓</span><span><span lang="ar">أرسل طلب صيانة مع صورة للعطل.</span><span lang="en">Send a repair request with a photo.</span></span></li>
+            <li><span class="dot">✓</span><span><span lang="ar">تصلك التحديثات على واتساب.</span><span lang="en">Updates come on WhatsApp.</span></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="import">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="rule"></div>
+        <h2><span lang="ar">كيف تنقل عقودك إلى عقدي</span><span lang="en">How the contract import works</span></h2>
+      </div>
+      <ol class="steps">
+        <li><span class="dot">1</span><span><strong><span lang="ar">ارفع</span><span lang="en">Upload</span></strong><span lang="ar">ملفات العقود من منصة إيجار.</span><span lang="en">Your Ejar contract PDFs.</span></span></li>
+        <li><span class="dot">2</span><span><strong><span lang="ar">عقدي يقرأ</span><span lang="en">Aqdi reads</span></strong><span lang="ar">المستأجر والوحدة والتواريخ ومبلغ الإيجار.</span><span lang="en">Tenant, unit, dates and rent.</span></span></li>
+        <li><span class="dot">3</span><span><strong><span lang="ar">أنت تؤكد</span><span lang="en">You confirm</span></strong><span lang="ar">راجع الحقول المظللة واحفظ.</span><span lang="en">Check the highlighted fields and save.</span></span></li>
+      </ol>
+
+      <div class="review" aria-label="Example contract review screen">
+        <div class="review-head">
+          <div>
+            <div class="mock-title"><span lang="ar">مراجعة العقود المستوردة</span><span lang="en">Review imported leases</span></div>
+            <div class="mock-sub"><span lang="ar">4 عقود · حقل واحد يحتاج تأكيدك</span><span lang="en">4 leases · 1 field needs your check</span></div>
+          </div>
+          <span class="btn btn-primary fake-btn" aria-hidden="true"><span lang="ar">تأكيد وحفظ</span><span lang="en">Confirm and save</span></span>
+        </div>
+        <div class="rv rv-head">
+          <span><span lang="ar">المستأجر</span><span lang="en">Tenant</span></span>
+          <span><span lang="ar">الوحدة</span><span lang="en">Unit</span></span>
+          <span><span lang="ar">نهاية العقد</span><span lang="en">Lease ends</span></span>
+          <span><span lang="ar">الإيجار السنوي</span><span lang="en">Yearly rent</span></span>
+        </div>
+        <div class="rv">
+          <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">محمد العتيبي</span><span lang="en">Mohammed Alotaibi</span></span>
+          <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 3، مبنى أ</span><span lang="en">Unit 3, Bldg A</span></span>
+          <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-03-14"></span>
+          <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent" data-sar="32000"></span>
+        </div>
+        <div class="rv">
+          <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">سارة القحطاني</span><span lang="en">Sara Alqahtani</span></span>
+          <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 7، مبنى أ</span><span lang="en">Unit 7, Bldg A</span></span>
+          <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-06-30"></span>
+          <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent" data-sar="28500"></span>
+        </div>
+        <div class="rv">
+          <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">فهد الدوسري</span><span lang="en">Fahad Aldosari</span></span>
+          <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 12، مبنى ب</span><span lang="en">Unit 12, Bldg B</span></span>
+          <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-01-09"></span>
+          <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent"><span class="confirm"><span data-sar="24000"></span><small><span lang="ar">يرجى التأكيد</span><span lang="en">Please confirm</span></small></span></span>
+        </div>
+        <div class="rv">
+          <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">نورة الشهري</span><span lang="en">Noura Alshehri</span></span>
+          <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 2، مبنى ج</span><span lang="en">Unit 2, Bldg C</span></span>
+          <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-09-21"></span>
+          <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent" data-sar="30000"></span>
+        </div>
+      </div>
+      <p class="import-note"><span lang="ar">إدخال 150 عقدًا يدويًا يأخذ أيامًا. <strong>مع عقدي، يكفي رفعها مرة واحدة.</strong></span><span lang="en">Moving 150 leases by hand takes days. <strong>With Aqdi it takes one upload.</strong></span></p>
+    </div>
+  </section>
 
   <section class="problem">
     <div class="wrap">
@@ -483,7 +601,7 @@
                  part(g, 'day') + ' ' + part(g, 'month') + ' ' + part(g, 'year') + 'م';
         }
         var he = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'numeric', year: 'numeric' }).formatToParts(d);
-        var ge = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(d);
+        var ge = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(d).replace('Sept', 'Sep');
         return part(he, 'day') + ' ' + HIJRI_EN[parseInt(part(he, 'month'), 10) - 1] + ' ' + part(he, 'year') + ' · ' + ge;
       } catch (e) {
         return d.toDateString();
@@ -495,6 +613,15 @@
         var d = new Date();
         d.setDate(d.getDate() + parseInt(nodes[i].getAttribute('data-date'), 10));
         nodes[i].textContent = formatDate(d, root.lang);
+      }
+      // Fixed dates (lease ends in the import example).
+      var fixed = document.querySelectorAll('[data-iso]');
+      for (var j = 0; j < fixed.length; j++) {
+        fixed[j].textContent = formatDate(new Date(fixed[j].getAttribute('data-iso') + 'T12:00:00'), root.lang);
+      }
+      var amounts = document.querySelectorAll('[data-sar]');
+      for (var k = 0; k < amounts.length; k++) {
+        amounts[k].textContent = NUM.format(parseInt(amounts[k].getAttribute('data-sar'), 10)) + ' ' + T[root.lang].sar;
       }
     }
 
