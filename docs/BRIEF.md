@@ -44,11 +44,11 @@ A new maintenance request is auto-assigned to the maintenance staff for that uni
 One yearly payment, based on the total number of units the office manages across all its buildings. Billed yearly, like the leases themselves. This matches the industry: US platforms like Entrata, AppFolio and Yardi all charge per unit, usually on an annual agreement.
 
 - **What counts:** every unit in the system, rented or vacant. Not contracts, which change all year.
-- **Minimum:** a minimum annual fee (e.g. priced as 50 units) so very small offices still cover onboarding and support.
+- **Minimum:** none. An office with 3 units pays for 3 units. Onboarding must be self-serve so small offices can set up without help.
 - **Volume rate:** a lower per-unit price above a threshold (e.g. above 100 units).
 - **Growth mid-year:** units added during the year are free until renewal. At renewal, the office pays for its new total.
 - **Tenants:** always free.
-- **Prices:** per-unit rate, minimum and threshold are placeholders for now. The website shows a calculator where an office enters its unit count and sees the yearly price.
+- **Prices:** working proposal is 60 SAR per unit per year for the first 100 units, 45 SAR for units 101–300, 30 SAR above 300, applied like tax brackets. Not final until tested with real offices. The website shows a calculator where an office enters its unit count and sees the yearly price.
 
 ## App structure and entry flow
 
