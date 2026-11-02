@@ -11,6 +11,7 @@ Read `docs/BRIEF.md` before any work. It's the product spec. If something there 
 
 - Arabic first (right-to-left), English second. No hard-coded text: everything goes through translations.
 - The real estate office is the paying account. Buildings and units live inside it. Staff can be limited to specific buildings.
+- Dates always show both calendars: Hijri first, then Gregorian with the month name, e.g. "1 Rajab 1448 · 10 Dec 2026". Never one calendar alone.
 - Billing is once a year, per unit. Tenants never pay.
 - The portal (contracts, rent, maintenance) is the main product. Bookable services are a small side feature.
 - Visual direction: warm and trustworthy, like a good Saudi real estate office. Not a tech or telecom look: no dark mode by default, no glowing gradients, no pill labels above headings.
