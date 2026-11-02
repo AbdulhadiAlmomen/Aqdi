@@ -187,8 +187,6 @@
   .total b { color: var(--calc-total); }
   .daily { background: var(--calc-tint); }
   .daily { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .daily { transition: opacity .35s ease; }
-  .daily.is-hidden { visibility: hidden; opacity: 0; }
   .coffee { flex: none; display: block; width: 34px; height: 34px; }
   .coffee svg { width: 34px; height: 34px; display: block; }
   .coffee.pop { animation: coffee-pop .7s cubic-bezier(.34,1.56,.64,1) both; transform-origin: 50% 80%; }
@@ -402,7 +400,7 @@
             <b id="total-price">—</b>
             <span><span lang="ar">في السنة</span><span lang="en">per year</span></span>
           </div>
-          <p class="daily is-hidden" id="daily"></p>
+          <p class="daily" id="daily"></p>
           <p class="pitch"><span lang="ar">دفعة وحدة تغطي السنة كاملة: العقود، التحصيل، الصيانة والتجديدات. أرخص من موظف يلاحق كل هذا، ومنصتنا ما تطلع إجازة.</span><span lang="en">One payment covers the whole year: contracts, rent collection, maintenance and renewals. Cheaper than hiring someone to chase all of it, and our platform never takes a day off.</span></p>
         </div>
       </div>
@@ -548,7 +546,6 @@
       cupTimer = setTimeout(function () {
         showCup = true;
         renderPrice();
-        document.getElementById('daily').classList.remove('is-hidden');
         var cup = document.querySelector('#daily .coffee');
         if (cup) cup.classList.add('pop');
       }, 450);
