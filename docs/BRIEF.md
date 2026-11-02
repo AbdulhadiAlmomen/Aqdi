@@ -48,7 +48,7 @@ One yearly payment, based on the total number of units the office manages across
 - **Volume rate:** a lower per-unit price above a threshold (e.g. above 100 units).
 - **Growth mid-year:** units added during the year are free until renewal. At renewal, the office pays for its new total.
 - **Tenants:** always free.
-- **Prices:** working proposal is 60 SAR per unit per year for the first 100 units, 45 SAR for units 101–300, 30 SAR above 300, applied like tax brackets. Not final until tested with real offices. The website shows a calculator where an office enters its unit count and sees the yearly price.
+- **Prices:** working proposal is 50 SAR per unit per year for the first 100 units, 40 SAR for units 101–300, 30 SAR above 300 (100 units = 5,000 SAR, 300 units = 13,000 SAR), applied like tax brackets. Not final until tested with real offices. The website shows a calculator where an office enters its unit count and sees the yearly price.
 
 ## App structure and entry flow
 
