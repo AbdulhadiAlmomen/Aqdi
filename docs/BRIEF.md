@@ -112,7 +112,7 @@ The first version needs five things working well: contracts with renewal reminde
 These are what make Aqdi different from a US portal. Build them in from day one, not as a later translation layer.
 
 - **Arabic first, English second.** Default language is Arabic with full right-to-left layout. A toggle switches to English (left-to-right). Every string goes through i18n from the start, no hard-coded text.
-- **Dates.** Show Gregorian and Hijri side by side on contracts, invoices and renewals.
+- **Dates.** Every date shows both calendars, everywhere: contracts, invoices, renewals, the dashboard and the website mockups. Hijri first, then Gregorian with the month written out, e.g. "1 Rajab 1448 · 10 Dec 2026" (Arabic: "١ رجب ١٤٤٨هـ · ١٠ ديسمبر ٢٠٢٦م"). Use the Umm al-Qura calendar for Hijri. Never show a date in only one calendar, and never use number-only formats like 10/12/2026.
 - **Currency.** SAR everywhere, formatted for Arabic and English.
 - **Login by phone.** Saudi mobile number (+966) with a one-time SMS code. No passwords for tenants and guests. Office admins can also use email and password.
 - **Payments.** Support mada, Apple Pay, STC Pay and cards through a Saudi payment gateway (Moyasar, HyperPay or Tap are the usual options). Keep the gateway behind an interface so it can be swapped.
