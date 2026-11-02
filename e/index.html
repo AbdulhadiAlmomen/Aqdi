@@ -70,11 +70,11 @@
   .logo-mark { display: block; width: 30px; height: 30px; }
   .logo-mark svg { display: block; }
   .nav-actions { display: flex; gap: 8px; align-items: center; }
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 20px; border-radius: 0; font-family: var(--font-label); font-size: 14px; font-weight: 500; line-height: 1.4; text-decoration: none; cursor: pointer; border: 1px solid var(--ink); background: transparent; color: var(--ink); transition: background .2s, color .2s; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 20px; border-radius: 999px; font-family: var(--font-label); font-size: 14px; font-weight: 500; line-height: 1.4; text-decoration: none; cursor: pointer; border: 1px solid transparent; background: var(--taupe-soft); color: var(--ink); transition: background .2s, color .2s; }
   html[lang="en"] .btn { text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
   .btn-primary { background: var(--navy); border-color: var(--navy); color: #fff; }
   .btn-primary:hover { background: var(--navy-deep); border-color: var(--navy-deep); }
-  .btn-quiet:hover { background: var(--ink); color: var(--bg); }
+  .btn-quiet:hover { background: var(--panel); }
   @media (max-width: 520px) { .nav-actions .btn-primary { display: none; } }
 
   /* Hero: text beside a tall interior photo, dashboard resting on it */
@@ -90,7 +90,7 @@
   html[lang="en"] .trust { font-family: var(--font-label); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
   .trust > span::before { content: "—"; color: var(--wine); margin-inline-end: 8px; }
 
-  .stage { position: relative; background: #c9a77c url("https://images.unsplash.com/photo-1737094662085-7e0db16198e3?w=1600&q=80&auto=format&fit=crop") center / cover; padding: 44px 36px; }
+  .stage { position: relative; background: var(--panel); padding: 40px 32px; border-radius: 20px; }
   @media (max-width: 520px) { .stage { padding: 20px 14px; } }
   .arch { display: none; }
   .stage-photo { width: 100%; aspect-ratio: 4 / 4.2; object-fit: cover; }
@@ -126,9 +126,7 @@
   .section-head p { color: var(--ink-2); margin: 0; }
   .rule { display: none; }
 
-  .problem { background: var(--taupe); border-top: none; }
-  .problem .problem-card p { color: var(--charcoal); }
-  .problem .problem-card { border-color: rgba(47,43,38,.18); }
+  .problem { background: var(--bg); }
   .problem-grid { display: grid; border-top: 1px solid var(--ink); }
   @media (min-width: 760px) { .problem-grid { grid-template-columns: repeat(3, 1fr); } }
   .problem-card { padding: 24px 0 8px; }
@@ -180,7 +178,7 @@
   html[lang="en"] .calc label { text-transform: uppercase; letter-spacing: .08em; font-size: 11.5px; }
   .units-row { display: flex; align-items: center; gap: 16px; }
   .units-row input[type="range"] { flex: 1; accent-color: var(--navy); }
-  .units-row input[type="number"] { width: 96px; padding: 9px 12px; border-radius: 0; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; font-size: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+  .units-row input[type="number"] { width: 96px; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; font-size: 18px; text-align: center; font-variant-numeric: tabular-nums; }
   .units-row input[type="number"]:focus { outline: 1px solid var(--ink); }
   .total { margin: 26px 0 0; padding-top: 22px; border-top: 1px solid var(--line); }
   .total b { display: block; font-family: var(--font-display); font-size: 48px; font-weight: 500; line-height: 1.3; font-variant-numeric: tabular-nums; color: var(--navy); }
@@ -191,12 +189,9 @@
   html[lang="ar"] .pitch { font-style: normal; }
 
   /* Closing: text beside a photo */
-  .closing { text-align: center; padding: 104px 0; background: var(--charcoal); border-top: none; }
-  .closing h2 { color: var(--bg); }
-  .closing .section-head p { color: #cfc8c2; }
-  .closing .soon { border-color: #cfc8c2; color: var(--bg); }
+  .closing { text-align: center; padding: 104px 0; }
   .closing .section-head { margin: 0 auto 26px; }
-  .soon { display: inline-block; padding: 11px 24px; border: 1px solid var(--ink); color: var(--ink); font-family: var(--font-label); font-size: 14px; }
+  .soon { display: inline-block; padding: 11px 24px; border-radius: 999px; background: var(--taupe-soft); color: var(--ink-2); font-family: var(--font-label); font-size: 14px; }
   html[lang="en"] .soon { text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
 
   footer { background: var(--taupe); padding: 40px 0 48px; color: var(--ink-2); font-size: 15px; }
@@ -290,7 +285,7 @@
     <div class="wrap">
       <div class="section-head">
         <div class="rule"></div>
-        <h2><span lang="ar">الإيجار في السعودية صار أكبر من الدفتر.</span><span lang="en">Renting in Saudi has outgrown the notebook.</span></h2>
+        <h2><span lang="ar">الإيجار في السعودية صار أكبر من الدفاتر.</span><span lang="en">Renting in Saudi has outgrown notebooks.</span></h2>
       </div>
       <div class="problem-grid">
         <div class="problem-card">
