@@ -186,6 +186,16 @@
   .calc { background: linear-gradient(160deg, var(--calc-a), var(--calc-b)); }
   .total b { color: var(--calc-total); }
   .daily { background: var(--calc-tint); }
+  .daily { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .coffee { flex: none; display: block; width: 34px; height: 34px; }
+  .coffee svg { width: 34px; height: 34px; display: block; }
+  .coffee.pop { animation: coffee-pop .7s cubic-bezier(.34,1.56,.64,1) both; transform-origin: 50% 80%; }
+  .coffee .steam { opacity: 0; transform-box: fill-box; animation: coffee-steam 2.4s ease-in-out infinite; }
+  .coffee .steam:nth-of-type(2) { animation-delay: .8s; }
+  .coffee .steam:nth-of-type(3) { animation-delay: 1.6s; }
+  @keyframes coffee-pop { 0% { transform: scale(0) rotate(-25deg); opacity: 0; } 60% { transform: scale(1.25) rotate(10deg); opacity: 1; } 80% { transform: scale(.95) rotate(-4deg); } 100% { transform: scale(1) rotate(0); } }
+  @keyframes coffee-steam { 0% { opacity: 0; transform: translateY(3px); } 40% { opacity: .9; } 100% { opacity: 0; transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) { .coffee.pop, .coffee .steam { animation: none; opacity: 1; } }
   .units-row input[type="range"] { accent-color: var(--calc-range); }
   .bracket b { color: var(--palm); }
   .trust > span::before { color: var(--brass); }
@@ -440,7 +450,7 @@
       en: {
         sar: 'SAR',
         daily: '{daily} SAR a day for your whole office.',
-        coffee: ' Less than a coffee.',
+        coffee: ' Less than a cup of coffee.',
         title: 'Aqdi | عقدي'
       }
     };
@@ -492,6 +502,16 @@
       return total;
     }
 
+    // Small coffee cup that pops in when the daily price is under a coffee.
+    var COFFEE_SVG = '<svg viewBox="0 0 32 32" width="30" height="30">' +
+      '<g fill="none" stroke="#f5efe6" stroke-width="1.6" stroke-linecap="round">' +
+      '<path class="steam" d="M12 9c-1.5-1.5 1.5-2.5 0-4"/><path class="steam" d="M16 9c-1.5-1.5 1.5-2.5 0-4"/><path class="steam" d="M20 9c-1.5-1.5 1.5-2.5 0-4"/></g>' +
+      '<path d="M7 12h17v6a7 7 0 0 1-7 7h-3a7 7 0 0 1-7-7z" fill="#f5efe6"/>' +
+      '<path d="M24 14h1.5a3 3 0 0 1 0 6H23.5" fill="none" stroke="#f5efe6" stroke-width="2"/>' +
+      '<rect x="8.5" y="12.5" width="14" height="2.2" rx="1.1" fill="#7a5a44"/>' +
+      '<path d="M5 27h21" stroke="#f5efe6" stroke-width="2" stroke-linecap="round"/></svg>';
+    var hadCoffee = false;
+
     var range = document.getElementById('units-range');
     var unitsInput = document.getElementById('units-num');
     function renderPrice() {
@@ -500,15 +520,33 @@
       if (!(units > 0)) {
         document.getElementById('total-price').textContent = '—';
         document.getElementById('daily').textContent = '';
+        hadCoffee = false;
         return;
       }
       var total = yearlyTotal(units);
       var daily = Math.round(total / 365);
       document.getElementById('total-price').textContent = NUM.format(total) + ' ' + t.sar;
-      document.getElementById('daily').textContent = fill(t.daily, { daily: NUM.format(daily) }) + (daily <= 20 ? t.coffee : '');
+      var dailyEl = document.getElementById('daily');
+      var cheap = daily <= 20;
+      dailyEl.textContent = fill(t.daily, { daily: NUM.format(daily) }) + (cheap ? t.coffee : '');
+      if (cheap) {
+        var cup = document.createElement('span');
+        cup.className = 'coffee' + (hadCoffee ? '' : ' pop');
+        cup.setAttribute('aria-hidden', 'true');
+        cup.innerHTML = COFFEE_SVG;
+        dailyEl.appendChild(cup);
+      }
+      hadCoffee = cheap;
     }
     range.addEventListener('input', function () { unitsInput.value = range.value; renderPrice(); });
     unitsInput.addEventListener('input', function () { range.value = Math.min(600, unitsInput.value || 1); renderPrice(); });
+    // Replay the coffee pop the first time the calculator scrolls into view.
+    if ('IntersectionObserver' in window) {
+      var seen = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { hadCoffee = false; renderPrice(); seen.disconnect(); }
+      }, { threshold: 0.5 });
+      seen.observe(document.querySelector('.calc'));
+    }
 
     function setLang(lang) {
       root.lang = lang;
