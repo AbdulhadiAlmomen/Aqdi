@@ -90,7 +90,9 @@
   html[lang="en"] .trust { font-family: var(--font-label); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
   .trust > span::before { content: "—"; color: var(--wine); margin-inline-end: 8px; }
 
-  .stage { position: relative; background: var(--panel); padding: 40px 32px; border-radius: 20px; }
+  .stage { position: relative; padding: 40px 32px; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(rgba(47,36,28,.18), rgba(47,36,28,.18)), #3b2a20 url("https://images.unsplash.com/photo-1736506159893-22cca29b8018?w=1600&q=80&auto=format&fit=crop") center / cover; }
+  .stage .mock { border-color: transparent; box-shadow: 0 30px 60px -24px rgba(20,12,8,.55); border-radius: 12px; }
   @media (max-width: 520px) { .stage { padding: 20px 14px; } }
   .arch { display: none; }
   .stage-photo { width: 100%; aspect-ratio: 4 / 4.2; object-fit: cover; }
