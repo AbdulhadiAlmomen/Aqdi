@@ -195,7 +195,13 @@
   .coffee .steam:nth-of-type(3) { animation-delay: 1.6s; }
   @keyframes coffee-pop { 0% { transform: scale(0) rotate(-25deg); opacity: 0; } 60% { transform: scale(1.25) rotate(10deg); opacity: 1; } 80% { transform: scale(.95) rotate(-4deg); } 100% { transform: scale(1) rotate(0); } }
   @keyframes coffee-steam { 0% { opacity: 0; transform: translateY(3px); } 40% { opacity: .9; } 100% { opacity: 0; transform: translateY(-6px); } }
-  @media (prefers-reduced-motion: reduce) { .coffee.pop, .coffee .steam { animation: none; opacity: 1; } }
+  .tip-paper .paper-sheet { opacity: 0; }
+  .tip-paper .paper-sheet, .tip-paper .paper-ball { transform-box: fill-box; transform-origin: center; }
+  .tip-paper.pop .paper-sheet { animation: paper-crumple 1.3s .7s ease-in both; }
+  .tip-paper.pop .paper-ball { animation: paper-ball 1.3s .7s ease-out both; }
+  @keyframes paper-crumple { 0%, 30% { transform: scale(1) rotate(0); opacity: 1; } 70%, 100% { transform: scale(.35) rotate(-70deg); opacity: 0; } }
+  @keyframes paper-ball { 0%, 45% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.15); opacity: 1; } 80% { transform: scale(1); } 100% { transform: translateX(-3px) rotate(-100deg); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .coffee.pop, .coffee .steam, .tip-paper.pop .paper-sheet, .tip-paper.pop .paper-ball { animation: none; } .coffee .steam { opacity: 1; } }
   .units-row input[type="range"] { accent-color: var(--calc-range); }
   .bracket b { color: var(--palm); }
   .trust > span::before { color: var(--brass); }
@@ -446,6 +452,7 @@
         daily: '{daily} ريال يوميًا لمكتبك بالكامل.',
         dailyTiny: 'أقل من ريال يوميًا لمكتبك بالكامل.',
         coffee: ' أقل من سعر كوب قهوة',
+        paper: ' أقل من تكلفة الورق والحبر لطباعة عقودك',
         title: 'عقدي | Aqdi'
       },
       en: {
@@ -453,6 +460,7 @@
         daily: '{daily} SAR a day for your whole office.',
         dailyTiny: 'Less than 1 Saudi riyal a day for your whole office.',
         coffee: ' Less than a cup of coffee',
+        paper: ' Less than the paper and ink for printing your contracts',
         title: 'Aqdi | عقدي'
       }
     };
@@ -512,6 +520,15 @@
       '<path d="M24 14h1.5a3 3 0 0 1 0 6H23.5" fill="none" stroke="#f5efe6" stroke-width="2"/>' +
       '<rect x="8.5" y="12.5" width="14" height="2.2" rx="1.1" fill="#7a5a44"/>' +
       '<path d="M5 27h21" stroke="#f5efe6" stroke-width="2" stroke-linecap="round"/></svg>';
+    // A printed contract page that crumples into a ball, for 21 to 60 SAR a day.
+    var PAPER_SVG = '<svg viewBox="0 0 32 32" width="30" height="30">' +
+      '<g class="paper-sheet">' +
+      '<path d="M9 4h11l5 5v19H9z" fill="#f5efe6"/><path d="M20 4v5h5z" fill="#d9cdbd"/>' +
+      '<g stroke="#9a8b7e" stroke-width="1.3" stroke-linecap="round"><path d="M12 13h10"/><path d="M12 17h10"/><path d="M12 21h5"/></g>' +
+      '<path d="M21.5 19.5c1.5 1.9 2.3 3 2.3 4a2.3 2.3 0 0 1-4.6 0c0-1 .8-2.1 2.3-4z" fill="#2b3a55"/></g>' +
+      '<g class="paper-ball">' +
+      '<path d="M6.5 17.5l4-8.5 7-2 6 3.5 2.8 7-2.8 7-7 2.8-6.8-2.8z" fill="#f5efe6"/>' +
+      '<g fill="none" stroke="#b5a796" stroke-width="1.2" stroke-linecap="round"><path d="M10.5 11.5l5.5 5.5 7-4"/><path d="M9 22l7-4 5.5 7"/><path d="M16 17l.7 8.5"/><path d="M21 17.5l4 1"/></g></g></svg>';
     var showCup = false, cupTimer = null;
 
     var range = document.getElementById('units-range');
@@ -528,13 +545,14 @@
       var daily = Math.round(total / 365);
       document.getElementById('total-price').textContent = NUM.format(total) + ' ' + t.sar;
       var dailyEl = document.getElementById('daily');
-      var cheap = daily >= 1 && daily <= 20;
-      dailyEl.textContent = (daily < 1 ? t.dailyTiny : fill(t.daily, { daily: NUM.format(daily) })) + (cheap ? t.coffee : '');
-      if (cheap && showCup) {
+      // Up to 20 SAR a day compares to a coffee, up to 60 to the paper and ink for printing contracts.
+      var tip = daily >= 1 && daily <= 20 ? 'coffee' : daily > 20 && daily <= 60 ? 'paper' : null;
+      dailyEl.textContent = (daily < 1 ? t.dailyTiny : fill(t.daily, { daily: NUM.format(daily) })) + (tip ? t[tip] : '');
+      if (tip && showCup) {
         var cup = document.createElement('span');
-        cup.className = 'coffee';
+        cup.className = 'coffee' + (tip === 'paper' ? ' tip-paper' : '');
         cup.setAttribute('aria-hidden', 'true');
-        cup.innerHTML = COFFEE_SVG;
+        cup.innerHTML = tip === 'paper' ? PAPER_SVG : COFFEE_SVG;
         dailyEl.appendChild(cup);
       }
     }
