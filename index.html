@@ -19,9 +19,9 @@
     --ink-2: #625a54;
     --ink-3: #9a918a;
     --line: #e5e0d7;
-    --palm: #5a2d2a;
+    --palm: #24324a;
     --palm-ink: #fdf8f3;
-    --palm-soft: #f1e7e3;
+    --palm-soft: #e4e7ee;
     --clay: #c4923c;
     --clay-soft: #f6ead3;
     --brass: #b07f2c;
@@ -62,7 +62,7 @@
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; border-radius: 999px; font: inherit; font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: background .2s, transform .2s; }
   html[lang="en"] .btn { font-weight: 600; }
   .btn-primary { background: var(--palm); color: var(--palm-ink); }
-  .btn-primary:hover { background: #4a2422; transform: translateY(-1px); }
+  .btn-primary:hover { background: #1a2538; transform: translateY(-1px); }
   .btn-quiet { background: transparent; border-color: var(--line); color: var(--ink); }
   .btn-quiet:hover { background: var(--surface); }
   @media (max-width: 520px) { .nav-actions .btn-primary { display: none; } }
@@ -171,13 +171,14 @@
   nav { background: rgba(248,246,241,.88); }
   .arch { background: var(--surface); border: 1px solid var(--sand-2); }
   .arch::after { border-color: var(--clay); opacity: .45; }
-  .logo-mark { background: var(--palm); box-shadow: inset 0 0 0 2px rgba(196,146,60,.55); }
+  .logo-mark { width: 34px; height: 34px; padding: 0; background: none; box-shadow: none; border-radius: 0; display: block; }
+  .logo-mark svg { display: block; }
   .rule { background: var(--clay); width: 36px; height: 2px; }
   .problem-card, .brackets { background: var(--surface); box-shadow: var(--shadow); }
   .feature { border: none; background: var(--surface); box-shadow: 0 1px 2px rgba(60,30,20,.04); }
   .icon { background: var(--clay-soft); color: var(--brass); }
   .dot { background: var(--clay-soft); color: var(--brass); }
-  .calc { background: linear-gradient(160deg, #5a2d2a, #431f1d); }
+  .calc { background: linear-gradient(160deg, #24324a, #1a2538); }
   .total b { color: #f3d79e; }
   .daily { background: rgba(243,215,158,.12); }
   .units-row input[type="range"] { accent-color: #e2b766; }
@@ -194,7 +195,7 @@
 <nav>
   <div class="wrap">
     <a href="#" class="logo" aria-label="Aqdi">
-      <span class="logo-mark" aria-hidden="true">ع</span>
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 64 64" width="34" height="34"><rect width="64" height="64" rx="14" fill="var(--palm)"/><g fill="none" stroke="#f5f3ec" stroke-width="3.6" stroke-linecap="round"><path d="M11 22 q2.5 -3 5 0 t5 0 t5 0 t5 0 t5 0 t5 0 t5 0 t5 0 t2 0"/><path d="M11 33 q2.5 -3 5 0 t5 0 t5 0 t5 0 t5 0 t5 0 t5 0 t5 0 t2 0"/><path d="M11 44 q2.5 -3 5 0 t5 0 t5 0 t5 0 t5 0 t5 0"/></g></svg></span>
       <span lang="ar">عقدي</span><span lang="en">Aqdi</span>
     </a>
     <div class="nav-actions">
