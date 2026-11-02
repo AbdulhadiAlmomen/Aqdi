@@ -374,7 +374,7 @@
             <div class="bracket"><span><span lang="ar">أول 100 وحدة</span><span lang="en">First 100 units</span></span><b><span lang="ar">50 ريال</span><span lang="en">50 SAR</span></b></div>
             <div class="bracket"><span><span lang="ar">من 101 إلى 300 وحدة</span><span lang="en">Units 101–300</span></span><b><span lang="ar">40 ريال</span><span lang="en">40 SAR</span></b></div>
             <div class="bracket"><span><span lang="ar">أكثر من 300 وحدة</span><span lang="en">Above 300 units</span></span><b><span lang="ar">30 ريال</span><span lang="en">30 SAR</span></b></div>
-            <p class="bracket-note"><span lang="ar">السعر للوحدة في السنة، وكل سعر ينطبق فقط على الوحدات في نطاقه. مثال: 150 وحدة تكلّف 7,000 ريال، أول 100 وحدة بـ 50 ريال والـ 50 الباقية بـ 40 ريال.</span><span lang="en">Price per unit, per year. Each rate applies only to the units in its range. Example: 150 units cost 7,000 SAR, the first 100 at 50 SAR and the other 50 at 40 SAR.</span></p>
+            <p class="bracket-note"><span lang="ar">السعر للوحدة في السنة، وكل سعر ينطبق فقط على الوحدات في نطاقه.<br>مثال: 150 وحدة تكلّف 7,000 ريال، أول 100 وحدة بـ 50 ريال والـ 50 الباقية بـ 40 ريال.</span><span lang="en">Price per unit, per year. Each rate applies only to the units in its range.<br>Example: 150 units cost 7,000 SAR, the first 100 at 50 SAR and the other 50 at 40 SAR.</span></p>
           </div>
           <ul class="rules">
             <li><span class="dot">✓</span><span><strong><span lang="ar">بدون حد أدنى</span><span lang="en">No minimum</span></strong><span lang="ar">المكتب الذي يدير 3 وحدات يدفع عن 3 وحدات فقط.</span><span lang="en">An office with 3 units pays for 3 units.</span></span></li>
@@ -444,13 +444,13 @@
       ar: {
         sar: 'ريال',
         daily: '{daily} ريال يوميًا لمكتبك بالكامل.',
-        coffee: ' أقل من سعر كوب قهوة.',
+        coffee: ' أقل من سعر كوب قهوة',
         title: 'عقدي | Aqdi'
       },
       en: {
         sar: 'SAR',
         daily: '{daily} SAR a day for your whole office.',
-        coffee: ' Less than a cup of coffee.',
+        coffee: ' Less than a cup of coffee',
         title: 'Aqdi | عقدي'
       }
     };
@@ -510,7 +510,7 @@
       '<path d="M24 14h1.5a3 3 0 0 1 0 6H23.5" fill="none" stroke="#f5efe6" stroke-width="2"/>' +
       '<rect x="8.5" y="12.5" width="14" height="2.2" rx="1.1" fill="#7a5a44"/>' +
       '<path d="M5 27h21" stroke="#f5efe6" stroke-width="2" stroke-linecap="round"/></svg>';
-    var hadCoffee = false;
+    var showCup = false, cupTimer = null;
 
     var range = document.getElementById('units-range');
     var unitsInput = document.getElementById('units-num');
@@ -520,7 +520,6 @@
       if (!(units > 0)) {
         document.getElementById('total-price').textContent = '—';
         document.getElementById('daily').textContent = '';
-        hadCoffee = false;
         return;
       }
       var total = yearlyTotal(units);
@@ -529,24 +528,28 @@
       var dailyEl = document.getElementById('daily');
       var cheap = daily <= 20;
       dailyEl.textContent = fill(t.daily, { daily: NUM.format(daily) }) + (cheap ? t.coffee : '');
-      if (cheap) {
+      if (cheap && showCup) {
         var cup = document.createElement('span');
-        cup.className = 'coffee' + (hadCoffee ? '' : ' pop');
+        cup.className = 'coffee';
         cup.setAttribute('aria-hidden', 'true');
         cup.innerHTML = COFFEE_SVG;
         dailyEl.appendChild(cup);
       }
-      hadCoffee = cheap;
     }
-    range.addEventListener('input', function () { unitsInput.value = range.value; renderPrice(); });
-    unitsInput.addEventListener('input', function () { range.value = Math.min(600, unitsInput.value || 1); renderPrice(); });
-    // Replay the coffee pop the first time the calculator scrolls into view.
-    if ('IntersectionObserver' in window) {
-      var seen = new IntersectionObserver(function (entries) {
-        if (entries[0].isIntersecting) { hadCoffee = false; renderPrice(); seen.disconnect(); }
-      }, { threshold: 0.5 });
-      seen.observe(document.querySelector('.calc'));
+    // The cup only appears after the visitor enters a unit count, popping in once they pause.
+    function onUnitsChanged() {
+      showCup = false;
+      renderPrice();
+      clearTimeout(cupTimer);
+      cupTimer = setTimeout(function () {
+        showCup = true;
+        renderPrice();
+        var cup = document.querySelector('#daily .coffee');
+        if (cup) cup.classList.add('pop');
+      }, 450);
     }
+    range.addEventListener('input', function () { unitsInput.value = range.value; onUnitsChanged(); });
+    unitsInput.addEventListener('input', function () { range.value = Math.min(600, unitsInput.value || 1); onUnitsChanged(); });
 
     function setLang(lang) {
       root.lang = lang;
