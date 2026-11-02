@@ -155,12 +155,7 @@
   footer .wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
   .founder { color: var(--ink); font-weight: 700; }
   .field { margin-bottom: 20px; }
-  .rent-row { display: flex; align-items: center; gap: 10px; }
-  .rent-row input { width: 160px; padding: 9px 12px; border-radius: 12px; border: 1px solid rgba(253,250,244,.25); background: rgba(253,250,244,.08); color: var(--palm-ink); font: inherit; font-size: 17px; text-align: center; font-variant-numeric: tabular-nums; }
-  .rent-row span { color: rgba(253,250,244,.75); font-size: 15px; }
-  .context { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
-  .context li { position: relative; padding-inline-start: 20px; font-size: 15px; line-height: 1.6; color: rgba(253,250,244,.9); }
-  .context li::before { content: ""; position: absolute; inset-inline-start: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; background: var(--brass-soft); }
+  .daily { margin: 16px 0 0; padding: 14px 18px; border-radius: 14px; background: rgba(253,250,244,.1); font-size: 16px; color: var(--palm-ink); }
   .pitch { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid rgba(253,250,244,.18); font-size: 15px; color: rgba(253,250,244,.75); }
   .brackets { background: var(--bg); border-radius: var(--radius); padding: 8px 24px 18px; margin-bottom: 24px; }
   .bracket { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -255,7 +250,7 @@
     <div class="wrap">
       <div class="section-head">
         <div class="rule"></div>
-        <h2><span lang="ar">أغلب الإيجارات في السعودية ما زالت تدار بالورق والمكالمات.</span><span lang="en">Most Saudi rentals still run on paper and phone calls.</span></h2>
+        <h2><span lang="ar">الإيجار في السعودية يستاهل أكثر من دفتر وجوال.</span><span lang="en">Renting in Saudi deserves better than a notebook and a phone.</span></h2>
       </div>
       <div class="problem-grid">
         <div class="problem-card">
@@ -359,19 +354,12 @@
               <input type="number" id="units-num" min="1" max="100000" value="100" inputmode="numeric" required>
             </div>
           </div>
-          <div class="field">
-            <label for="rent-num"><span lang="ar">متوسط الإيجار السنوي للوحدة (تقديري)</span><span lang="en">Average yearly rent per unit (estimate)</span></label>
-            <div class="rent-row">
-              <input type="number" id="rent-num" min="0" step="1000" value="35000" inputmode="numeric">
-              <span><span lang="ar">ريال</span><span lang="en">SAR</span></span>
-            </div>
-          </div>
           <div class="total">
             <b id="total-price">—</b>
             <span id="total-monthly"></span>
           </div>
-          <ul class="context" id="context"></ul>
-          <p class="pitch"><span lang="ar">دفعة وحدة تغطي السنة كاملة: العقود، التحصيل، الصيانة والتجديدات. أرخص من موظف يلاحق كل هذا، وما ياخذ إجازة.</span><span lang="en">One payment covers the whole year: contracts, rent collection, maintenance and renewals. Cheaper than hiring someone to chase all of it, and it never takes a day off.</span></p>
+          <p class="daily" id="daily"></p>
+          <p class="pitch"><span lang="ar">دفعة وحدة تغطي السنة كاملة: العقود، التحصيل، الصيانة والتجديدات. أرخص من موظف يطارد ورا كل هذا، ومنصتنا ما تطلع إجازة.</span><span lang="en">One payment covers the whole year: contracts, rent collection, maintenance and renewals. Cheaper than hiring someone to chase all of it, and our platform never takes a day off.</span></p>
         </div>
       </div>
     </div>
@@ -414,23 +402,15 @@
       ar: {
         sar: 'ريال',
         monthly: 'حوالي {x} ريال في الشهر',
-        daily: 'يعني تقريبًا {daily} ريال في اليوم لمكتبك كامل.',
+        daily: 'تقريبًا {daily} ريال في اليوم لمكتبك كامل.',
         coffee: ' أقل من سعر كوب قهوة.',
-        perUnit: 'أقل من 5 ريال للوحدة في الشهر.',
-        percent: 'بس {percent}٪ من الإيجارات اللي تديرها.',
-        percentTiny: 'أقل من 0.1٪ من الإيجارات اللي تديرها.',
-        vacancy: 'سنة كاملة من عقدي تكلفك نفس وحدة فاضية {days} يوم.',
         title: 'عقدي | Aqdi'
       },
       en: {
         sar: 'SAR',
         monthly: 'about {x} SAR a month',
-        daily: 'That’s about {daily} SAR a day for your whole office.',
+        daily: 'About {daily} SAR a day for your whole office.',
         coffee: ' Less than a coffee.',
-        perUnit: 'Less than 5 SAR per unit a month.',
-        percent: 'Just {percent}% of the rent you manage.',
-        percentTiny: 'Less than 0.1% of the rent you manage.',
-        vacancy: 'A full year of Aqdi costs the same as one unit sitting empty for {days} days.',
         title: 'Aqdi | عقدي'
       }
     };
@@ -484,38 +464,23 @@
 
     var range = document.getElementById('units-range');
     var unitsInput = document.getElementById('units-num');
-    var rentInput = document.getElementById('rent-num');
     function renderPrice() {
       var t = T[root.lang];
       var units = Math.floor(parseFloat(unitsInput.value));
-      var rent = parseFloat(rentInput.value);
-      var list = document.getElementById('context');
-      list.innerHTML = '';
       if (!(units > 0)) {
         document.getElementById('total-price').textContent = '—';
         document.getElementById('total-monthly').textContent = '';
+        document.getElementById('daily').textContent = '';
         return;
       }
       var total = yearlyTotal(units);
+      var daily = Math.round(total / 365);
       document.getElementById('total-price').textContent = NUM.format(total) + ' ' + t.sar;
       document.getElementById('total-monthly').textContent = fill(t.monthly, { x: NUM.format(Math.round(total / 12)) });
-
-      var daily = Math.round(total / 365);
-      var lines = [fill(t.daily, { daily: NUM.format(daily) }) + (daily <= 20 ? t.coffee : ''), t.perUnit];
-      if (rent > 0) {
-        var pct = (total / (units * rent) * 100).toFixed(1);
-        lines.push(pct === '0.0' ? t.percentTiny : fill(t.percent, { percent: pct }));
-        lines.push(fill(t.vacancy, { days: NUM.format(Math.round(total / (rent / 365))) }));
-      }
-      for (var i = 0; i < lines.length; i++) {
-        var li = document.createElement('li');
-        li.textContent = lines[i];
-        list.appendChild(li);
-      }
+      document.getElementById('daily').textContent = fill(t.daily, { daily: NUM.format(daily) }) + (daily <= 20 ? t.coffee : '');
     }
     range.addEventListener('input', function () { unitsInput.value = range.value; renderPrice(); });
     unitsInput.addEventListener('input', function () { range.value = Math.min(600, unitsInput.value || 1); renderPrice(); });
-    rentInput.addEventListener('input', renderPrice);
 
     function setLang(lang) {
       root.lang = lang;
