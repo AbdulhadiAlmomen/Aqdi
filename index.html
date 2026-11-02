@@ -453,7 +453,7 @@
       en: {
         sar: 'SAR',
         daily: '{daily} SAR a day for your whole office.',
-        dailyTiny: 'Less than 1 SAR a day for your whole office.',
+        dailyTiny: 'Less than 1 Saudi riyal a day for your whole office.',
         coffee: ' Less than a cup of coffee',
         title: 'Aqdi | عقدي'
       }
@@ -530,7 +530,7 @@
       var daily = Math.round(total / 365);
       document.getElementById('total-price').textContent = NUM.format(total) + ' ' + t.sar;
       var dailyEl = document.getElementById('daily');
-      var cheap = daily <= 20;
+      var cheap = daily >= 1 && daily <= 20;
       dailyEl.textContent = (daily < 1 ? t.dailyTiny : fill(t.daily, { daily: NUM.format(daily) })) + (cheap ? t.coffee : '');
       if (cheap && showCup) {
         var cup = document.createElement('span');
