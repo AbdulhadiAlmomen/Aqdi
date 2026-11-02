@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aqdi | عقدي</title>
+<meta name="description" content="Aqdi is an Arabic-first platform where Saudi real estate offices and their tenants handle leases, rent, maintenance and communication in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ee;
+    --surface: #ffffff;
+    --surface-2: #efe9dd;
+    --ink: #13231f;
+    --ink-2: #4a5a55;
+    --line: #e2dbcc;
+    --brand: #0e6b56;
+    --brand-ink: #ffffff;
+    --brand-soft: #dcefe8;
+    --accent: #c0832e;
+    --accent-soft: #f6e8d2;
+    --danger: #b4452f;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(19,35,31,.06), 0 8px 24px rgba(19,35,31,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1715; --surface: #16211e; --surface-2: #1c2a26; --ink: #eef3f1; --ink-2: #a3b3ae;
+      --line: #263632; --brand: #3fb393; --brand-ink: #06120f; --brand-soft: #173a31;
+      --accent: #e0a654; --accent-soft: #3a2c17; --danger: #e07a62;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1715; --surface: #16211e; --surface-2: #1c2a26; --ink: #eef3f1; --ink-2: #a3b3ae;
+    --line: #263632; --brand: #3fb393; --brand-ink: #06120f; --brand-soft: #173a31;
+    --accent: #e0a654; --accent-soft: #3a2c17; --danger: #e07a62;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px; line-height: 1.6;
+  }
+  html[lang="en"] [lang="ar"]:not(html) { display: none; }
+  html[lang="ar"] [lang="en"]:not(html) { display: none; }
+  html[lang="ar"] body { font-size: 18px; }
+
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+  /* Nav */
+  nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; text-decoration: none; }
+  .logo-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--brand); color: var(--brand-ink); display: grid; place-items: center; font-size: 18px; }
+  .nav-actions { display: flex; gap: 8px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 10px; font: inherit; font-weight: 600; font-size: 15px; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
+  .btn-primary { background: var(--brand); color: var(--brand-ink); }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+  .btn-ghost:hover { background: var(--surface); }
+  @media (max-width: 520px) { .nav-actions .btn-primary { display: none; } }
+
+  /* Hero */
+  .hero { padding: 64px 0 48px; display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 960px) { .hero { grid-template-columns: 1.05fr 1fr; padding: 88px 0 72px; } }
+  .eyebrow { display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--brand); background: var(--brand-soft); padding: 5px 12px; border-radius: 999px; }
+  h1 { font-size: clamp(34px, 5.4vw, 56px); line-height: 1.12; margin: 18px 0 18px; letter-spacing: -.02em; }
+  html[lang="ar"] h1 { letter-spacing: 0; line-height: 1.3; }
+  .lede { font-size: 19px; color: var(--ink-2); max-width: 34em; margin: 0 0 28px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .cta-row .btn { padding: 13px 22px; font-size: 16px; }
+
+  /* Dashboard mock */
+  .mock { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 18px; }
+  .mock-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .mock-title { font-weight: 700; }
+  .mock-sub { font-size: 13px; color: var(--ink-2); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat { background: var(--surface-2); border-radius: 12px; padding: 12px; }
+  .stat b { display: block; font-size: 22px; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 12px; color: var(--ink-2); }
+  .rows { display: grid; gap: 8px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 14px; }
+  .row small { color: var(--ink-2); display: block; font-size: 12px; }
+  .pill { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+  .pill-ok { background: var(--brand-soft); color: var(--brand); }
+  .pill-warn { background: var(--accent-soft); color: var(--accent); }
+  .pill-bad { background: color-mix(in srgb, var(--danger) 15%, transparent); color: var(--danger); }
+
+  /* Sections */
+  section { padding: 56px 0; }
+  .section-head { max-width: 640px; margin-bottom: 32px; }
+  h2 { font-size: clamp(26px, 3.6vw, 36px); line-height: 1.2; margin: 10px 0 12px; letter-spacing: -.01em; }
+  .section-head p { color: var(--ink-2); margin: 0; }
+
+  .problem { background: var(--surface); border-block: 1px solid var(--line); }
+  .problem-grid { display: grid; gap: 16px; }
+  @media (min-width: 760px) { .problem-grid { grid-template-columns: repeat(3, 1fr); } }
+  .problem-card { padding: 22px; border-radius: var(--radius); background: var(--bg); border: 1px solid var(--line); }
+  .problem-card h3 { margin: 0 0 6px; font-size: 18px; }
+  .problem-card p { margin: 0; color: var(--ink-2); font-size: 15px; }
+
+  .features { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .features { grid-template-columns: repeat(3, 1fr); } }
+  .feature { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+  .icon { width: 42px; height: 42px; border-radius: 11px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; margin-bottom: 14px; }
+  .icon svg { width: 22px; height: 22px; }
+  .feature h3 { margin: 0 0 6px; font-size: 18px; }
+  .feature p { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .feature.extra { background: var(--accent-soft); border-color: transparent; }
+  .feature.extra .icon { background: var(--surface); color: var(--accent); }
+
+  .split { display: grid; gap: 16px; }
+  @media (min-width: 820px) { .split { grid-template-columns: 1fr 1fr; } }
+  .who { border-radius: 18px; padding: 28px; border: 1px solid var(--line); background: var(--surface); }
+  .who.pay { background: var(--brand); color: var(--brand-ink); border-color: transparent; }
+  .who.pay p, .who.pay li { color: color-mix(in srgb, var(--brand-ink) 85%, transparent); }
+  .who h3 { margin: 0 0 8px; font-size: 22px; }
+  .who p { margin: 0 0 14px; color: var(--ink-2); }
+  .who ul { margin: 0; padding-inline-start: 20px; color: var(--ink-2); }
+  .who li { margin: 4px 0; }
+  .tag { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+
+  .closing { text-align: center; }
+  .closing .section-head { margin-inline: auto; }
+  .closing .cta-row { justify-content: center; }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--ink-2); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+  .founder { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="logo" aria-label="Aqdi home">
+      <span class="logo-mark" aria-hidden="true">ع</span>
+      <span lang="en">Aqdi</span><span lang="ar">عقدي</span>
+    </a>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" id="lang-toggle" type="button">
+        <span lang="en">العربية</span><span lang="ar">English</span>
+      </button>
+      <a href="#waitlist" class="btn btn-primary">
+        <span lang="en">Get early access</span><span lang="ar">احصل على وصول مبكر</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <header class="hero">
+      <div>
+        <span class="eyebrow">
+          <span lang="en">Built for Saudi real estate offices</span>
+          <span lang="ar">مصمم لمكاتب العقار في السعودية</span>
+        </span>
+        <h1>
+          <span lang="en">Leases, rent and repairs. One place, not ten WhatsApp groups.</span>
+          <span lang="ar">العقود والإيجار والصيانة في مكان واحد، بدل عشر مجموعات واتساب.</span>
+        </h1>
+        <p class="lede">
+          <span lang="en">Aqdi gives real estate offices one dashboard for every building, unit and tenant, and gives tenants a portal to see their contract, pay rent and request maintenance. Arabic-first, made for how renting works in Saudi.</span>
+          <span lang="ar">عقدي يمنح مكتب العقار لوحة تحكم واحدة لكل المباني والوحدات والمستأجرين، ويمنح المستأجر بوابة يرى فيها عقده ويدفع إيجاره ويطلب الصيانة. عربي أولاً، ومصمم لطريقة الإيجار في السعودية.</span>
+        </p>
+        <div class="cta-row">
+          <a href="#waitlist" class="btn btn-primary">
+            <span lang="en">Join the waitlist</span><span lang="ar">انضم لقائمة الانتظار</span>
+          </a>
+          <a href="#features" class="btn btn-ghost">
+            <span lang="en">See what it does</span><span lang="ar">اكتشف المزايا</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mock" aria-label="Example office dashboard">
+        <div class="mock-head">
+          <div>
+            <div class="mock-title"><span lang="en">Al Noor Real Estate</span><span lang="ar">مكتب النور العقاري</span></div>
+            <div class="mock-sub"><span lang="en">4 buildings · 62 units</span><span lang="ar">٤ مباني · ٦٢ وحدة</span></div>
+          </div>
+          <span class="pill pill-ok"><span lang="en">Live</span><span lang="ar">مباشر</span></span>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>91%</b><span><span lang="en">Rent collected</span><span lang="ar">الإيجار المحصّل</span></span></div>
+          <div class="stat"><b>7</b><span><span lang="en">Leases ending in 60 days</span><span lang="ar">عقود تنتهي خلال ٦٠ يوماً</span></span></div>
+          <div class="stat"><b>3</b><span><span lang="en">Open repairs</span><span lang="ar">طلبات صيانة مفتوحة</span></span></div>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <div><span lang="en">Unit 12, Building A</span><span lang="ar">وحدة ١٢، مبنى أ</span>
+              <small><span lang="en">Semi-annual rent · due Rajab 1</span><span lang="ar">إيجار نصف سنوي · مستحق ١ رجب</span></small></div>
+            <span class="pill pill-ok"><span lang="en">Paid</span><span lang="ar">مدفوع</span></span>
+          </div>
+          <div class="row">
+            <div><span lang="en">Unit 4, Building C</span><span lang="ar">وحدة ٤، مبنى ج</span>
+              <small><span lang="en">AC not cooling · reported today</span><span lang="ar">المكيف لا يبرد · بلاغ اليوم</span></small></div>
+            <span class="pill pill-warn"><span lang="en">In progress</span><span lang="ar">قيد التنفيذ</span></span>
+          </div>
+          <div class="row">
+            <div><span lang="en">Unit 9, Building B</span><span lang="ar">وحدة ٩، مبنى ب</span>
+              <small><span lang="en">Annual lease · ends in 21 days</span><span lang="ar">عقد سنوي · ينتهي خلال ٢١ يوماً</span></small></div>
+            <span class="pill pill-bad"><span lang="en">Renew</span><span lang="ar">تجديد</span></span>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <section class="problem">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span lang="en">The problem</span><span lang="ar">المشكلة</span></span>
+        <h2><span lang="en">Most Saudi rentals still run on paper, phone calls and notebooks.</span><span lang="ar">أغلب الإيجارات في السعودية ما زالت تدار بالورق والمكالمات والدفاتر.</span></h2>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <h3><span lang="en">Tenants chase the office</span><span lang="ar">المستأجر يلاحق المكتب</span></h3>
+          <p><span lang="en">When does my contract end? How much do I owe? Every answer takes a phone call.</span><span lang="ar">متى ينتهي عقدي؟ كم المبلغ المستحق؟ كل إجابة تحتاج مكالمة.</span></p>
+        </div>
+        <div class="problem-card">
+          <h3><span lang="en">Repairs go through the haris</span><span lang="ar">الصيانة تمر عبر الحارس</span></h3>
+          <p><span lang="en">A broken AC gets reported by word of mouth, and nobody knows if it was fixed.</span><span lang="ar">بلاغ المكيف المعطل يصل شفهياً، ولا أحد يعرف هل تم إصلاحه.</span></p>
+        </div>
+        <div class="problem-card">
+          <h3><span lang="en">Offices fly blind</span><span lang="ar">المكتب بلا رؤية واضحة</span></h3>
+          <p><span lang="en">Spreadsheets can't tell you who paid, which leases expire soon, or what is still open.</span><span lang="ar">الجداول لا تخبرك من دفع، وأي العقود ستنتهي قريباً، وما الذي ما زال معلقاً.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span lang="en">What Aqdi does</span><span lang="ar">ماذا يقدم عقدي</span></span>
+        <h2><span lang="en">Everything between the office and the tenant, in one app.</span><span lang="ar">كل ما بين المكتب والمستأجر، في تطبيق واحد.</span></h2>
+        <p><span lang="en">The office adds its buildings, units and tenants once. From then on, the day-to-day runs from one dashboard.</span><span lang="ar">يضيف المكتب مبانيه ووحداته ومستأجريه مرة واحدة، وبعدها تدار الأمور اليومية من لوحة واحدة.</span></p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
+          <h3><span lang="en">Office dashboard</span><span lang="ar">لوحة تحكم المكتب</span></h3>
+          <p><span lang="en">See every building, unit and tenant at a glance, with what needs attention first.</span><span lang="ar">كل المباني والوحدات والمستأجرين في نظرة واحدة، مع ما يحتاج انتباهك أولاً.</span></p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></div>
+          <h3><span lang="en">Digital leases</span><span lang="ar">عقود رقمية</span></h3>
+          <p><span lang="en">Tenants see their contract anytime. Offices get reminders before renewals come due.</span><span lang="ar">المستأجر يرى عقده في أي وقت، والمكتب يتلقى تنبيهات قبل مواعيد التجديد.</span></p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></div>
+          <h3><span lang="en">Rent payments</span><span lang="ar">دفع الإيجار</span></h3>
+          <p><span lang="en">Pay yearly, semi-annual or monthly online, with a clear record of who paid and when.</span><span lang="ar">ادفع سنوياً أو نصف سنوي أو شهرياً عبر الإنترنت، مع سجل واضح لمن دفع ومتى.</span></p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></div>
+          <h3><span lang="en">Maintenance requests</span><span lang="ar">طلبات الصيانة</span></h3>
+          <p><span lang="en">Tenants report issues with a photo. The office assigns, tracks and closes them.</span><span lang="ar">المستأجر يبلّغ مع صورة، والمكتب يسند الطلب ويتابعه ويغلقه.</span></p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg></div>
+          <h3><span lang="en">Announcements</span><span lang="ar">الإعلانات</span></h3>
+          <p><span lang="en">Water cut tomorrow? Tell one building or all of them, without a group chat.</span><span lang="ar">انقطاع ماء غداً؟ أبلغ مبنى واحداً أو كل المباني، بدون مجموعة واتساب.</span></p>
+        </div>
+        <div class="feature extra">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg></div>
+          <h3><span lang="en">Bookable services</span><span lang="ar">خدمات قابلة للحجز</span></h3>
+          <p><span lang="en">Offices can list paid services like cleaning, AC repair and moving that anyone can book.</span><span lang="ar">يمكن للمكتب عرض خدمات مدفوعة مثل التنظيف وصيانة المكيفات والنقل، يحجزها أي شخص.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="split">
+        <div class="who pay">
+          <div class="tag"><span lang="en">For offices</span><span lang="ar">للمكاتب</span></div>
+          <h3><span lang="en">Simple pricing per unit</span><span lang="ar">تسعير بسيط لكل وحدة</span></h3>
+          <p><span lang="en">Real estate offices subscribe monthly, priced per unit or by tier, so small offices pay small.</span><span lang="ar">يشترك المكتب شهرياً، بسعر لكل وحدة أو حسب الباقة، فالمكتب الصغير يدفع أقل.</span></p>
+          <ul>
+            <li><span lang="en">Unlimited tenants and staff</span><span lang="ar">مستأجرون وموظفون بلا حد</span></li>
+            <li><span lang="en">Rent tracking and renewal reminders</span><span lang="ar">متابعة الإيجار وتنبيهات التجديد</span></li>
+            <li><span lang="en">Your own services storefront</span><span lang="ar">واجهة خدمات خاصة بمكتبك</span></li>
+          </ul>
+        </div>
+        <div class="who">
+          <div class="tag"><span lang="en">For tenants</span><span lang="ar">للمستأجرين</span></div>
+          <h3><span lang="en">Always free</span><span lang="ar">مجاني دائماً</span></h3>
+          <p><span lang="en">Tenants never pay to use Aqdi. They get a clear view of their home and a direct line to the office.</span><span lang="ar">المستأجر لا يدفع شيئاً لاستخدام عقدي، ويحصل على صورة واضحة لسكنه وتواصل مباشر مع المكتب.</span></p>
+          <ul>
+            <li><span lang="en">Contract and payment history</span><span lang="ar">العقد وسجل المدفوعات</span></li>
+            <li><span lang="en">Maintenance requests with status updates</span><span lang="ar">طلبات صيانة مع متابعة الحالة</span></li>
+            <li><span lang="en">Building announcements</span><span lang="ar">إعلانات المبنى</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing" id="waitlist">
+    <div class="wrap">
+      <div class="section-head">
+        <h2><span lang="en">Run your office from one screen.</span><span lang="ar">أدر مكتبك من شاشة واحدة.</span></h2>
+        <p><span lang="en">Aqdi is in development. Early offices get free onboarding and help shape the product.</span><span lang="ar">عقدي قيد التطوير. المكاتب الأولى تحصل على تهيئة مجانية وتشارك في تشكيل المنتج.</span></p>
+      </div>
+      <div class="cta-row">
+        <span class="eyebrow">
+          <span lang="en">Early access opening soon</span><span lang="ar">الوصول المبكر قريباً</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <span lang="en">Founded and built by</span><span lang="ar">أسسه وطوّره</span>
+      <span class="founder">Abdulhadi Almomen</span>
+    </div>
+    <div>© 2026 Aqdi · عقدي</div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function setLang(lang) {
+      root.lang = lang;
+      root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      try { localStorage.setItem('aqdi-lang', lang); } catch (e) {}
+    }
+    var saved = null;
+    try { saved = localStorage.getItem('aqdi-lang'); } catch (e) {}
+    var browser = (navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en';
+    setLang(saved || browser);
+    document.getElementById('lang-toggle').addEventListener('click', function () {
+      setLang(root.lang === 'ar' ? 'en' : 'ar');
+    });
+  })();
+</script>
+</body>
+</html>
