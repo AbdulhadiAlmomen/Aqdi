@@ -140,9 +140,8 @@
   .units-row input[type="range"] { flex: 1; accent-color: var(--brass-soft); }
   .units-row input[type="number"] { width: 92px; padding: 9px 12px; border-radius: 12px; border: 1px solid rgba(253,250,244,.25); background: rgba(253,250,244,.08); color: var(--palm-ink); font: inherit; font-size: 17px; text-align: center; }
   .total { margin: 28px 0 6px; padding-top: 24px; border-top: 1px solid rgba(253,250,244,.18); }
-  .total b { display: block; font-family: var(--font-display); font-size: 40px; line-height: 1.3; font-variant-numeric: tabular-nums; }
+  .total b { display: block; font-family: var(--font-display); font-size: 44px; line-height: 1.3; font-variant-numeric: tabular-nums; }
   .total span { color: rgba(253,250,244,.75); font-size: 15px; }
-  .fine { font-size: 13px; color: rgba(253,250,244,.6); margin: 16px 0 0; }
   .tenant-free { margin-top: 20px; padding: 20px 24px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
   .tenant-free h3 { margin: 0 0 4px; font-size: 19px; }
   .tenant-free p { margin: 0; color: var(--ink-2); font-size: 16px; }
@@ -155,6 +154,18 @@
   footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--ink-3); font-size: 14px; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
   .founder { color: var(--ink); font-weight: 700; }
+  .field { margin-bottom: 20px; }
+  .rent-row { display: flex; align-items: center; gap: 10px; }
+  .rent-row input { width: 160px; padding: 9px 12px; border-radius: 12px; border: 1px solid rgba(253,250,244,.25); background: rgba(253,250,244,.08); color: var(--palm-ink); font: inherit; font-size: 17px; text-align: center; font-variant-numeric: tabular-nums; }
+  .rent-row span { color: rgba(253,250,244,.75); font-size: 15px; }
+  .context { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
+  .context li { position: relative; padding-inline-start: 20px; font-size: 15px; line-height: 1.6; color: rgba(253,250,244,.9); }
+  .context li::before { content: ""; position: absolute; inset-inline-start: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; background: var(--brass-soft); }
+  .pitch { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid rgba(253,250,244,.18); font-size: 15px; color: rgba(253,250,244,.75); }
+  .brackets { background: var(--bg); border-radius: var(--radius); padding: 8px 24px 18px; margin-bottom: 24px; }
+  .bracket { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .bracket b { font-family: var(--font-display); font-size: 22px; color: var(--palm); white-space: nowrap; }
+  .bracket-note { margin: 14px 0 0; font-size: 14px; color: var(--ink-3); }
 </style>
 </head>
 <body>
@@ -209,28 +220,28 @@
           <div class="mock-head">
             <div>
               <div class="mock-title"><span lang="ar">مكتب النور العقاري</span><span lang="en">Al Noor Real Estate</span></div>
-              <div class="mock-sub"><span lang="ar">٤ مباني · ٦٢ وحدة</span><span lang="en">4 buildings · 62 units</span></div>
+              <div class="mock-sub"><span lang="ar">4 مباني · 62 وحدة</span><span lang="en">4 buildings · 62 units</span></div>
             </div>
             <div class="mock-sub" data-date="0"></div>
           </div>
           <div class="stats">
-            <div class="stat"><b><span lang="ar">٩١٪</span><span lang="en">91%</span></b><span><span lang="ar">الإيجار المحصّل</span><span lang="en">Rent collected</span></span></div>
-            <div class="stat"><b><span lang="ar">٧</span><span lang="en">7</span></b><span><span lang="ar">عقود تنتهي خلال ٦٠ يوماً</span><span lang="en">Leases ending in 60 days</span></span></div>
-            <div class="stat"><b><span lang="ar">٣</span><span lang="en">3</span></b><span><span lang="ar">طلبات صيانة مفتوحة</span><span lang="en">Open repairs</span></span></div>
+            <div class="stat"><b>91%</b><span><span lang="ar">الإيجار المحصّل</span><span lang="en">Rent collected</span></span></div>
+            <div class="stat"><b>7</b><span><span lang="ar">عقود تنتهي خلال 60 يوماً</span><span lang="en">Leases ending in 60 days</span></span></div>
+            <div class="stat"><b>3</b><span><span lang="ar">طلبات صيانة مفتوحة</span><span lang="en">Open repairs</span></span></div>
           </div>
           <div class="rows">
             <div class="row">
-              <div><span lang="ar">وحدة ١٢، مبنى أ</span><span lang="en">Unit 12, Building A</span>
+              <div><span lang="ar">وحدة 12، مبنى أ</span><span lang="en">Unit 12, Building A</span>
                 <small><span lang="ar">إيجار نصف سنوي · مستحق</span><span lang="en">Semi-annual rent · due</span> <span data-date="12"></span></small></div>
               <span class="status s-paid"><span lang="ar">مدفوع</span><span lang="en">Paid</span></span>
             </div>
             <div class="row">
-              <div><span lang="ar">وحدة ٤، مبنى ج</span><span lang="en">Unit 4, Building C</span>
+              <div><span lang="ar">وحدة 4، مبنى ج</span><span lang="en">Unit 4, Building C</span>
                 <small><span lang="ar">المكيف لا يبرد · بلاغ اليوم</span><span lang="en">AC not cooling · reported today</span></small></div>
               <span class="status s-progress"><span lang="ar">قيد التنفيذ</span><span lang="en">In progress</span></span>
             </div>
             <div class="row">
-              <div><span lang="ar">وحدة ٩، مبنى ب</span><span lang="en">Unit 9, Building B</span>
+              <div><span lang="ar">وحدة 9، مبنى ب</span><span lang="en">Unit 9, Building B</span>
                 <small><span lang="ar">عقد سنوي · ينتهي</span><span lang="en">Annual lease · ends</span> <span data-date="21"></span></small></div>
               <span class="status s-renew"><span lang="ar">تجديد</span><span lang="en">Renew</span></span>
             </div>
@@ -277,7 +288,7 @@
         <div class="feature">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></div>
           <h3><span lang="ar">العقود والتجديد</span><span lang="en">Contracts and renewals</span></h3>
-          <p><span lang="ar">المستأجر يرى عقده في أي وقت، والمكتب يرى العقود المنتهية خلال ٩٠ و٦٠ و٣٠ يوماً ويرسل عرض التجديد من التطبيق.</span><span lang="en">Tenants see their contract anytime. Offices see leases ending in 90, 60 and 30 days and send renewal offers in the app.</span></p>
+          <p><span lang="ar">المستأجر يرى عقده في أي وقت، والمكتب يرى العقود المنتهية خلال 90 و60 و30 يوماً ويرسل عرض التجديد من التطبيق.</span><span lang="en">Tenants see their contract anytime. Offices see leases ending in 90, 60 and 30 days and send renewal offers in the app.</span></p>
         </div>
         <div class="feature">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/></svg></div>
@@ -317,16 +328,20 @@
     <div class="wrap">
       <div class="section-head">
         <div class="rule"></div>
-        <h2><span lang="ar">دفعة واحدة في السنة، حسب عدد الوحدات.</span><span lang="en">One yearly payment, based on your units.</span></h2>
-        <p><span lang="ar">يُدفع الاشتراك سنوياً مثل عقود الإيجار نفسها، ويعتمد على إجمالي الوحدات في كل مبانيك.</span><span lang="en">Billed once a year, like the leases themselves, based on the total units across all your buildings.</span></p>
+        <h2><span lang="ar">دفعة وحدة في السنة، حسب عدد الوحدات اللي تديرها.</span><span lang="en">One yearly payment, based on how many units you manage.</span></h2>
+        <p><span lang="ar">يُحتسب الاشتراك على إجمالي الوحدات في كل مبانيك، المؤجرة والشاغرة، ويُدفع مرة واحدة في السنة مثل عقود الإيجار نفسها.</span><span lang="en">Priced on the total units across all your buildings, rented or vacant, and paid once a year, like the leases themselves.</span></p>
       </div>
       <div class="pricing-grid">
         <div>
+          <div class="brackets">
+            <div class="bracket"><span><span lang="ar">أول 100 وحدة</span><span lang="en">First 100 units</span></span><b><span lang="ar">50 ريال</span><span lang="en">50 SAR</span></b></div>
+            <div class="bracket"><span><span lang="ar">من 101 إلى 300 وحدة</span><span lang="en">Units 101–300</span></span><b><span lang="ar">40 ريال</span><span lang="en">40 SAR</span></b></div>
+            <div class="bracket"><span><span lang="ar">أكثر من 300 وحدة</span><span lang="en">Above 300 units</span></span><b><span lang="ar">30 ريال</span><span lang="en">30 SAR</span></b></div>
+            <p class="bracket-note"><span lang="ar">للوحدة في السنة. كل سعر يُطبَّق فقط على الوحدات داخل شريحته، مثل شرائح الضريبة.</span><span lang="en">Per unit, per year. Each rate applies only to the units in its range, like tax brackets.</span></p>
+          </div>
           <ul class="rules">
-            <li><span class="dot"><span lang="ar">١</span><span lang="en">1</span></span><span><strong><span lang="ar">كل وحدة تُحتسب</span><span lang="en">Every unit counts</span></strong><span lang="ar">المؤجرة والشاغرة، وليس عدد العقود التي تتغير طوال السنة.</span><span lang="en">Rented or vacant. Not contracts, which change all year.</span></span></li>
-            <li><span class="dot"><span lang="ar">٢</span><span lang="en">2</span></span><span><strong><span lang="ar">حد أدنى بسيط</span><span lang="en">A simple minimum</span></strong><span lang="ar">الحد الأدنى يُحتسب كـ ٥٠ وحدة، ليغطي التهيئة والدعم.</span><span lang="en">The minimum is priced as 50 units, to cover onboarding and support.</span></span></li>
-            <li><span class="dot"><span lang="ar">٣</span><span lang="en">3</span></span><span><strong><span lang="ar">سعر أقل للمكاتب الكبيرة</span><span lang="en">Lower rate as you grow</span></strong><span lang="ar">كل وحدة فوق ١٠٠ وحدة بسعر أقل.</span><span lang="en">Every unit above 100 is billed at a lower rate.</span></span></li>
-            <li><span class="dot"><span lang="ar">٤</span><span lang="en">4</span></span><span><strong><span lang="ar">الوحدات الجديدة مجاناً حتى التجديد</span><span lang="en">New units free until renewal</span></strong><span lang="ar">أضف مباني ووحدات خلال السنة بدون تكلفة إضافية، وعند التجديد تدفع حسب إجماليك الجديد.</span><span lang="en">Add buildings and units mid-year at no extra cost. At renewal you pay for your new total.</span></span></li>
+            <li><span class="dot">✓</span><span><strong><span lang="ar">بدون حد أدنى</span><span lang="en">No minimum</span></strong><span lang="ar">مكتب عنده 3 وحدات يدفع عن 3 وحدات فقط.</span><span lang="en">An office with 3 units pays for 3 units.</span></span></li>
+            <li><span class="dot">✓</span><span><strong><span lang="ar">الوحدات الجديدة مجاناً حتى التجديد</span><span lang="en">New units free until renewal</span></strong><span lang="ar">أضف مباني ووحدات خلال السنة بدون تكلفة إضافية، وعند التجديد تدفع حسب إجماليك الجديد.</span><span lang="en">Add buildings and units mid-year at no extra cost. At renewal you pay for your new total.</span></span></li>
           </ul>
           <div class="tenant-free">
             <h3><span lang="ar">المستأجر لا يدفع شيئاً</span><span lang="en">Tenants never pay</span></h3>
@@ -335,18 +350,28 @@
         </div>
 
         <div class="calc">
-          <h3><span lang="ar">احسب اشتراكك السنوي</span><span lang="en">Estimate your yearly price</span></h3>
+          <h3><span lang="ar">احسب اشتراكك السنوي</span><span lang="en">Calculate your yearly price</span></h3>
           <p class="muted"><span lang="ar">أدخل عدد الوحدات التي يديرها مكتبك.</span><span lang="en">Enter how many units your office manages.</span></p>
-          <label for="units-num"><span lang="ar">عدد الوحدات</span><span lang="en">Number of units</span></label>
-          <div class="units-row">
-            <input type="range" id="units-range" min="1" max="500" value="80" aria-label="Units">
-            <input type="number" id="units-num" min="1" max="10000" value="80" inputmode="numeric">
+          <div class="field">
+            <label for="units-num"><span lang="ar">عدد الوحدات</span><span lang="en">Number of units</span></label>
+            <div class="units-row">
+              <input type="range" id="units-range" min="1" max="600" value="100" aria-label="Units">
+              <input type="number" id="units-num" min="1" max="100000" value="100" inputmode="numeric" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rent-num"><span lang="ar">متوسط الإيجار السنوي للوحدة (تقديري)</span><span lang="en">Average yearly rent per unit (estimate)</span></label>
+            <div class="rent-row">
+              <input type="number" id="rent-num" min="0" step="1000" value="35000" inputmode="numeric">
+              <span><span lang="ar">ريال</span><span lang="en">SAR</span></span>
+            </div>
           </div>
           <div class="total">
             <b id="total-price">—</b>
-            <span id="total-note"></span>
+            <span id="total-monthly"></span>
           </div>
-          <p class="fine"><span lang="ar">أسعار تقديرية للتوضيح فقط. الأسعار النهائية تُعلن عند الإطلاق.</span><span lang="en">Example prices for illustration only. Final pricing will be announced at launch.</span></p>
+          <ul class="context" id="context"></ul>
+          <p class="pitch"><span lang="ar">دفعة وحدة تغطي السنة كاملة: العقود، التحصيل، الصيانة والتجديدات. أرخص من موظف يلاحق كل هذا، وما ياخذ إجازة.</span><span lang="en">One payment covers the whole year: contracts, rent collection, maintenance and renewals. Cheaper than hiring someone to chase all of it, and it never takes a day off.</span></p>
         </div>
       </div>
     </div>
@@ -378,13 +403,43 @@
   (function () {
     var root = document.documentElement;
 
-    // Placeholder pricing from docs/BRIEF.md: per unit per year, minimum billed as 50 units,
-    // units above the threshold billed at the volume rate. Final numbers not decided yet.
-    var PRICING = { rate: 60, volumeRate: 45, threshold: 100, minUnits: 50 };
+    // Working rates from docs/BRIEF.md, applied like tax brackets: SAR per unit per year.
+    var BRACKETS = [
+      { upTo: 100, rate: 50 },
+      { upTo: 300, rate: 40 },
+      { upTo: Infinity, rate: 30 }
+    ];
+
+    var T = {
+      ar: {
+        sar: 'ريال',
+        monthly: 'حوالي {x} ريال في الشهر',
+        daily: 'يعني تقريبًا {daily} ريال في اليوم لمكتبك كامل.',
+        coffee: ' أقل من سعر كوب قهوة.',
+        perUnit: 'أقل من 5 ريال للوحدة في الشهر.',
+        percent: 'بس {percent}٪ من الإيجارات اللي تديرها.',
+        percentTiny: 'أقل من 0.1٪ من الإيجارات اللي تديرها.',
+        vacancy: 'سنة كاملة من عقدي تكلفك نفس وحدة فاضية {days} يوم.',
+        title: 'عقدي | Aqdi'
+      },
+      en: {
+        sar: 'SAR',
+        monthly: 'about {x} SAR a month',
+        daily: 'That’s about {daily} SAR a day for your whole office.',
+        coffee: ' Less than a coffee.',
+        perUnit: 'Less than 5 SAR per unit a month.',
+        percent: 'Just {percent}% of the rent you manage.',
+        percentTiny: 'Less than 0.1% of the rent you manage.',
+        vacancy: 'A full year of Aqdi costs the same as one unit sitting empty for {days} days.',
+        title: 'Aqdi | عقدي'
+      }
+    };
 
     // Dates: Hijri (Umm al-Qura) first, then Gregorian with the month name.
+    // Arabic: Hijri in Arabic digits, Gregorian in Western digits.
     var HIJRI_EN = ['Muharram', 'Safar', 'Rabi al-Awwal', 'Rabi al-Thani', 'Jumada al-Ula', 'Jumada al-Akhirah',
                     'Rajab', 'Shaban', 'Ramadan', 'Shawwal', 'Dhu al-Qadah', 'Dhu al-Hijjah'];
+    var DATE_OPTS = { day: 'numeric', month: 'long', year: 'numeric' };
     function part(parts, type) {
       for (var i = 0; i < parts.length; i++) if (parts[i].type === type) return parts[i].value;
       return '';
@@ -392,8 +447,8 @@
     function formatDate(d, lang) {
       try {
         if (lang === 'ar') {
-          var h = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-arab', { day: 'numeric', month: 'long', year: 'numeric' }).formatToParts(d);
-          var g = new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-arab', { day: 'numeric', month: 'long', year: 'numeric' }).formatToParts(d);
+          var h = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-arab', DATE_OPTS).formatToParts(d);
+          var g = new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-latn', DATE_OPTS).formatToParts(d);
           return part(h, 'day') + ' ' + part(h, 'month') + ' ' + part(h, 'year') + 'هـ · ' +
                  part(g, 'day') + ' ' + part(g, 'month') + ' ' + part(g, 'year') + 'م';
         }
@@ -413,38 +468,59 @@
       }
     }
 
-    var range = document.getElementById('units-range');
-    var num = document.getElementById('units-num');
-    function money(n, lang) {
-      return new Intl.NumberFormat(lang === 'ar' ? 'ar-SA' : 'en-SA', { style: 'currency', currency: 'SAR', maximumFractionDigits: 0 }).format(n);
+    // Prices use Western digits and a comma separator in both languages.
+    var NUM = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+    function fill(str, vars) {
+      return str.replace(/\{(\w+)\}/g, function (_, k) { return vars[k]; });
     }
-    function count(n, lang) {
-      return new Intl.NumberFormat(lang === 'ar' ? 'ar-SA' : 'en-US').format(n);
-    }
-    function renderPrice() {
-      var units = Math.max(1, parseInt(num.value, 10) || 1);
-      var billed = Math.max(units, PRICING.minUnits);
-      var total = Math.min(billed, PRICING.threshold) * PRICING.rate +
-                  Math.max(billed - PRICING.threshold, 0) * PRICING.volumeRate;
-      var lang = root.lang;
-      document.getElementById('total-price').textContent = money(total, lang);
-      var note;
-      if (lang === 'ar') {
-        note = 'سنوياً · حوالي ' + money(total / units, lang) + ' لكل وحدة في السنة';
-        if (units < PRICING.minUnits) note = 'سنوياً · الحد الأدنى (' + count(PRICING.minUnits, lang) + ' وحدة)';
-      } else {
-        note = 'per year · about ' + money(total / units, lang) + ' per unit per year';
-        if (units < PRICING.minUnits) note = 'per year · minimum (' + PRICING.minUnits + ' units)';
+    function yearlyTotal(units) {
+      var total = 0, from = 0;
+      for (var i = 0; i < BRACKETS.length && units > from; i++) {
+        total += (Math.min(units, BRACKETS[i].upTo) - from) * BRACKETS[i].rate;
+        from = BRACKETS[i].upTo;
       }
-      document.getElementById('total-note').textContent = note;
+      return total;
     }
-    range.addEventListener('input', function () { num.value = range.value; renderPrice(); });
-    num.addEventListener('input', function () { range.value = Math.min(500, num.value || 1); renderPrice(); });
+
+    var range = document.getElementById('units-range');
+    var unitsInput = document.getElementById('units-num');
+    var rentInput = document.getElementById('rent-num');
+    function renderPrice() {
+      var t = T[root.lang];
+      var units = Math.floor(parseFloat(unitsInput.value));
+      var rent = parseFloat(rentInput.value);
+      var list = document.getElementById('context');
+      list.innerHTML = '';
+      if (!(units > 0)) {
+        document.getElementById('total-price').textContent = '—';
+        document.getElementById('total-monthly').textContent = '';
+        return;
+      }
+      var total = yearlyTotal(units);
+      document.getElementById('total-price').textContent = NUM.format(total) + ' ' + t.sar;
+      document.getElementById('total-monthly').textContent = fill(t.monthly, { x: NUM.format(Math.round(total / 12)) });
+
+      var daily = Math.round(total / 365);
+      var lines = [fill(t.daily, { daily: NUM.format(daily) }) + (daily <= 20 ? t.coffee : ''), t.perUnit];
+      if (rent > 0) {
+        var pct = (total / (units * rent) * 100).toFixed(1);
+        lines.push(pct === '0.0' ? t.percentTiny : fill(t.percent, { percent: pct }));
+        lines.push(fill(t.vacancy, { days: NUM.format(Math.round(total / (rent / 365))) }));
+      }
+      for (var i = 0; i < lines.length; i++) {
+        var li = document.createElement('li');
+        li.textContent = lines[i];
+        list.appendChild(li);
+      }
+    }
+    range.addEventListener('input', function () { unitsInput.value = range.value; renderPrice(); });
+    unitsInput.addEventListener('input', function () { range.value = Math.min(600, unitsInput.value || 1); renderPrice(); });
+    rentInput.addEventListener('input', renderPrice);
 
     function setLang(lang) {
       root.lang = lang;
       root.dir = lang === 'ar' ? 'rtl' : 'ltr';
-      document.title = lang === 'ar' ? 'عقدي | Aqdi' : 'Aqdi | عقدي';
+      document.title = T[lang].title;
       try { localStorage.setItem('aqdi-lang', lang); } catch (e) {}
       renderDates();
       renderPrice();
@@ -457,5 +533,6 @@
     });
   })();
 </script>
+
 </body>
 </html>
