@@ -61,7 +61,7 @@ If moving in is painful, offices won't switch, however good the app is. Getting 
 **Ways in, from least to most effort for the office:**
 
 1. **Done for them (first offices).** The office sends notebook photos, an Excel file or Ejar PDFs, and the Aqdi team enters the data by hand. Used for the first 10–20 offices, and to learn what real data looks like.
-2. **Ejar PDF upload (first upgrade after MVP).** The office uploads its Ejar contract PDFs; Aqdi reads each one and fills in unit, tenant, phone, dates and rent. The office reviews and confirms before saving.
+2. **Ejar PDF upload (MVP, the core AI feature).** The office uploads its Ejar contract PDFs; Aqdi reads each one and fills in unit, tenant, phone, dates and rent. The office reviews and confirms before saving.
 3. **Excel import (MVP).** A ready Arabic template: building, unit, tenant name, phone, lease start, lease end, rent. Upload shows a preview with errors highlighted before anything is saved.
 4. **Manual entry (MVP).** Fast forms for adding one unit or tenant at a time.
 
@@ -168,7 +168,7 @@ Two more tables support the structure above: **Building assignment** (staff user
 
 Design the data model so these can be added without a rewrite, but don't build them yet.
 
-- Ejar PDF upload that reads contracts and fills in the data (first upgrade after MVP)
+- Reading handwritten notebook photos (too risky for rent and dates in the first version)
 - Real Ejar API integration for contract registration and status
 - Buy-now-pay-later rent splitting with Tabby or Tamara
 - Digital contract signing inside the app
@@ -195,7 +195,7 @@ A suggested stack, open to change if there's a good reason:
 Build in this order, and get each phase working before moving on:
 
 1. Project setup, i18n with Arabic RTL, auth with phone OTP (mocked SMS), roles and office scoping
-2. Office admin: buildings, units, tenants, contracts, plus Excel import with preview
+2. Office admin: buildings, units, tenants, contracts, plus AI Ejar PDF import and Excel import, both with a review screen (see docs/IMPORT_AND_ACCESS.md)
 3. Tenant portal: login, my contract, announcements, tenant invite by WhatsApp link (mocked)
 4. Invoices generated from contracts, payments with a mock gateway, receipts
 5. Maintenance requests, staff assignment, staff job view
