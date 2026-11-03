@@ -62,7 +62,9 @@ Tenants never sign up and never make a password. Their account already exists fr
 | Invites, rent reminders, repair updates, announcements | WhatsApp | Everyone reads it; can include buttons like "Pay rent" |
 | Backup when WhatsApp fails | SMS | Reaches every phone |
 
-**Setup needed:** a registered SMS sender name with the CST (about 230 SAR, a few weeks, needs a Saudi commercial registration), and an approved WhatsApp Business account with message templates approved by Meta.
+**Setup needed:** a registered SMS sender name with the CST (about 230 SAR, a few weeks, needs a Saudi commercial registration), and an approved WhatsApp Business account with message templates approved by Meta. Use one provider that handles both (for example Unifonic), so it's one account, one integration and one bill.
+
+**Nothing here is manual.** Codes are sent automatically when the tenant asks to log in, and most phones fill them in with one tap. If WhatsApp doesn't deliver, the provider switches to SMS on its own. You only pay for the SMS that actually get sent. The office only steps in if both fail, which means the number is wrong: it fixes the number and taps resend.
 
 ## Edge cases
 
