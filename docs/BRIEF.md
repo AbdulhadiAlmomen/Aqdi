@@ -8,7 +8,7 @@ Aqdi is a web app that gives Saudi real estate offices and their tenants one pla
 
 **The problem.** Most Saudi rentals still run on paper, phone calls and WhatsApp groups. Tenants chase the office for renewal dates, pay rent in large yearly or six-month chunks, and report a broken AC by calling the haris. Offices track all of it in notebooks or spreadsheets and have no clear view of who paid, which contracts end soon, or which repairs are still open.
 
-**What Aqdi does.** The office signs up, adds its buildings, units and tenants, and runs the day-to-day from one dashboard. Tenants log in to see their contract, pay rent, request maintenance and get announcements. As a side feature, the office can list paid services (cleaning, AC repair, moving) that anyone can book, tenant or not.
+**What Aqdi does.** The office signs up and uploads its Ejar lease PDFs. AI reads them and sets up every building, unit, tenant and rent schedule in minutes, flagging anything it's unsure of for the office to confirm, so moving off notebooks and spreadsheets doesn't mean days of typing. From then on, the office runs the day-to-day from one dashboard. Tenants log in to see their contract, pay rent, request maintenance and get announcements. As a side feature, the office can list paid services (cleaning, AC repair, moving) that anyone can book, tenant or not.
 
 **Who pays.** The real estate office, once a year, based on how many units it manages. Tenants use it free. Details under Pricing and billing.
 
@@ -93,11 +93,11 @@ Phone number + OTP                              v
 
 ## MVP features
 
-The first version needs five things working well: contracts with renewal reminders, rent payments, maintenance, notifications, and the office dashboard. Everything else waits.
+The first version needs six things working well: AI import of Ejar contracts, contracts with renewal reminders, rent payments, maintenance, notifications, and the office dashboard. Everything else waits.
 
 ### Office admin
 
-- **Properties.** Add buildings, then units inside each (unit number, floor, type, size, monthly or yearly rent, status: vacant, occupied, under maintenance).
+- **Properties.** Upload Ejar PDFs and let AI create buildings, units, tenants and contracts, or add buildings, then units inside each (unit number, floor, type, size, monthly or yearly rent, status: vacant, occupied, under maintenance).
 - **Tenants.** Add a tenant by phone number and national ID or iqama number, link them to a unit.
 - **Contracts.** Create a lease: start and end date, rent amount, payment schedule (yearly, 6-month, quarterly, monthly), deposit, uploaded PDF of the signed contract, optional Ejar contract number.
 - **Renewals.** Contracts ending in the next 90, 60 and 30 days appear on the dashboard. The office can send a renewal offer (new rent, new dates), and the tenant accepts or declines in the app.
