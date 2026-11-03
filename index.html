@@ -230,9 +230,10 @@
   .review { background: var(--surface); border-radius: 22px; box-shadow: var(--shadow); padding: 20px; }
   .review-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
   .review-head .fake-btn { padding: 8px 18px; font-size: 14px; pointer-events: none; }
-  .rv { display: grid; grid-template-columns: 1.2fr .9fr 1.7fr 1fr; gap: 12px; align-items: center; padding: 12px 14px; font-size: 14px; line-height: 1.5; border-top: 1px solid var(--line); }
+  .rv { display: grid; grid-template-columns: 1.15fr 1fr 1fr .9fr 1.6fr .9fr; gap: 12px; align-items: center; padding: 12px 14px; font-size: 14px; line-height: 1.5; border-top: 1px solid var(--line); }
   .rv-head { border-top: none; font-size: 12px; font-weight: 700; color: var(--ink-3); padding-bottom: 8px; }
   .rv .num-cell { font-variant-numeric: tabular-nums; }
+  .rv bdi { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .confirm { display: inline-block; line-height: 1.4; background: #fbecd3; color: #7a4a0c; border-radius: 10px; padding: 6px 10px; margin: -6px -10px; }
   .confirm small { display: block; font-size: 11px; font-weight: 700; color: #a2600f; }
   @media (max-width: 640px) {
@@ -365,7 +366,7 @@
       </div>
       <ol class="steps">
         <li><span class="dot">1</span><span><strong><span lang="ar">ارفع</span><span lang="en">Upload</span></strong><span lang="ar">ملفات العقود من منصة إيجار.</span><span lang="en">Your Ejar contract PDFs.</span></span></li>
-        <li><span class="dot">2</span><span><strong><span lang="ar">عقدي يقرأ</span><span lang="en">Aqdi reads</span></strong><span lang="ar">المستأجر والوحدة والتواريخ ومبلغ الإيجار.</span><span lang="en">Tenant, unit, dates and rent.</span></span></li>
+        <li><span class="dot">2</span><span><strong><span lang="ar">عقدي يقرأ</span><span lang="en">Aqdi reads</span></strong><span lang="ar">اسم المستأجر وهويته وجواله، والوحدة والتواريخ ومبلغ الإيجار.</span><span lang="en">Tenant name, ID and phone, plus unit, dates and rent.</span></span></li>
         <li><span class="dot">3</span><span><strong><span lang="ar">أنت تؤكد</span><span lang="en">You confirm</span></strong><span lang="ar">راجع الحقول المظللة واحفظ.</span><span lang="en">Check the highlighted fields and save.</span></span></li>
       </ol>
 
@@ -379,30 +380,40 @@
         </div>
         <div class="rv rv-head">
           <span><span lang="ar">المستأجر</span><span lang="en">Tenant</span></span>
+          <span><span lang="ar">رقم الهوية</span><span lang="en">ID number</span></span>
+          <span><span lang="ar">الجوال</span><span lang="en">Phone</span></span>
           <span><span lang="ar">الوحدة</span><span lang="en">Unit</span></span>
           <span><span lang="ar">نهاية العقد</span><span lang="en">Lease ends</span></span>
           <span><span lang="ar">الإيجار السنوي</span><span lang="en">Yearly rent</span></span>
         </div>
         <div class="rv">
           <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">محمد العتيبي</span><span lang="en">Mohammed Alotaibi</span></span>
+          <span data-label-ar="رقم الهوية" data-label-en="ID number"><bdi dir="ltr">1098234561</bdi></span>
+          <span data-label-ar="الجوال" data-label-en="Phone"><bdi dir="ltr">055 214 7390</bdi></span>
           <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 3، مبنى أ</span><span lang="en">Unit 3, Bldg A</span></span>
           <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-03-14"></span>
           <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent" data-sar="32000"></span>
         </div>
         <div class="rv">
           <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">سارة القحطاني</span><span lang="en">Sara Alqahtani</span></span>
+          <span data-label-ar="رقم الهوية" data-label-en="ID number"><bdi dir="ltr">1065427380</bdi></span>
+          <span data-label-ar="الجوال" data-label-en="Phone"><bdi dir="ltr">050 381 6624</bdi></span>
           <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 7، مبنى أ</span><span lang="en">Unit 7, Bldg A</span></span>
           <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-06-30"></span>
           <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent" data-sar="28500"></span>
         </div>
         <div class="rv">
           <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">فهد الدوسري</span><span lang="en">Fahad Aldosari</span></span>
+          <span data-label-ar="رقم الهوية" data-label-en="ID number"><bdi dir="ltr">2134876590</bdi></span>
+          <span data-label-ar="الجوال" data-label-en="Phone"><bdi dir="ltr">054 902 1175</bdi></span>
           <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 12، مبنى ب</span><span lang="en">Unit 12, Bldg B</span></span>
           <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-01-09"></span>
           <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent"><span class="confirm"><span data-sar="24000"></span><small><span lang="ar">يرجى التأكيد</span><span lang="en">Please confirm</span></small></span></span>
         </div>
         <div class="rv">
           <span data-label-ar="المستأجر" data-label-en="Tenant"><span lang="ar">نورة الشهري</span><span lang="en">Noura Alshehri</span></span>
+          <span data-label-ar="رقم الهوية" data-label-en="ID number"><bdi dir="ltr">1123908764</bdi></span>
+          <span data-label-ar="الجوال" data-label-en="Phone"><bdi dir="ltr">056 447 2038</bdi></span>
           <span data-label-ar="الوحدة" data-label-en="Unit"><span lang="ar">وحدة 2، مبنى ج</span><span lang="en">Unit 2, Bldg C</span></span>
           <span data-label-ar="نهاية العقد" data-label-en="Lease ends" data-iso="2027-09-21"></span>
           <span class="num-cell" data-label-ar="الإيجار السنوي" data-label-en="Yearly rent" data-sar="30000"></span>
