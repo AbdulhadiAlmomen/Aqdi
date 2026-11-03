@@ -1,6 +1,6 @@
 # Aqdi (عقدي)
 
-Read `docs/BRIEF.md` before any work. It's the product spec. If something there conflicts with a request, ask before going ahead.
+Read `docs/BRIEF.md` before any work. It's the product spec. For contract import and tenant login, also read `docs/IMPORT_AND_ACCESS.md`. If something there conflicts with a request, ask before going ahead.
 
 ## Where things stand
 
