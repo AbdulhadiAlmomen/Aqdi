@@ -74,7 +74,8 @@ The first version needs: AI import, portfolio dashboard, rent tracking with remi
 - **Maintenance:** requests with photos, auto-assigned by building, status, cost, rating.
 - **Owner statements:** per owner per month: rent expected vs received, late tenants, vacancies, maintenance cost, office notes. PDF, sent by WhatsApp or email.
 - **Announcements and messages:** to one building or all; message threads with tenants.
-- **Dashboard home:** collected vs expected this month, late list, leases ending soon, open jobs, vacancies.
+- **Dashboard home and reports (free, no add-on):** collected vs expected this month, collection rate over time, late list, vacancy days, maintenance cost per building, repeat repairs, leases ending soon. Charts, in both languages.
+- **Renewal rent check:** for leases ending in 90 days, show the unit's rent next to the district average for that unit type from Ejar's public rental index (rei.rega.gov.sa). No API exists, so in v1 the Aqdi team keeps a district table for the pilot city, updated quarterly. Check the index's terms of use before relying on it.
 
 ### Tenant (through WhatsApp link)
 - Lease details (read-only) with a note that the official copy is in the Ejar app.
@@ -126,7 +127,8 @@ Every table except `users` has `office_id`; every query filters by it.
 ## 10. Later or postponed
 
 - Official Ejar integration (apply early through a licensed partner).
-- AI tier: drafting tenant replies, renewal follow-ups (paid add-on).
+- AI tier: drafting tenant replies, renewal follow-ups, monthly Arabic summary, "ask your portfolio" questions (paid add-on).
+- Package handling: either a partnership with RedBox Community lockers or a haris package log (photo, WhatsApp alert, pickup code). Only if interviews show offices hear complaints about it.
 - Owner login portal.
 - Services marketplace and public booking page.
 - Rent financing partner (e.g. Ejari).

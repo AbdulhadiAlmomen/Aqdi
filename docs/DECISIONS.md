@@ -4,6 +4,9 @@ Newest first. Add a row whenever a product, pricing, technical or legal decision
 
 | Date | Decision | Why | Status |
 | --- | --- | --- | --- |
+| 5 Nov 2026 | Reports and charts are free for every office, and shown on the landing page | Every competitor has them; they help win offices, not a reason to charge more | Decided |
+| 5 Nov 2026 | Renewal rent check against Ejar's rental index in the MVP, district table kept by hand for the pilot city | Saudi-specific, money for owners; no API, so manual in v1 | Decided, check index terms |
+| 5 Nov 2026 | Parcel lockers: don't build hardware; RedBox partnership or haris package log later | RedBox already runs residential lockers integrated with carriers | Later, only if interviews confirm |
 | 5 Nov 2026 | Aqdi is the operations layer on top of Ejar, not a tenant portal | Ejar already does contracts, renewals, notices, residential rent payment and a tenant app. The gap is office operations | Decided |
 | 5 Nov 2026 | Track rent, never collect residential rent | Since 15 Jan 2024, residential rent must go through Ejar (mada or SADAD 153); holding money would also need payment licensing | Decided |
 | 5 Nov 2026 | Owner monthly statements in the MVP | Offices report to owners monthly; Ejar gives nothing for this; likely strongest reason to pay | Decided, validate in interviews |
