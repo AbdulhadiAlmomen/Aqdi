@@ -46,11 +46,11 @@ Tenants never sign up and never make a password. Their account already exists fr
 
 1. **Account created.** When the office approves the import, Aqdi creates each tenant's account, linked to their unit and the mobile number on the contract.
 2. **Office sends invites.** One button sends every tenant an invite, or the office can pick which ones.
-3. **Invite on WhatsApp.** The message comes in the office's name: "Al Noor Real Estate has added you to Aqdi. See your contract and pay rent here: [link]." If WhatsApp fails, the same invite goes by SMS.
+3. **Invite on WhatsApp.** The message comes in the office's name: "Al Noor Real Estate has added you to Aqdi. See your lease, rent schedule and send repair requests here: [link]." If WhatsApp fails, the same invite goes by SMS.
 4. **Tenant taps the link.** The link only works for that phone number and expires after 7 days.
 5. **Code by SMS.** Aqdi sends a 6-digit code by SMS from the registered sender name "Aqdi". Most phones fill it in automatically.
 6. **Extra check, first time only.** The tenant enters the last 4 digits of their ID number. Aqdi knows the ID type from the contract and asks the right way: "رقم هويتك" for Saudis (10 digits, starts with 1), "رقم إقامتك" for residents (10 digits, starts with 2), or the ID on the contract for anyone else, like GCC citizens. If there's no usable number, Aqdi skips this check and relies on the SMS code.
-7. **In.** The tenant sees their contract, payments and maintenance. They stay logged in for 90 days, and can add Aqdi to their home screen like an app.
+7. **In.** The tenant sees their lease, rent schedule and status (rent itself is paid through Ejar), repairs and messages. They stay logged in for 90 days, and can add Aqdi to their home screen like an app.
 
 **Logging in later:** enter phone number, get an SMS code, done.
 
@@ -59,7 +59,7 @@ Tenants never sign up and never make a password. Their account already exists fr
 | Message | Channel | Why |
 | --- | --- | --- |
 | Login codes | SMS | Standard for codes in Saudi; banks and apps all use it |
-| Invites, rent reminders, repair updates, announcements | WhatsApp | Everyone reads it; can include buttons like "Pay rent" |
+| Invites, rent reminders, repair updates, announcements | WhatsApp | Everyone reads it; can include buttons like "How to pay via Ejar" |
 | Backup when WhatsApp fails | SMS | Reaches every phone |
 
 **Setup needed:** a registered SMS sender name with the CST (about 230 SAR, a few weeks, needs a Saudi commercial registration), and an approved WhatsApp Business account with message templates approved by Meta. Use one provider that handles both (for example Unifonic), so it's one account, one integration and one bill.
