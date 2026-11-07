@@ -4,6 +4,8 @@ Newest first. Add a row whenever a product, pricing, technical or legal decision
 
 | Date | Decision | Why | Status |
 | --- | --- | --- | --- |
+| 6 Nov 2026 | Message: less daily tenant work for the office, owner informed and approving. Rent tracking is no longer a headline | Ejar already sends payment reminders and shows status; Saudi owners often run their own offices, so "keep your owners" doesn't fit | Decided, confirm with pilot offices |
+| 6 Nov 2026 | Owner approvals in the MVP: costs above a limit the office sets go to the owner by WhatsApp to approve | Ties maintenance, owner reporting and communication into one workflow | Decided |
 | 5 Nov 2026 | Reports and charts are free for every office, and shown on the landing page | Every competitor has them; they help win offices, not a reason to charge more | Decided |
 | 5 Nov 2026 | Renewal rent check against Ejar's rental index in the MVP, district table kept by hand for the pilot city | Saudi-specific, money for owners; no API, so manual in v1 | Decided, check index terms |
 | 5 Nov 2026 | Parcel lockers: don't build hardware; RedBox partnership or haris package log later | RedBox already runs residential lockers integrated with carriers | Later, only if interviews confirm |

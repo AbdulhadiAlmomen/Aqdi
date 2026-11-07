@@ -8,6 +8,8 @@ Updated 5 Nov 2026. This is a copy of the planning doc in Claude chat. Why thing
 
 **The problem.** Ejar already handles contract registration, renewals, official notices, and rent payment for residential leases (since 15 Jan 2024, residential rent must be paid through Ejar's channels: mada or SADAD biller 153). What Ejar doesn't do is run the office. Someone still chases late tenants, sends technicians, reports to each building owner, and answers tenant questions, mostly on WhatsApp and Excel.
 
+**The message.** Fewer calls for the office, full clarity for the owner. Landing page copy: `docs/LANDING_COPY.md`.
+
 **What Aqdi does**
 1. The office uploads its Ejar lease PDFs. AI sets up every building, unit, tenant and rent schedule in minutes; the office confirms anything flagged.
 2. One dashboard for every building: who's paid, who's late, which leases end soon, what's broken.
@@ -72,6 +74,7 @@ The first version needs: AI import, portfolio dashboard, rent tracking with remi
 - **Late reminders:** WhatsApp message to the tenant N days after due (office sets N), with how to pay through Ejar.
 - **Renewal pipeline:** leases ending in 90 / 60 / 30 days, auto-renew flag, office notes. The renewal itself happens in Ejar; Aqdi tracks and reminds.
 - **Maintenance:** requests with photos, auto-assigned by building, status, cost, rating.
+- **Owner approvals:** the office sets a cost limit per owner. Any repair above it is sent to the owner by WhatsApp with the photo and price; he approves or rejects with one tap. The decision is logged.
 - **Owner statements:** per owner per month: rent expected vs received, late tenants, vacancies, maintenance cost, office notes. PDF, sent by WhatsApp or email.
 - **Announcements and messages:** to one building or all; message threads with tenants.
 - **Dashboard home and reports (free, no add-on):** collected vs expected this month, collection rate over time, late list, vacancy days, maintenance cost per building, repeat repairs, leases ending soon. Charts, in both languages.
