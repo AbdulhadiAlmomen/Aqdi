@@ -79,8 +79,12 @@ export const verifications = pgTable(
 export const offices = pgTable("offices", {
   id: text("id").primaryKey().$defaultFn(newId),
   name: text("name").notNull(),
-  // Set by the payment webhook (step 4). Free offices can import up to FREE_CONTRACT_LIMIT contracts.
+  // Set when a subscription payment succeeds (lib/billing.ts). Free offices can import up to FREE_CONTRACT_LIMIT contracts.
   paid: boolean("paid").notNull().default(false),
+  paidUnits: integer("paid_units"),
+  paidAt: timestamp("paid_at", { withTimezone: true }),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
 });

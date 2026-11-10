@@ -7,12 +7,15 @@ export type Db = NeonDatabase<typeof schema>;
 // Folder for the embedded Postgres used in local development when DATABASE_URL isn't set.
 export const LOCAL_DB_DIR = ".pglite";
 
-let instance: Db | undefined;
+// One connection per server process, kept on globalThis: Next.js bundles route handlers and pages
+// separately, and each bundle would otherwise open its own (two embedded databases locally that
+// don't see each other's writes; extra connection pools against Neon).
+const shared = globalThis as typeof globalThis & { __aqdiDb?: Db };
 
 // Created on first use, so builds and static pages never need a database connection.
 export function getDb(): Db {
-  if (!instance) instance = connect();
-  return instance;
+  shared.__aqdiDb ??= connect();
+  return shared.__aqdiDb;
 }
 
 function connect(): Db {

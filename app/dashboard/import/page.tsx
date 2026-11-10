@@ -39,9 +39,14 @@ async function ImportGate() {
   const left = office?.paid ? null : Math.max(0, FREE_CONTRACT_LIMIT - used);
   if (left === 0) {
     return (
-      <p className="form-error">
-        <T k="import.limitReached" vars={{ limit: String(FREE_CONTRACT_LIMIT) }} />
-      </p>
+      <div className="limit-box">
+        <p className="form-error">
+          <T k="import.limitReached" vars={{ limit: String(FREE_CONTRACT_LIMIT) }} />
+        </p>
+        <Link href="/dashboard/billing" className="btn btn-primary">
+          <T k="dashboard.upgrade" />
+        </Link>
+      </div>
     );
   }
   return (

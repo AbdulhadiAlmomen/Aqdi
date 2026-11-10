@@ -55,6 +55,11 @@ export function forOffice(db: Db, officeId: string) {
       return row ?? null;
     },
 
+    async unitCount() {
+      const [row] = await db.select({ n: count() }).from(units).where(eq(units.officeId, officeId));
+      return row.n;
+    },
+
     async contractCount() {
       const [row] = await db.select({ n: count() }).from(contracts).where(eq(contracts.officeId, officeId));
       return row.n;

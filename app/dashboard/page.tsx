@@ -45,9 +45,14 @@ async function OfficeOverview() {
             <T k="dashboard.welcome" vars={{ name: member.name }} />
           </h1>
         </div>
-        <Link href="/dashboard/import" className="btn btn-primary">
-          <T k="dashboard.import" />
-        </Link>
+        <div className="dash-actions">
+          <Link href="/dashboard/billing" className="btn btn-quiet">
+            <T k="dashboard.billing" />
+          </Link>
+          <Link href="/dashboard/import" className="btn btn-primary">
+            <T k="dashboard.import" />
+          </Link>
+        </div>
       </div>
 
       <div className="dash-stats">
@@ -68,9 +73,16 @@ async function OfficeOverview() {
             <T k="dashboard.contracts" />
           </h2>
           <p className="dash-big">{contracts.length}</p>
-          {!office?.paid && (
+          {office?.paid ? (
             <p className="dash-muted">
-              <T k="dashboard.freeLeft" vars={{ used: String(contracts.length), limit: String(FREE_CONTRACT_LIMIT) }} />
+              <T k="dashboard.paidPlan" />
+            </p>
+          ) : (
+            <p className="dash-muted">
+              <T k="dashboard.freeLeft" vars={{ used: String(contracts.length), limit: String(FREE_CONTRACT_LIMIT) }} />{" "}
+              <Link href="/dashboard/billing" className="dash-link">
+                <T k="dashboard.upgrade" />
+              </Link>
             </p>
           )}
         </div>
