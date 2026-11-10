@@ -4,6 +4,8 @@ import { asExtraction } from "@/lib/contracts/mock-extractor";
 import { formatDual, hijriIso, normalizeHijri } from "@/lib/dates";
 import sample1 from "@/samples/expected/sample-1.json";
 import sample2 from "@/samples/expected/sample-2.json";
+import sampleEn1 from "@/samples/expected/sample-en-1.json";
+import sampleEn2 from "@/samples/expected/sample-en-2.json";
 
 describe("field checks", () => {
   it("normalizes Saudi mobiles and rejects others", () => {
@@ -31,8 +33,8 @@ describe("field checks", () => {
 });
 
 describe("drafts from extraction", () => {
-  it("a perfect read of either sample has no flags", () => {
-    for (const s of [sample1, sample2]) {
+  it("a perfect read of any sample (Arabic or English) has no flags", () => {
+    for (const s of [sample1, sample2, sampleEn1, sampleEn2]) {
       const { draft, flags } = draftFromExtraction(asExtraction(s));
       expect(flags).toEqual({});
       expect(draft.tenantId.last4).toBe(s.tenantIdNumber.slice(-4));

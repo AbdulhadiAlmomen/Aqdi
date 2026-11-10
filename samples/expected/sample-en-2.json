@@ -1,0 +1,51 @@
+{
+  "contractNumber": "20518863307",
+  "startDateGregorian": "2026-07-01",
+  "startDateHijri": "1448-01-16",
+  "endDateGregorian": "2027-06-30",
+  "endDateHijri": "1449-01-25",
+  "tenantName": "Rahul Menon",
+  "tenantNationality": "Indian",
+  "tenantIdType": "iqama",
+  "tenantIdNumber": "2287613049",
+  "tenantMobile": "+966561247730",
+  "propertyCity": "Riyadh",
+  "propertyDistrict": "Al Malqa",
+  "propertyStreet": "Anas Ibn Malik Road",
+  "buildingNumber": "3071",
+  "postalCode": "13524",
+  "additionalNumber": "6629",
+  "deedNumber": "618720345902",
+  "unitNumber": "10",
+  "unitType": "Apartment",
+  "unitFloor": "3",
+  "unitArea": 104.5,
+  "annualRent": 30000,
+  "paymentCycle": "quarterly",
+  "installments": [
+    {
+      "number": 1,
+      "dueDateGregorian": "2026-07-01",
+      "dueDateHijri": "1448-01-16",
+      "amount": 7500
+    },
+    {
+      "number": 2,
+      "dueDateGregorian": "2026-10-01",
+      "dueDateHijri": "1448-04-20",
+      "amount": 7500
+    },
+    {
+      "number": 3,
+      "dueDateGregorian": "2027-01-01",
+      "dueDateHijri": "1448-07-23",
+      "amount": 7500
+    },
+    {
+      "number": 4,
+      "dueDateGregorian": "2027-04-01",
+      "dueDateHijri": "1448-10-24",
+      "amount": 7500
+    }
+  ]
+}

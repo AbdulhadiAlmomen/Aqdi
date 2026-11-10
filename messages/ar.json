@@ -38,7 +38,7 @@
   "dashboard.contracts": "العقود",
   "dashboard.empty": "لا توجد عقود بعد. ابدأ برفع عقودك من منصة إيجار، ويجهّز عقدي مبانيك ووحداتك وعقودك.",
   "dashboard.buildingLine": "مبنى {number}، حي {district}",
-  "dashboard.buildingCounts": "{units} وحدة · {contracts} عقد",
+  "dashboard.buildingCounts": "الوحدات: {units} · العقود: {contracts}",
   "dashboard.unitLine": "{type} {number}",
   "dashboard.freeLeft": "الحساب المجاني: {used} من {limit} عقود",
   "col.contract": "رقم العقد",
@@ -119,5 +119,13 @@
   "importError.refused": "تعذّرت قراءة هذا العقد.",
   "importError.busy": "الخدمة مشغولة الآن، حاول بعد قليل.",
   "importError.failed": "تعذّرت قراءة العقد، حاول مرة أخرى.",
-  "importError.limit": "وصلت إلى حد الحساب المجاني."
+  "importError.limit": "وصلت إلى حد الحساب المجاني.",
+  "samples.title": "ليس لديك عقد الآن؟ جرّب عقدًا تجريبيًا",
+  "samples.hint": "عقود وهمية بنفس ترتيب عقد إيجار، بأسماء وأرقام غير حقيقية. اعرض العقد، ثم اقرأه بضغطة واحدة.",
+  "samples.one": "عقد تجريبي 1 · هوية وطنية · دفعتان نصف سنويتان",
+  "samples.two": "عقد تجريبي 2 · إقامة · أربع دفعات ربع سنوية",
+  "samples.view": "عرض العقد",
+  "samples.hide": "إخفاء",
+  "samples.read": "اقرأ هذا العقد",
+  "samples.open": "فتح في نافذة جديدة"
 }

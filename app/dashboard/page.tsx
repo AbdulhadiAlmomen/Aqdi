@@ -103,7 +103,7 @@ async function OfficeOverview() {
                 <tbody>
                   {contracts.map((c) => (
                     <tr key={c.id}>
-                      <td dir="ltr" className="num">{c.contractNumber}</td>
+                      <td dir="ltr" className="cell-num">{c.contractNumber}</td>
                       <td>
                         {c.tenantName}
                         <small>
@@ -118,7 +118,7 @@ async function OfficeOverview() {
                       </td>
                       <td><DualDate iso={c.startDate} /></td>
                       <td><DualDate iso={c.endDate} /></td>
-                      <td className="num">
+                      <td className="cell-num">
                         <T k="currency" vars={{ amount: SAR.format(Number(c.annualRent)) }} />
                         <small>
                           <T k={`cycle.${c.paymentCycle}` as MessageKey} />
@@ -141,7 +141,10 @@ async function OfficeOverview() {
                   <p className="dash-big">
                     <T k="dashboard.buildingLine" vars={{ number: b.buildingNumber ?? "", district: b.district ?? "" }} />
                   </p>
-                  <p className="dash-muted">{[b.street, b.city].filter(Boolean).join("، ")}</p>
+                  <p className="dash-muted">
+                    <span lang="ar">{[b.street, b.city].filter(Boolean).join("، ")}</span>
+                    <span lang="en">{[b.street, b.city].filter(Boolean).join(", ")}</span>
+                  </p>
                   <p className="dash-muted">
                     <T k="dashboard.buildingCounts" vars={{ units: String(b.unitCount), contracts: String(b.contractCount) }} />
                   </p>

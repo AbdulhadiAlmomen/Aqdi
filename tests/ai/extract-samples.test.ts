@@ -5,13 +5,17 @@ import { ClaudeExtractor } from "@/lib/contracts/claude-extractor";
 import { normalizeHijri } from "@/lib/dates";
 import sample1 from "@/samples/expected/sample-1.json";
 import sample2 from "@/samples/expected/sample-2.json";
+import sampleEn1 from "@/samples/expected/sample-en-1.json";
+import sampleEn2 from "@/samples/expected/sample-en-2.json";
 
 // Calls the real Claude API (costs a few cents). Run with: npm run test:ai
 // Prints, for each sample, every field the AI got right or wrong against the known answers.
 
 const CASES = [
-  { file: "samples/sample-1.pdf", expected: sample1 },
-  { file: "samples/sample-2.pdf", expected: sample2 },
+  { file: "public/samples/sample-1.pdf", expected: sample1 },
+  { file: "public/samples/sample-2.pdf", expected: sample2 },
+  { file: "public/samples/sample-en-1.pdf", expected: sampleEn1 },
+  { file: "public/samples/sample-en-2.pdf", expected: sampleEn2 },
 ];
 
 // Numbers compare by value ("16000.00" equals 16000); everything else as trimmed text.

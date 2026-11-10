@@ -38,7 +38,7 @@
   "dashboard.contracts": "Contracts",
   "dashboard.empty": "No contracts yet. Upload your Ejar contracts and Aqdi sets up your buildings, units and leases.",
   "dashboard.buildingLine": "Building {number}, {district}",
-  "dashboard.buildingCounts": "{units} units · {contracts} contracts",
+  "dashboard.buildingCounts": "Units: {units} · Contracts: {contracts}",
   "dashboard.unitLine": "{type} {number}",
   "dashboard.freeLeft": "Free account: {used} of {limit} contracts",
   "col.contract": "Contract no.",
@@ -119,5 +119,13 @@
   "importError.refused": "This contract couldn't be read.",
   "importError.busy": "The service is busy. Please try again shortly.",
   "importError.failed": "The contract couldn't be read. Please try again.",
-  "importError.limit": "You've reached the free limit."
+  "importError.limit": "You've reached the free limit.",
+  "samples.title": "No contract at hand? Try a sample",
+  "samples.hint": "Made-up contracts in the Ejar layout, with fictional names and numbers. View one, then read it in one click.",
+  "samples.one": "Sample 1 · National ID · semi-annual rent",
+  "samples.two": "Sample 2 · Iqama · quarterly rent",
+  "samples.view": "View",
+  "samples.hide": "Hide",
+  "samples.read": "Read this sample",
+  "samples.open": "Open in a new tab"
 }

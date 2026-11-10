@@ -1,0 +1,39 @@
+{
+  "contractNumber": "20517742018",
+  "startDateGregorian": "2026-05-01",
+  "startDateHijri": "1447-11-14",
+  "endDateGregorian": "2027-04-30",
+  "endDateHijri": "1448-11-23",
+  "tenantName": "Omar Khalid Al-Shamri",
+  "tenantNationality": "Saudi",
+  "tenantIdType": "national_id",
+  "tenantIdNumber": "1123456780",
+  "tenantMobile": "0558812046",
+  "propertyCity": "Riyadh",
+  "propertyDistrict": "Al Yasmin",
+  "propertyStreet": "Abi Bakr As Siddiq Road",
+  "buildingNumber": "8352",
+  "postalCode": "13325",
+  "additionalNumber": "4417",
+  "deedNumber": "512340987611",
+  "unitNumber": "7",
+  "unitType": "Apartment",
+  "unitFloor": "2",
+  "unitArea": 132,
+  "annualRent": 36000,
+  "paymentCycle": "semi_annual",
+  "installments": [
+    {
+      "number": 1,
+      "dueDateGregorian": "2026-05-01",
+      "dueDateHijri": "1447-11-14",
+      "amount": 18000
+    },
+    {
+      "number": 2,
+      "dueDateGregorian": "2026-11-01",
+      "dueDateHijri": "1448-05-21",
+      "amount": 18000
+    }
+  ]
+}
