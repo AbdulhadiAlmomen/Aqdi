@@ -587,3 +587,31 @@ html[lang="en"] .auth-card h1 { font-size: 34px; line-height: 1.15; }
 .auth-card p { margin: 0; color: var(--ink-2); }
 .auth-card .auth-alt { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 15px; }
 .auth-card .auth-alt a { color: var(--palm); font-weight: 700; }
+
+/* Account forms */
+.auth-form { display: grid; gap: 16px; margin-top: 28px; text-align: start; }
+.form-field { display: grid; gap: 6px; }
+.form-label { font-size: 14px; font-weight: 700; color: var(--ink); }
+.form-field input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: inherit; font-size: 16px; transition: border-color .2s, background .2s, box-shadow .2s; }
+html[dir="rtl"] .form-field input[dir="ltr"] { text-align: right; }
+.form-field input:focus { outline: none; border-color: var(--clay); background: var(--surface); box-shadow: 0 0 0 3px var(--clay-soft); }
+.form-hint { font-size: 13px; color: var(--ink-3); }
+.form-error { margin: 0; padding: 10px 14px; border-radius: 12px; background: var(--red-bg); color: var(--red); font-size: 14px; }
+.form-submit { width: 100%; padding: 14px; font-size: 16px; margin-top: 4px; }
+.form-submit:disabled { opacity: .7; cursor: default; transform: none; }
+
+/* Dashboard */
+.dash { padding-top: 48px; padding-bottom: 96px; }
+.dash h1 { font-size: clamp(30px, 4vw, 42px); line-height: 1.35; margin: 0 0 28px; }
+html[lang="en"] .dash h1 { font-size: clamp(34px, 4.4vw, 48px); line-height: 1.15; }
+.dash-eyebrow { margin: 0 0 6px; font-size: 14px; font-weight: 700; color: var(--brass); }
+.dash-loading { color: var(--ink-3); }
+.dash-grid { display: grid; gap: 20px; }
+@media (min-width: 760px) { .dash-grid { grid-template-columns: 1fr 1fr; } .dash-next { grid-column: 1 / -1; } }
+.dash-card { padding: 24px 28px; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+.dash .dash-card h2 { margin: 0 0 8px; letter-spacing: 0; line-height: 1.5; font-size: 15px; font-family: var(--font-body); color: var(--ink-3); font-weight: 700; }
+.dash-card p { margin: 0; }
+.dash-big { font-size: 22px; font-weight: 700; color: var(--ink); }
+.dash-muted { color: var(--ink-2); font-size: 15px; }
+html[dir="rtl"] .dash-muted[dir="ltr"] { text-align: right; }
+.dash-next { background: var(--brass-soft); box-shadow: none; }
