@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { LANG_BOOT_SCRIPT } from "@/lib/lang";
+import { BOOT_SCRIPT } from "@/lib/lang";
 import { messages } from "@/lib/i18n";
 import "./globals.css";
 
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: LANG_BOOT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         {/* Same Google Fonts request as the original site, so the type renders identically.

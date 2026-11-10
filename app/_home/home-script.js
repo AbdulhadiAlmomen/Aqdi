@@ -251,6 +251,18 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       observers.push(io);
     });
 
+    // In-page links scroll smoothly without writing #section into the address,
+    // so a refresh or a reopened link always starts at the top.
+    each('a[href^="#"]', function (a) {
+      a.addEventListener('click', function (e) {
+        var id = a.getAttribute('href').slice(1);
+        var target = id ? document.getElementById(id) : null;
+        e.preventDefault();
+        if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+        else window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      }, listen);
+    });
+
     // FAQ: answers open smoothly in place.
     each('.faq-q', function (btn) {
       btn.addEventListener('click', function () {

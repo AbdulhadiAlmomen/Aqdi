@@ -31,4 +31,6 @@ export function saveLang(lang: Lang) {
 }
 
 // Runs in <head> before the first paint, so English visitors never see an Arabic flash.
-export const LANG_BOOT_SCRIPT = `(function(){try{var l=localStorage.getItem("${KEY}");if(l!=="ar"&&l!=="en"){l=/(?:^|; )${KEY}=en(?:;|$)/.test(document.cookie)?"en":"ar"}if(l==="en"){var d=document.documentElement;d.lang="en";d.dir="ltr"}}catch(e){}})()`;
+// On the homepage it also makes every load start at the top: no restored scroll position
+// on refresh, and no jump to a leftover #section in the address.
+export const BOOT_SCRIPT = `(function(){try{var l=localStorage.getItem("${KEY}");if(l!=="ar"&&l!=="en"){l=/(?:^|; )${KEY}=en(?:;|$)/.test(document.cookie)?"en":"ar"}if(l==="en"){var d=document.documentElement;d.lang="en";d.dir="ltr"}}catch(e){}try{if(location.pathname==="/"){history.scrollRestoration="manual";if(location.hash)history.replaceState(history.state,"",location.pathname+location.search)}}catch(e){}})()`;
