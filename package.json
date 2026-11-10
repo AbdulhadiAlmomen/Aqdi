@@ -10,7 +10,8 @@
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node --env-file-if-exists=.env.local scripts/migrate.mts",
-    "test:ai": "AQDI_AI_TESTS=1 node --env-file-if-exists=.env.local node_modules/vitest/vitest.mjs run tests/ai"
+    "test:ai": "AQDI_AI_TESTS=1 node --env-file-if-exists=.env.local node_modules/vitest/vitest.mjs run tests/ai",
+    "db:seed-demo": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file-if-exists=.env.local scripts/seed-demo.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.7.0",
