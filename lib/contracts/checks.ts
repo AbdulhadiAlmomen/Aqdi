@@ -83,52 +83,50 @@ const text = (v: string) => v.trim();
 export function draftFromExtraction(x: ExtractedContract): { draft: Draft; flags: Flags } {
   const flags: Flags = {};
   const fields: Record<TextField, string> = {
-    contractNumber: toWestern(x.contractNumber.value).replace(/\D/g, ""),
-    startDate: text(x.startDateGregorian.value),
-    endDate: text(x.endDateGregorian.value),
-    annualRent: parseAmount(x.annualRent.value),
-    paymentCycle: x.paymentCycle.value === "unknown" ? "" : x.paymentCycle.value,
-    tenantName: text(x.tenantName.value),
-    tenantNationality: text(x.tenantNationality.value),
-    tenantMobile: x.tenantMobile.value ? (normalizeMobile(x.tenantMobile.value) ?? x.tenantMobile.value) : "",
-    propertyCity: text(x.propertyCity.value),
-    propertyDistrict: (text(x.propertyDistrict.value)).replace(/^حي\s+/, ""),
-    propertyStreet: text(x.propertyStreet.value),
-    buildingNumber: text(x.buildingNumber.value),
-    postalCode: text(x.postalCode.value),
-    additionalNumber: text(x.additionalNumber.value),
-    deedNumber: text(x.deedNumber.value),
-    unitNumber: text(x.unitNumber.value),
-    unitType: text(x.unitType.value),
-    unitFloor: text(x.unitFloor.value),
-    unitArea: parseAmount(x.unitArea.value),
+    contractNumber: toWestern(x.contractNumber).replace(/\D/g, ""),
+    startDate: text(x.startDateGregorian),
+    endDate: text(x.endDateGregorian),
+    annualRent: parseAmount(x.annualRent),
+    paymentCycle: x.paymentCycle === "unknown" ? "" : x.paymentCycle,
+    tenantName: text(x.tenantName),
+    tenantNationality: text(x.tenantNationality),
+    tenantMobile: x.tenantMobile ? (normalizeMobile(x.tenantMobile) ?? text(x.tenantMobile)) : "",
+    propertyCity: text(x.propertyCity),
+    propertyDistrict: text(x.propertyDistrict).replace(/^حي\s+/, ""),
+    propertyStreet: text(x.propertyStreet),
+    buildingNumber: text(x.buildingNumber),
+    postalCode: text(x.postalCode),
+    additionalNumber: text(x.additionalNumber),
+    deedNumber: text(x.deedNumber),
+    unitNumber: text(x.unitNumber),
+    unitType: text(x.unitType),
+    unitFloor: text(x.unitFloor),
+    unitArea: parseAmount(x.unitArea),
   };
 
   // The AI's own doubt, mapped onto our field names.
-  const confidenceOf: Record<TextField, { confidence: string }> = {
-    contractNumber: x.contractNumber, startDate: x.startDateGregorian, endDate: x.endDateGregorian,
-    annualRent: x.annualRent, paymentCycle: x.paymentCycle, tenantName: x.tenantName, tenantNationality: x.tenantNationality,
-    tenantMobile: x.tenantMobile, propertyCity: x.propertyCity, propertyDistrict: x.propertyDistrict, propertyStreet: x.propertyStreet,
-    buildingNumber: x.buildingNumber, postalCode: x.postalCode, additionalNumber: x.additionalNumber, deedNumber: x.deedNumber,
-    unitNumber: x.unitNumber, unitType: x.unitType, unitFloor: x.unitFloor, unitArea: x.unitArea,
-  };
-  for (const key of TEXT_FIELDS) if (confidenceOf[key].confidence === "low") add(flags, key, "lowConfidence");
+  const uncertain = new Set<string>(x.uncertainFields);
+  const aiName: Partial<Record<TextField, string>> = { startDate: "startDateGregorian", endDate: "endDateGregorian" };
+  for (const key of TEXT_FIELDS) if (uncertain.has(aiName[key] ?? key)) add(flags, key, "lowConfidence");
+  if (uncertain.has("startDateHijri")) add(flags, "startDate", "lowConfidence");
+  if (uncertain.has("endDateHijri")) add(flags, "endDate", "lowConfidence");
 
   // Other ID types (e.g. a passport) are allowed but flagged; a malformed national ID or iqama must be re-typed.
-  const id = classifyId(text(x.tenantIdNumber.value));
-  const otherType = x.tenantIdType.value === "passport" || x.tenantIdType.value === "other";
-  const needsEntry = !!x.tenantIdNumber.value && !id.valid && !otherType;
-  if (x.tenantIdNumber.value && !id.valid && otherType) add(flags, "tenantId", "idOther");
-  if (x.tenantIdNumber.confidence === "low") add(flags, "tenantId", "lowConfidence");
+  const idText = text(x.tenantIdNumber);
+  const id = classifyId(idText);
+  const otherType = x.tenantIdType === "passport" || x.tenantIdType === "other";
+  const needsEntry = !!idText && !id.valid && !otherType;
+  if (idText && !id.valid && otherType) add(flags, "tenantId", "idOther");
+  if (uncertain.has("tenantIdNumber") || uncertain.has("tenantIdType")) add(flags, "tenantId", "lowConfidence");
 
   // Printed Hijri dates must be the same days as the Gregorian ones.
-  const printedHijri = { start: normalizeHijri(x.startDateHijri.value), end: normalizeHijri(x.endDateHijri.value) };
+  const printedHijri = { start: normalizeHijri(x.startDateHijri), end: normalizeHijri(x.endDateHijri) };
   if (isValidIsoDate(fields.startDate) && printedHijri.start && hijriIso(fields.startDate) !== printedHijri.start) add(flags, "startDate", "hijriMismatch");
   if (isValidIsoDate(fields.endDate) && printedHijri.end && hijriIso(fields.endDate) !== printedHijri.end) add(flags, "endDate", "hijriMismatch");
 
-  const installments = x.installments.items.map((i) => ({ dueDate: text(i.dueDateGregorian), amount: parseAmount(i.amount) }));
-  if (x.installments.confidence === "low") add(flags, "installments", "lowConfidence");
-  if (x.installments.items.some((i) => i.dueDateHijri && isValidIsoDate(i.dueDateGregorian) && normalizeHijri(i.dueDateHijri) !== hijriIso(i.dueDateGregorian))) {
+  const installments = x.installments.map((i) => ({ dueDate: text(i.dueDateGregorian), amount: parseAmount(i.amount) }));
+  if (uncertain.has("installments")) add(flags, "installments", "lowConfidence");
+  if (x.installments.some((i) => i.dueDateHijri && isValidIsoDate(text(i.dueDateGregorian)) && normalizeHijri(i.dueDateHijri) !== hijriIso(text(i.dueDateGregorian)))) {
     add(flags, "installments", "hijriMismatch");
   }
 

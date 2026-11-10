@@ -28,28 +28,28 @@ describe.skipIf(!process.env.AQDI_AI_TESTS)("AI reading of the sample contracts"
       const started = Date.now();
       const x = await new ClaudeExtractor().extract(new Uint8Array(readFileSync(file)));
       const seconds = ((Date.now() - started) / 1000).toFixed(1);
-      const rows: [string, unknown, unknown, string, boolean][] = [];
-      const check = (name: string, got: unknown, want: unknown, confidence: string) => rows.push([name, got, want, confidence, same(got, want)]);
+      const rows: [string, unknown, unknown, boolean][] = [];
+      const uncertain = new Set<string>(x.uncertainFields);
+      const check = (name: string, got: unknown, want: unknown) => rows.push([name, got, want, same(got, want)]);
 
       for (const key of Object.keys(expected) as (keyof typeof expected)[]) {
         if (key === "installments") continue;
-        const field = x[key as keyof typeof x] as { value: unknown; confidence: string };
-        const got = key.endsWith("Hijri") ? normalizeHijri(field.value as string) : field.value;
-        check(key, got, expected[key], field.confidence);
+        const got = x[key as keyof typeof x];
+        check(key, key.endsWith("Hijri") ? normalizeHijri(got as string) : got, expected[key]);
       }
-      check("installments.count", x.installments.items.length, expected.installments.length, x.installments.confidence);
+      check("installments.count", x.installments.length, expected.installments.length);
       expected.installments.forEach((want, i) => {
-        const got = x.installments.items[i];
-        check(`installment ${i + 1} date`, got?.dueDateGregorian, want.dueDateGregorian, x.installments.confidence);
-        check(`installment ${i + 1} hijri`, normalizeHijri(got?.dueDateHijri), want.dueDateHijri, x.installments.confidence);
-        check(`installment ${i + 1} amount`, got?.amount, want.amount, x.installments.confidence);
+        const got = x.installments[i];
+        check(`installment ${i + 1} date`, got?.dueDateGregorian, want.dueDateGregorian);
+        check(`installment ${i + 1} hijri`, normalizeHijri(got?.dueDateHijri), want.dueDateHijri);
+        check(`installment ${i + 1} amount`, got?.amount, want.amount);
       });
 
       const { flags } = draftFromExtraction(x);
-      const wrong = rows.filter((r) => !r[4]);
+      const wrong = rows.filter((r) => !r[3]);
       console.log(
         `\n${file}: ${rows.length - wrong.length}/${rows.length} fields right in ${seconds}s\n` +
-          rows.map(([n, got, want, c, ok]) => `  ${ok ? "✓" : "✗"} ${n.padEnd(22)} ${JSON.stringify(got)}${ok ? "" : `  (expected ${JSON.stringify(want)})`}  [${c}]`).join("\n") +
+          rows.map(([n, got, want, ok]) => `  ${ok ? "✓" : "✗"} ${n.padEnd(22)} ${JSON.stringify(got)}${ok ? "" : `  (expected ${JSON.stringify(want)})`}${uncertain.has(n) ? "  [AI unsure]" : ""}`).join("\n") +
           `\n  flags raised by the code checks: ${JSON.stringify(flags)}`,
       );
       expect(x.isEjarContract).toBe(true);

@@ -7,36 +7,16 @@ type Expected = typeof sample1;
 
 // Turns a sample's known answers into what a perfect read would return.
 export function asExtraction(expected: Expected): ExtractedContract {
-  const f = (value: string | number) => ({ value: String(value), confidence: "high" as const });
+  const { installments, tenantIdType, paymentCycle, unitArea, annualRent, ...rest } = expected;
   return {
     isEjarContract: true,
-    contractNumber: f(expected.contractNumber),
-    startDateGregorian: f(expected.startDateGregorian),
-    startDateHijri: f(expected.startDateHijri),
-    endDateGregorian: f(expected.endDateGregorian),
-    endDateHijri: f(expected.endDateHijri),
-    tenantName: f(expected.tenantName),
-    tenantNationality: f(expected.tenantNationality),
-    tenantIdType: { value: expected.tenantIdType as "national_id" | "iqama", confidence: "high" },
-    tenantIdNumber: f(expected.tenantIdNumber),
-    tenantMobile: f(expected.tenantMobile),
-    propertyCity: f(expected.propertyCity),
-    propertyDistrict: f(expected.propertyDistrict),
-    propertyStreet: f(expected.propertyStreet),
-    buildingNumber: f(expected.buildingNumber),
-    postalCode: f(expected.postalCode),
-    additionalNumber: f(expected.additionalNumber),
-    deedNumber: f(expected.deedNumber),
-    unitNumber: f(expected.unitNumber),
-    unitType: f(expected.unitType),
-    unitFloor: f(expected.unitFloor),
-    unitArea: f(expected.unitArea),
-    annualRent: f(expected.annualRent),
-    paymentCycle: { value: expected.paymentCycle as "semi_annual" | "quarterly", confidence: "high" },
-    installments: {
-      confidence: "high",
-      items: expected.installments.map((i) => ({ ...i, amount: String(i.amount) })),
-    },
+    ...rest,
+    unitArea: String(unitArea),
+    annualRent: String(annualRent),
+    tenantIdType: tenantIdType as ExtractedContract["tenantIdType"],
+    paymentCycle: paymentCycle as ExtractedContract["paymentCycle"],
+    installments: installments.map((i) => ({ dueDateGregorian: i.dueDateGregorian, dueDateHijri: i.dueDateHijri, amount: String(i.amount) })),
+    uncertainFields: [],
   };
 }
 

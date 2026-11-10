@@ -19,4 +19,13 @@ describe("AI output schema", () => {
     expect(unions).toBeLessThanOrEqual(16);
     expect(unions).toBe(0);
   });
+
+  // Anthropic also caps the compiled grammar's size. A flat schema of plain strings stays small;
+  // this keeps it from quietly growing back into nested per-field objects.
+  it("stays flat and small", () => {
+    const { schema } = betaZodOutputFormat(ExtractedContractSchema) as unknown as { schema: { properties: Record<string, { type?: string }> } };
+    const objectFields = Object.entries(schema.properties).filter(([, v]) => v.type === "object");
+    expect(objectFields).toEqual([]);
+    expect(JSON.stringify(schema).length).toBeLessThan(8000);
+  });
 });
