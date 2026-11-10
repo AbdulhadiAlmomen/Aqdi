@@ -1,0 +1,51 @@
+{
+  "contractNumber": "20519930485",
+  "startDateGregorian": "2026-09-01",
+  "startDateHijri": "1448-03-19",
+  "endDateGregorian": "2027-08-31",
+  "endDateHijri": "1449-03-29",
+  "tenantName": "أحمد فاروق خان",
+  "tenantNationality": "باكستاني",
+  "tenantIdType": "iqama",
+  "tenantIdNumber": "2134876590",
+  "tenantMobile": "+966549021175",
+  "propertyCity": "الرياض",
+  "propertyDistrict": "الملقا",
+  "propertyStreet": "طريق أنس بن مالك",
+  "buildingNumber": "2968",
+  "postalCode": "13524",
+  "additionalNumber": "7781",
+  "deedNumber": "410229817305",
+  "unitNumber": "12",
+  "unitType": "شقة",
+  "unitFloor": "3",
+  "unitArea": 118.5,
+  "annualRent": 28500,
+  "paymentCycle": "quarterly",
+  "installments": [
+    {
+      "number": 1,
+      "dueDateGregorian": "2026-09-01",
+      "dueDateHijri": "1448-03-19",
+      "amount": 7125
+    },
+    {
+      "number": 2,
+      "dueDateGregorian": "2026-12-01",
+      "dueDateHijri": "1448-06-21",
+      "amount": 7125
+    },
+    {
+      "number": 3,
+      "dueDateGregorian": "2027-03-01",
+      "dueDateHijri": "1448-09-22",
+      "amount": 7125
+    },
+    {
+      "number": 4,
+      "dueDateGregorian": "2027-06-01",
+      "dueDateHijri": "1448-12-26",
+      "amount": 7125
+    }
+  ]
+}

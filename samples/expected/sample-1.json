@@ -1,0 +1,39 @@
+{
+  "contractNumber": "20512847396",
+  "startDateGregorian": "2026-03-15",
+  "startDateHijri": "1447-09-26",
+  "endDateGregorian": "2027-03-14",
+  "endDateHijri": "1448-10-06",
+  "tenantName": "محمد عبدالرحمن العتيبي",
+  "tenantNationality": "سعودي",
+  "tenantIdType": "national_id",
+  "tenantIdNumber": "1098234561",
+  "tenantMobile": "0552147390",
+  "propertyCity": "الرياض",
+  "propertyDistrict": "النرجس",
+  "propertyStreet": "شارع الأمير سلطان بن فهد",
+  "buildingNumber": "7421",
+  "postalCode": "13325",
+  "additionalNumber": "3104",
+  "deedNumber": "310118045672",
+  "unitNumber": "3",
+  "unitType": "شقة",
+  "unitFloor": "1",
+  "unitArea": 145,
+  "annualRent": 32000,
+  "paymentCycle": "semi_annual",
+  "installments": [
+    {
+      "number": 1,
+      "dueDateGregorian": "2026-03-15",
+      "dueDateHijri": "1447-09-26",
+      "amount": 16000
+    },
+    {
+      "number": 2,
+      "dueDateGregorian": "2026-09-15",
+      "dueDateHijri": "1448-04-04",
+      "amount": 16000
+    }
+  ]
+}

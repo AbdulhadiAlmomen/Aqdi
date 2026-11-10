@@ -1,4 +1,4 @@
-import { boolean, index, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { boolean, date, index, integer, numeric, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
 const updatedAt = () =>
@@ -75,10 +75,12 @@ export const verifications = pgTable(
 
 // ---- Offices ----
 
-// The paying account. Buildings, units, tenants and contracts will hang off office_id.
+// The paying account. Buildings, units, tenants and contracts hang off office_id.
 export const offices = pgTable("offices", {
   id: text("id").primaryKey().$defaultFn(newId),
   name: text("name").notNull(),
+  // Set by the payment webhook (step 4). Free offices can import up to FREE_CONTRACT_LIMIT contracts.
+  paid: boolean("paid").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
 });
@@ -103,4 +105,103 @@ export const memberships = pgTable(
     uniqueIndex("memberships_office_user_idx").on(t.officeId, t.userId),
     index("memberships_user_id_idx").on(t.userId),
   ],
+);
+
+// ---- Properties and leases (all office-owned: every row carries office_id) ----
+
+const officeId = () =>
+  text("office_id")
+    .notNull()
+    .references(() => offices.id, { onDelete: "cascade" });
+
+// One building per title deed (or, without a deed number, per national address).
+export const buildings = pgTable(
+  "buildings",
+  {
+    id: text("id").primaryKey().$defaultFn(newId),
+    officeId: officeId(),
+    city: text("city"),
+    district: text("district"),
+    street: text("street"),
+    buildingNumber: text("building_number"),
+    postalCode: text("postal_code"),
+    additionalNumber: text("additional_number"),
+    deedNumber: text("deed_number"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("buildings_office_idx").on(t.officeId)],
+);
+
+export const units = pgTable(
+  "units",
+  {
+    id: text("id").primaryKey().$defaultFn(newId),
+    officeId: officeId(),
+    buildingId: text("building_id")
+      .notNull()
+      .references(() => buildings.id, { onDelete: "cascade" }),
+    unitNumber: text("unit_number").notNull(),
+    unitType: text("unit_type"),
+    floor: text("floor"),
+    areaSqm: numeric("area_sqm", { precision: 10, scale: 2 }),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("units_building_number_idx").on(t.buildingId, t.unitNumber), index("units_office_idx").on(t.officeId)],
+);
+
+export const ID_TYPES = ["national_id", "iqama", "other"] as const;
+
+// Only the last 4 digits of the ID or iqama number are ever stored.
+export const tenants = pgTable(
+  "tenants",
+  {
+    id: text("id").primaryKey().$defaultFn(newId),
+    officeId: officeId(),
+    name: text("name").notNull(),
+    nationality: text("nationality"),
+    idType: text("id_type", { enum: ID_TYPES }).notNull(),
+    idLast4: text("id_last4").notNull(),
+    mobile: text("mobile").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [index("tenants_office_idx").on(t.officeId)],
+);
+
+export const PAYMENT_CYCLES = ["monthly", "quarterly", "semi_annual", "annual", "other"] as const;
+
+export const contracts = pgTable(
+  "contracts",
+  {
+    id: text("id").primaryKey().$defaultFn(newId),
+    officeId: officeId(),
+    unitId: text("unit_id")
+      .notNull()
+      .references(() => units.id, { onDelete: "cascade" }),
+    tenantId: text("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    contractNumber: text("contract_number").notNull(),
+    startDate: date("start_date", { mode: "string" }).notNull(),
+    endDate: date("end_date", { mode: "string" }).notNull(),
+    annualRent: numeric("annual_rent", { precision: 12, scale: 2 }).notNull(),
+    paymentCycle: text("payment_cycle", { enum: PAYMENT_CYCLES }).notNull(),
+    source: text("source").notNull().default("ejar_import"),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("contracts_office_number_idx").on(t.officeId, t.contractNumber), index("contracts_unit_idx").on(t.unitId)],
+);
+
+export const installments = pgTable(
+  "installments",
+  {
+    id: text("id").primaryKey().$defaultFn(newId),
+    officeId: officeId(),
+    contractId: text("contract_id")
+      .notNull()
+      .references(() => contracts.id, { onDelete: "cascade" }),
+    sequence: integer("sequence").notNull(),
+    dueDate: date("due_date", { mode: "string" }).notNull(),
+    amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
+  },
+  (t) => [index("installments_contract_idx").on(t.contractId)],
 );
