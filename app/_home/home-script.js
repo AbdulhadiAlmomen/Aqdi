@@ -354,12 +354,18 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       function clear(extra) { return Object.assign({}, CLEAR, extra); }
       var heroTitle = document.querySelector('.hero h1');
 
+      // The hero card keeps one fixed 3D perspective. (Tweening it from 1400 toward 0 made any tilt
+      // blow up near the end of the intro, throwing the card across the screen.)
+      var heroStage = document.getElementById('hero-stage');
+      var mock = heroStage.querySelector('.mock');
+      gsap.set(mock, { transformPerspective: 1400 });
+
       var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
       tl.from('nav .wrap', { y: -16, opacity: 0, duration: .7 })
         .call(function () { heroTitle.classList.add('in'); }, null, .1)
         .from('.hero .lede, .hero .cta-row, .hero .trust', { opacity: 0, y: 18, filter: 'blur(6px)', duration: .9, stagger: .12 }, .45)
         .from('.hero .arch', { opacity: 0, scale: .94, duration: 1.2 }, .2)
-        .from('.hero .mock', { opacity: 0, y: 60, rotationX: 12, transformPerspective: 1400, duration: 1.3 }, .35)
+        .from(mock, { opacity: 0, y: 60, rotationX: 12, duration: 1.3 }, .35)
         .from('.hero .stat', { opacity: 0, y: 14, duration: .7, stagger: .08 }, .85)
         .from('.hero .row', { opacity: 0, y: 12, duration: .7, stagger: .1 }, 1.05)
         .from('.hero-chip', { opacity: 0, y: -12, scale: .92, duration: .7, ease: 'back.out(1.8)' }, 1.7);
@@ -368,18 +374,19 @@ export function initHome(gsapLib, ScrollTriggerLib) {
         tl.to(o, { v: to, duration: 1.4, ease: 'power2.out', onUpdate: function () { b.textContent = Math.round(o.v) + suffix; } }, .9);
       });
 
-      // Hero dashboard tilts gently toward the pointer.
-      var heroStage = document.getElementById('hero-stage');
-      var mock = heroStage.querySelector('.mock');
+      // Hero dashboard tilts gently toward the pointer, once its intro is done (both move rotationX).
       if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        var tiltReady = false;
+        tl.call(function () { tiltReady = true; }, null, 1.65);
         var rx = gsap.quickTo(mock, 'rotationX', { duration: .9, ease: 'power3' });
         var ry = gsap.quickTo(mock, 'rotationY', { duration: .9, ease: 'power3' });
         heroStage.addEventListener('pointermove', function (e) {
+          if (!tiltReady) return;
           var r = heroStage.getBoundingClientRect();
           ry(((e.clientX - r.left) / r.width - .5) * 7);
           rx(-((e.clientY - r.top) / r.height - .5) * 7);
         }, listen);
-        heroStage.addEventListener('pointerleave', function () { rx(0); ry(0); }, listen);
+        heroStage.addEventListener('pointerleave', function () { if (tiltReady) { rx(0); ry(0); } }, listen);
       }
       gsap.to('.hero .arch', { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
