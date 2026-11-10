@@ -1,156 +1,207 @@
-# Aqdi (عقدي): Product Brief v2
+# Aqdi (عقدي): Product Brief for Development
 
-Updated 5 Nov 2026. This is a copy of the planning doc in Claude chat. Why things are the way they are: `docs/DECISIONS.md`. Import and login details: `docs/IMPORT_AND_ACCESS.md`.
+Last synced from the planning doc: Nov 1, 2026. The planning doc is the source of truth; this file is a copy for Claude Code.
 
-## 1. What Aqdi is
+## What Aqdi is
 
-**Aqdi is the daily operating system for small and mid-size Saudi real estate offices that manage buildings for owners.** It works on top of Ejar, not instead of it.
+Aqdi is a web app that gives Saudi real estate offices and their tenants one place to handle leases, rent, maintenance and communication. Think of the resident portals US apartment complexes use, built Arabic-first for how renting works in Saudi.
 
-**The problem.** Ejar already handles contract registration, renewals, official notices, and rent payment for residential leases (since 15 Jan 2024, residential rent must be paid through Ejar's channels: mada or SADAD biller 153). What Ejar doesn't do is run the office. Someone still chases late tenants, sends technicians, reports to each building owner, and answers tenant questions, mostly on WhatsApp and Excel.
+**The problem.** Most Saudi rentals still run on paper, phone calls and WhatsApp groups. Tenants chase the office for renewal dates, pay rent in large yearly or six-month chunks, and report a broken AC by calling the haris. Offices track all of it in notebooks or spreadsheets and have no clear view of who paid, which contracts end soon, or which repairs are still open.
 
-**The message.** Fewer calls for the office, full clarity for the owner. Landing page copy: `docs/LANDING_COPY.md`.
+**What Aqdi does.** The office signs up and uploads its Ejar lease PDFs. AI reads them and sets up every building, unit, tenant and rent schedule in minutes, flagging anything it's unsure of for the office to confirm, so moving off notebooks and spreadsheets doesn't mean days of typing. From then on, the office runs the day-to-day from one dashboard. Tenants log in to see their contract, pay rent, request maintenance and get announcements. As a side feature, the office can list paid services (cleaning, AC repair, moving) that anyone can book, tenant or not.
 
-**What Aqdi does**
-1. The office uploads its Ejar lease PDFs. AI sets up every building, unit, tenant and rent schedule in minutes; the office confirms anything flagged.
-2. One dashboard for every building: who's paid, who's late, which leases end soon, what's broken.
-3. Rent tracking against each lease's schedule, with automatic WhatsApp reminders to late tenants.
-4. Maintenance: tenant reports a problem, office assigns a technician, cost is recorded.
-5. Monthly owner statements: income, late payments, vacancies and repair costs per owner, as a PDF.
-6. Tenants get a WhatsApp link to report repairs, read announcements, message the office, and see their lease and rent schedule.
+**Who pays.** The real estate office, once a year, based on how many units it manages. Tenants use it free. Details under Pricing and billing.
 
-**What Aqdi does not do**
-- Collect or move residential rent. Tenants pay through Ejar; Aqdi tracks it.
-- Register, renew or replace contracts. That stays in Ejar.
-- Run a services marketplace (cleaning, AC, moving). Postponed.
+## Users and roles
 
-**Who pays.** The office, once a year, per unit. Tenants and owners never pay.
+Four roles, each with its own view. One real estate office is one account (tenant in the multi-tenant sense), and all data is scoped to it.
 
-## 2. First customer
-
-A licensed office managing **30 to 300 units for several owners**, in one city, running operations on WhatsApp and Excel. Not leasing-only brokers, not large developers.
-
-## 3. Users and roles
-
-| Role | Who | Sees |
+| Role | Who they are | What they see |
 | --- | --- | --- |
-| Office manager | Runs the office | Everything across all buildings |
-| Leasing staff | Handles tenants and renewals | Assigned buildings: tenants, leases, rent status |
-| Maintenance staff | Haris or technician | Only jobs for assigned buildings |
-| Tenant | Person on the lease | Own lease, rent schedule and status, repairs, announcements, messages |
-| Owner | Owns buildings the office manages | No login in v1; receives monthly PDF statement |
-| Aqdi admin (internal) | Aqdi team | Offices, import review queue, subscriptions, audited support access |
+| Office admin | Owner or manager of the real estate office | Full dashboard: buildings, units, tenants, contracts, payments, maintenance, services, announcements, staff |
+| Maintenance staff | The haris or technician | Only jobs assigned to them, with photos, address and unit; can update status and mark done |
+| Tenant | Someone with an active lease in one of the office's units | Their contract, payments, maintenance requests, announcements, messages, and services at tenant price |
+| Guest customer | Anyone who books a service without a lease | Only the services page and their own bookings |
 
-The office is the account. An office has many owners and buildings; each building has one owner. Staff are assigned to all or some buildings. New maintenance requests go to the maintenance staff of that building.
+A person can be a guest first and become a tenant later. Same phone number, same account, and the role gets upgraded when the office links them to a lease.
 
-## 4. Pricing and billing
+### Offices with many buildings
 
-- One yearly payment per office, based on units in the system (rented or vacant), across all buildings.
-- 50 SAR per unit per year for the first 100 units, 40 for units 101 to 300, 30 above 300, bracketed like tax. No minimum. Example: 150 units = 7,000 SAR.
-- Billing year starts at signup. Units added mid-year are free until renewal; recount at renewal. Removed units are not refunded.
-- Prices exclude 15% VAT. Aqdi must issue ZATCA-compliant e-invoices for its own subscriptions.
-- Pay by Saudi gateway (Tap or Moyasar, mada supported) or bank transfer. Stripe is not available to Saudi companies.
-- Pilot offer: 60 days free with agreed success goals, then a founding price (about 30% off) locked for 2 years.
-- Website calculator shows the bracket breakdown so pricing never feels like a trick.
+The office is the account, not the building. An office like Anwar with 10 buildings has one account, one annual bill, and all 10 buildings inside it.
 
-## 5. Onboarding
+Staff are assigned to buildings so each person only sees their own work:
 
-Details in `docs/IMPORT_AND_ACCESS.md`. Summary: upload Ejar PDFs or Excel, AI extracts, code validates, office reviews flagged fields, approves, then tenants get a WhatsApp invite and log in with an SMS code. The founder sets up data for the first 10 offices.
+| Staff role | Scope | Sees |
+| --- | --- | --- |
+| Office manager | All buildings | Everything: contracts, payments, maintenance, staff, reports |
+| Leasing | All or selected buildings | Contracts and renewals for their buildings |
+| Maintenance | Selected buildings | Repair jobs and service bookings for their buildings only |
 
-## 6. App structure
+A new maintenance request is auto-assigned to the maintenance staff for that unit's building. The manager can reassign any job.
 
-- Login screen (phone + SMS code; admins can also use email + password), then the right view for the role: office dashboard, staff job list, or tenant portal.
-- Tenants normally arrive through a WhatsApp link, not the homepage.
-- No public services page in v1.
+## Pricing and billing
 
-## 7. MVP features
+One yearly payment, based on the total number of units the office manages across all its buildings. Billed yearly, like the leases themselves. This matches the industry: US platforms like Entrata, AppFolio and Yardi all charge per unit, usually on an annual agreement.
 
-The first version needs: AI import, portfolio dashboard, rent tracking with reminders, renewal pipeline, maintenance, owner statements, light tenant portal.
+The office's billing year starts the day it signs up and is separate from its tenants' lease dates. Leases start all through the year, so billing never follows them. The unit count comes straight from the system on renewal day. It stays accurate because a unit has to be in Aqdi for the office to rent it, collect on it or log repairs for it.
 
-### Office
-- **Import:** AI import of Ejar PDFs and Excel import, both with a review screen.
-- **Properties:** owners, buildings, units (number, floor, type, size, status).
-- **Leases:** created from import, editable. Ejar contract number stored and unique per office.
-- **Rent tracking:** installments generated from each lease's payment schedule; status due, paid, late. Paid is set by the office manually, or by uploading Ejar's payment report (format to confirm with pilot offices). Later: Ejar integration.
-- **Late reminders:** WhatsApp message to the tenant N days after due (office sets N), with how to pay through Ejar.
-- **Renewal pipeline:** leases ending in 90 / 60 / 30 days, auto-renew flag, office notes. The renewal itself happens in Ejar; Aqdi tracks and reminds.
-- **Maintenance:** requests with photos, auto-assigned by building, status, cost, rating.
-- **Owner approvals:** the office sets a cost limit per owner. Any repair above it is sent to the owner by WhatsApp with the photo and price; he approves or rejects with one tap. The decision is logged.
-- **Owner statements:** per owner per month: rent expected vs received, late tenants, vacancies, maintenance cost, office notes. PDF, sent by WhatsApp or email.
-- **Announcements and messages:** to one building or all; message threads with tenants.
-- **Dashboard home and reports (free, no add-on):** collected vs expected this month, collection rate over time, late list, vacancy days, maintenance cost per building, repeat repairs, leases ending soon. Charts, in both languages.
-- **Renewal rent check:** for leases ending in 90 days, show the unit's rent next to the district average for that unit type from Ejar's public rental index (rei.rega.gov.sa). No API exists, so in v1 the Aqdi team keeps a district table for the pilot city, updated quarterly. Check the index's terms of use before relying on it.
+- **What counts:** every unit in the system, rented or vacant. Not contracts, which change all year.
+- **Minimum:** none. An office with 3 units pays for 3 units. Onboarding must be self-serve so small offices can set up without help.
+- **Volume rate:** a lower per-unit price above a threshold (e.g. above 100 units).
+- **Growth mid-year:** units added during the year are free until renewal. At renewal, the office pays for its new total. Units removed mid-year are not refunded, but lower next year's bill.
+- **Tenants:** always free.
+- **Prices:** working proposal is 50 SAR per unit per year for the first 100 units, 40 SAR for units 101–300, 30 SAR above 300 (100 units = 5,000 SAR, 300 units = 13,000 SAR), applied like tax brackets. Not final until tested with real offices. The website shows a calculator where an office enters its unit count and sees the yearly price.
 
-### Tenant (through WhatsApp link)
-- Lease details (read-only) with a note that the official copy is in the Ejar app.
-- Rent schedule and status, plus how to pay (Ejar app, mada, or SADAD 153).
-- Repair request with photo, and its status.
-- Announcements and messages with the office.
+## Onboarding: moving offices in
+
+If moving in is painful, offices won't switch, however good the app is. Getting their data in fast is a core feature, not an extra.
+
+**Minimum to get value on day one:** unit, tenant name, phone number, lease end date, rent amount. That alone gives renewal reminders and rent tracking. Photos, contract files and deposits can be added later.
+
+**Ways in, from least to most effort for the office:**
+
+1. **Done for them (first offices).** The office sends notebook photos, an Excel file or Ejar PDFs, and the Aqdi team enters the data by hand. Used for the first 10–20 offices, and to learn what real data looks like.
+2. **Ejar PDF upload (MVP, the core AI feature).** The office uploads its Ejar contract PDFs; Aqdi reads each one and fills in unit, tenant, phone, dates and rent. The office reviews and confirms before saving.
+3. **Excel import (MVP).** A ready Arabic template: building, unit, tenant name, phone, lease start, lease end, rent. Upload shows a preview with errors highlighted before anything is saved.
+4. **Manual entry (MVP).** Fast forms for adding one unit or tenant at a time.
+
+**Tenants join by WhatsApp link (MVP).** When the office adds a tenant, Aqdi sends a WhatsApp link. The tenant opens it, enters the OTP code and is in. No app download, nothing for the office to explain.
+
+**Start small is fine.** An office can move one building first and add the rest later.
+
+## App structure and entry flow
+
+Aqdi is a portal first. The homepage is a login screen, like the resident portals in the US, and the services page is a side entrance.
+
+```
+Login screen (aqdi.sa)                Office's shared link (WhatsApp, Instagram, QR)
+   |        \                                   |
+   |         "Not a tenant? Book a service" --> Public services page
+   v                                            |
+Phone number + OTP                              v
+   |                                        Guest booking (book and pay)
+   opens by role:
+   - Office dashboard
+   - Staff job list
+   - Tenant portal
+```
+
+- **Login screen.** Phone number and OTP. After login, the app opens the right view for the user's role: office dashboard, staff job list, or tenant portal.
+- **Side link.** Under the login button: "Not a tenant? Book a service." It opens the office's public services page.
+- **Shared link.** Most guests won't come through the login screen. They'll come from a link or QR code the office shares. That link goes straight to the services page.
+- **Guests** only see services and their own bookings. They never see contracts, payments or anything from the portal.
+
+## MVP features
+
+The first version needs six things working well: AI import of Ejar contracts, contracts with renewal reminders, rent payments, maintenance, notifications, and the office dashboard. Everything else waits.
+
+### Office admin
+
+- **Properties.** Upload Ejar PDFs and let AI create buildings, units, tenants and contracts, or add buildings, then units inside each (unit number, floor, type, size, monthly or yearly rent, status: vacant, occupied, under maintenance).
+- **Tenants.** Add a tenant by phone number and national ID or iqama number, link them to a unit.
+- **Contracts.** Create a lease: start and end date, rent amount, payment schedule (yearly, 6-month, quarterly, monthly), deposit, uploaded PDF of the signed contract, optional Ejar contract number.
+- **Renewals.** Contracts ending in the next 90, 60 and 30 days appear on the dashboard. The office can send a renewal offer (new rent, new dates), and the tenant accepts or declines in the app.
+- **Payments.** Auto-generate rent invoices from the payment schedule. Show paid, due, and late. Allow the office to record a cash or bank transfer payment by hand.
+- **Maintenance.** See all requests across buildings, assign each to a staff member, track status, see cost if any.
+- **Announcements.** Post to one building or all buildings (water cut, elevator service, Ramadan hours). Tenants get notified.
+- **Dashboard home.** Occupancy rate, rent collected this month vs expected, late payers, contracts ending soon, open maintenance jobs.
+
+### Tenant
+
+- **My contract.** Dates, rent, schedule, deposit, downloadable PDF, days until expiry.
+- **Pay rent.** See upcoming and past invoices, pay online, download receipts.
+- **Maintenance request.** Pick a category (AC, plumbing, electrical, appliance, other), describe it, attach photos or a short video, pick preferred time. Track status: submitted, assigned, scheduled, in progress, done. Rate the job after.
+- **Renewal.** Get the office's renewal offer and accept or decline.
+- **Announcements and messages.** Read building announcements and message the office directly.
 
 ### Maintenance staff
-- Mobile list of assigned jobs; update status, add photo and note, mark done.
 
-### Aqdi admin
-- Offices and subscription status, import review queue, audited support access.
+- Mobile-friendly list of assigned jobs with unit, tenant contact, photos and preferred time.
+- Update status, add a note or photo when done.
 
-## 8. Saudi-specific requirements
+### Services (small side feature)
 
-- **Arabic first**, full RTL, English toggle. All text through i18n.
-- **Dates:** Hijri first, then Gregorian with month name. English "1 Rajab 1448 · 10 Dec 2026". Arabic "١ رجب ١٤٤٨هـ · 10 ديسمبر 2026م": Hijri in Arabic digits (`ar-SA-u-ca-islamic-umalqura-nu-arab`), Gregorian in Western digits (`ar-SA-u-ca-gregory-nu-latn`).
-- **Numbers and money:** Western digits with a normal comma in both languages, e.g. "5,000 ريال" (`ar-SA-u-nu-latn`).
-- **Login:** Saudi mobile + SMS code from a registered sender name, plus last 4 digits of national ID (starts with 1) or iqama (starts with 2) on first login.
-- **Messaging:** WhatsApp for invites, reminders, updates; SMS for codes and automatic fallback; one provider (e.g. Unifonic).
-- **Rent:** residential rent goes through Ejar only. Aqdi never holds tenant money.
-- **Ejar:** no public API. Integration is by application (keyaccounts@nhc.sa) and needs a licensed real estate partner; months, not weeks. v1 works from PDFs and reports.
-- **Privacy (PDPL):** ID and iqama numbers encrypted, only last 4 shown. Legal review on hosting location before the pilot.
+- Office lists services with name, description, price, and whether tenants get a different price.
+- Each office has a public link (e.g. `aqdi.sa/s/office-name`) it can share on WhatsApp, Instagram or a QR code.
+- Guests book with phone number and OTP, pick a time, pay or pay on arrival. Tenants see the same services inside their portal.
+- Bookings show up for the office next to maintenance jobs and can be assigned to staff the same way.
 
-## 9. Data model
+## Saudi-specific requirements
 
-Every table except `users` has `office_id`; every query filters by it.
+These are what make Aqdi different from a US portal. Build them in from day one, not as a later translation layer.
 
-| Entity | Key fields |
-| --- | --- |
-| Office | name (ar, en), CR number, logo, plan |
-| User | phone, name, email (optional), language |
-| Membership | user, office, role (manager, leasing, maintenance, tenant) |
-| BuildingAssignment | staff user, building, role |
-| Owner | name, phone, email, statement preferences |
-| Building | owner, name, city, district, national address, deed number |
-| Unit | building, number, floor, type, size, status |
-| Lease | unit, tenant user, Ejar number, start, end, annual rent, payment cycle, deposit, auto-renew, PDF |
-| RentInstallment | lease, due date, amount, status (due, paid, late) |
-| PaymentRecord | installment, amount, date, source (manual, ejar_report, integration), evidence file |
-| MaintenanceRequest | unit, tenant, category, description, photos, assignee, status, cost, rating |
-| OwnerStatement | owner, month, figures snapshot, PDF, sent at |
-| Announcement, Message | target or thread, body, attachments |
-| ImportBatch, ImportItem | source PDF, extracted JSON, confidence per field, validation errors, review status, edits |
-| NotificationLog | user, channel (whatsapp, sms), template, status |
-| Subscription | office, period, units billed, amount, invoice, payment status |
-| AuditLog | who, what, when, before and after |
+- **Arabic first, English second.** Default language is Arabic with full right-to-left layout. A toggle switches to English (left-to-right). Every string goes through i18n from the start, no hard-coded text.
+- **Dates.** Every date shows both calendars, everywhere: contracts, invoices, renewals, the dashboard and the website mockups. Hijri first, then Gregorian with the month written out, e.g. "1 Rajab 1448 · 10 Dec 2026" (Arabic: "١ رجب ١٤٤٨هـ · 10 ديسمبر 2026م", Hijri in Arabic digits, Gregorian in Western digits). Use the Umm al-Qura calendar for Hijri. Never show a date in only one calendar, and never use number-only formats like 10/12/2026.
+- **Currency.** SAR everywhere. Prices, totals and calculations use Western digits (0–9) with a normal comma in both languages, e.g. "5,000 ريال", never the Arabic thousands separator (٬). The one exception is the Hijri date on the Arabic side, which uses Arabic digits.
+- **Login by phone.** Saudi mobile number (+966) with a one-time SMS code. No passwords for tenants and guests. Office admins can also use email and password.
+- **Payments.** Support mada, Apple Pay, STC Pay and cards through a Saudi payment gateway (Moyasar, HyperPay or Tap are the usual options). Keep the gateway behind an interface so it can be swapped.
+- **Flexible rent.** Even if the contract is yearly, the office can let the tenant pay monthly. Later, a buy-now-pay-later partner (Tabby or Tamara) can split payments while the office gets paid upfront.
+- **WhatsApp notifications.** Renewal reminders, rent due, maintenance updates and announcements go out on WhatsApp (WhatsApp Business API) as the main channel, with SMS as backup and in-app as the record.
+- **Ejar.** Residential leases in Saudi are registered on Ejar. For the MVP, store the Ejar contract number and let the office upload the Ejar PDF. A real API integration comes later and depends on getting official access.
+- **Data and compliance.** Saudi's Personal Data Protection Law applies, so plan to host in-region and store national ID and iqama numbers encrypted. Check ZATCA e-invoicing rules before charging for services.
 
-## 10. Later or postponed
+## Data model
 
-- Official Ejar integration (apply early through a licensed partner).
-- AI tier: drafting tenant replies, renewal follow-ups, monthly Arabic summary, "ask your portfolio" questions (paid add-on).
-- Package handling: either a partnership with RedBox Community lockers or a haris package log (photo, WhatsApp alert, pickup code). Only if interviews show offices hear complaints about it.
-- Owner login portal.
-- Services marketplace and public booking page.
-- Rent financing partner (e.g. Ejari).
-- Accounting, native apps, reading handwritten notebooks.
+Every table except `users` carries an `office_id`, and every query filters by it. One office must never see another office's data.
 
-## 11. Tech and build order
+| Entity | Key fields | Belongs to |
+| --- | --- | --- |
+| Office | name (ar, en), commercial registration number, logo, public slug, plan | top level |
+| User | phone, name, email (optional), language preference | can have roles in many offices |
+| Membership | user, office, role (admin, staff, tenant, guest) | Office + User |
+| Building | name, city, district, address, location pin | Office |
+| Unit | number, floor, type, size (m²), base rent, status | Building |
+| Contract | unit, tenant, start, end, rent amount, payment schedule, deposit, Ejar number, PDF, status (active, ending, renewed, ended) | Unit + tenant User |
+| Invoice | contract, amount (SAR), due date, status (due, paid, late), paid at, method | Contract |
+| Payment | invoice, amount, gateway reference, method (mada, Apple Pay, STC Pay, card, cash, transfer) | Invoice |
+| Renewal offer | contract, new rent, new start and end, status (sent, accepted, declined) | Contract |
+| Maintenance request | unit, tenant, category, description, photos or video, preferred time, assigned staff, status, cost, rating | Unit |
+| Service | name (ar, en), description, price, tenant price, active | Office |
+| Booking | service, customer user, time, address, price, payment status, assigned staff, status | Service |
+| Announcement | title, body, target (all or specific buildings), sent at | Office |
+| Message | thread between tenant and office, body, attachments | Office + User |
+| Notification log | user, channel (WhatsApp, SMS, in-app), template, status | User |
 
-Stack: Next.js + TypeScript, Tailwind with logical properties for RTL, next-intl (Arabic default), PostgreSQL via Supabase with office scoping, object storage for PDFs and photos, Claude Sonnet 5.5 for contract reading and Haiku 5.5 for small tasks, one WhatsApp + SMS provider, Tap or Moyasar for subscriptions. All external services behind interfaces with mocks first.
+Two more tables support the structure above: **Building assignment** (staff user, building, role: leasing or maintenance) for scoping staff to buildings, and **Subscription** (office, period start and end, units billed, rate, amount, payment status) for annual billing.
 
-Build order (each phase working before the next):
+## Later features (not in MVP)
 
-0. **Discovery first.** No product code beyond the import prototype until office interviews confirm the pain (see the assessment).
-1. Import prototype: extraction, validation rules, review screen, tested on 30 to 50 real Ejar PDFs with accuracy measured per field.
-2. Setup: auth (mocked SMS), roles, office scoping, i18n with RTL.
-3. Office core: owners, buildings, units, tenants, leases from import; Excel import.
-4. Rent tracking, late reminders (mocked WhatsApp), renewal pipeline.
-5. Maintenance, staff job view, light tenant portal with WhatsApp-link login.
-6. Owner statements.
-7. Dashboard home and Aqdi admin.
-8. Real providers (messaging, subscription payments) and pilot hardening.
+Design the data model so these can be added without a rewrite, but don't build them yet.
 
-Seed data: one office, two owners, three buildings, about 30 units, leases at different stages, some late installments, a few open repairs.
+- Reading handwritten notebook photos (too risky for rent and dates in the first version)
+- Real Ejar API integration for contract registration and status
+- Buy-now-pay-later rent splitting with Tabby or Tamara
+- Digital contract signing inside the app
+- Visitor and delivery gate passes (family visitors, Jahez or HungerStation drivers)
+- Move-in and move-out inspections with photo checklists, tied to the deposit
+- Water tank refill and gas delivery requests
+- Amenity booking (gym, majlis hall, pool)
+- Native iOS and Android apps (the MVP is a mobile-first web app)
+- Owner view for property owners who use an office to manage their units
+- Reports and exports for accounting
+
+## Tech guidance and build order
+
+A suggested stack, open to change if there's a good reason:
+
+- **Frontend and backend:** Next.js with TypeScript, mobile-first, one codebase for all roles
+- **Styling:** Tailwind CSS with logical properties so RTL and LTR both work cleanly
+- **Translations:** next-intl or similar, Arabic as the default locale
+- **Database:** PostgreSQL with Prisma, row-level scoping by `office_id`
+- **Auth:** phone number + OTP for tenants and guests, email + password option for admins
+- **Files:** object storage for contract PDFs and maintenance photos
+- **External services behind interfaces:** payment gateway, SMS, WhatsApp, Ejar. Start each one with a mock implementation so the app runs end to end before any real integration is set up.
+
+Build in this order, and get each phase working before moving on:
+
+1. Project setup, i18n with Arabic RTL, auth with phone OTP (mocked SMS), roles and office scoping
+2. Office admin: buildings, units, tenants, contracts, plus AI Ejar PDF import and Excel import, both with a review screen (see docs/IMPORT_AND_ACCESS.md)
+3. Tenant portal: login, my contract, announcements, tenant invite by WhatsApp link (mocked)
+4. Invoices generated from contracts, payments with a mock gateway, receipts
+5. Maintenance requests, staff assignment, staff job view
+6. Renewal reminders and offers, notification system (mock WhatsApp and SMS, real in-app)
+7. Office dashboard with occupancy, collections, late payers, contracts ending, open jobs
+8. Services page, public office link, guest booking
+9. Swap mocks for real providers (payment gateway, SMS, WhatsApp)
+
+Seed the database with one sample office, two buildings, about 20 units and a few tenants with contracts at different stages, so every screen has something to show.
