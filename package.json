@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "node scripts/migrate.mts"
+    "db:migrate": "node --env-file-if-exists=.env.local scripts/migrate.mts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.7.19",

@@ -13,7 +13,25 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. `npm run build` makes a production build; `npm run lint` checks the code.
+Open http://localhost:3000. `npm run build` makes a production build; `npm run lint` checks the code; `npm test` runs the tests (they bring their own in-memory Postgres, no setup needed).
+
+## Local settings (`.env.local`, never committed)
+
+- `BETTER_AUTH_SECRET`: any long random string, e.g. `openssl rand -base64 32`.
+- `DATABASE_URL`: optional. Without it, `npm run db:migrate` and `npm run dev` use an embedded Postgres stored in `.pglite/`, so you can work offline with throwaway data.
+
+To use the Neon database locally instead, copy its URL from Vercel without it ever appearing on screen:
+
+```bash
+npx vercel login
+npx vercel link
+npx vercel env pull .env.vercel --environment=production --yes
+grep -E '^DATABASE_URL(_UNPOOLED)?=' .env.vercel >> .env.local && rm .env.vercel
+```
+
+That is the live database: anything you create locally shows up for real. `vercel env pull` writes the whole file it's given, which is why it goes to `.env.vercel` first and only the two database lines are copied into `.env.local`.
+
+On Vercel, `DATABASE_URL` comes from the Neon integration, `BETTER_AUTH_SECRET` is set in Project Settings, and migrations run automatically before every build (`vercel.json`).
 
 ## Where things are
 
