@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { SiteHeader } from "@/components/SiteHeader";
 import { currentOffice } from "@/lib/dal";
 import { T } from "@/lib/i18n";
 import { FREE_CONTRACT_LIMIT } from "@/lib/offices";
@@ -12,12 +11,7 @@ export const maxDuration = 300;
 export default function ImportPage() {
   return (
     <>
-      <SiteHeader>
-        <Link href="/dashboard" className="btn btn-text">
-          <T k="import.back" />
-        </Link>
-      </SiteHeader>
-      <main className="wrap dash">
+
         <h1>
           <T k="import.title" />
         </h1>
@@ -27,7 +21,6 @@ export default function ImportPage() {
         <Suspense fallback={<p className="dash-loading"><T k="dashboard.loading" /></p>}>
           <ImportGate />
         </Suspense>
-      </main>
     </>
   );
 }

@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { logOut } from "@/app/actions/auth";
 import { DualDate } from "@/components/DualDate";
-import { SiteHeader } from "@/components/SiteHeader";
 import { currentOffice } from "@/lib/dal";
 import { T, type MessageKey } from "@/lib/i18n";
 import { FREE_CONTRACT_LIMIT } from "@/lib/offices";
@@ -11,21 +9,10 @@ const SAR = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
 
 export default function DashboardPage() {
   return (
-    <>
-      <SiteHeader>
-        <form action={logOut}>
-          <button className="btn btn-text" type="submit">
-            <T k="dashboard.logout" />
-          </button>
-        </form>
-      </SiteHeader>
-      <main className="wrap dash">
-        {/* The page frame is static; the signed-in part streams in once the session is checked. */}
-        <Suspense fallback={<p className="dash-loading"><T k="dashboard.loading" /></p>}>
-          <OfficeOverview />
-        </Suspense>
-      </main>
-    </>
+    // The page frame is static; the signed-in part streams in once the session is checked.
+    <Suspense fallback={<p className="dash-loading"><T k="dashboard.loading" /></p>}>
+      <OfficeOverview />
+    </Suspense>
   );
 }
 

@@ -700,3 +700,36 @@ html[dir="rtl"] .dash-table td.cell-num[dir="ltr"] { text-align: right; }
 .billing-total ul { list-style: none; margin: 6px 0 0; padding: 0; color: var(--ink-2); font-size: 14px; }
 .billing-test { margin: 0; padding: 10px 14px; border-radius: 12px; background: var(--amber-bg); color: #7a4a0c; font-size: 14px; }
 .billing-paid { display: grid; gap: 10px; justify-items: start; max-width: 560px; }
+
+/* Office sidebar (start side: right in Arabic, left in English) */
+.dash-shell { max-width: 1320px; display: grid; grid-template-columns: 1fr; align-items: start; }
+.dash-shell > .dash { min-width: 0; }
+.side-nav { padding-top: 20px; }
+.side-group { margin-bottom: 18px; }
+.side-group-title { margin: 0 0 6px; padding-inline: 12px; font-size: 12px; font-weight: 700; color: var(--ink-3); }
+.side-nav ul { list-style: none; margin: 0; padding: 0; }
+.side-link { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; border-radius: 10px; color: var(--ink-2); font-size: 15px; text-decoration: none; line-height: 1.45; transition: background .15s, color .15s; }
+a.side-link:hover { background: var(--sand); color: var(--ink); }
+.side-link[aria-current="page"] { background: var(--surface); color: var(--ink); font-weight: 700; box-shadow: var(--shadow); }
+.side-link.is-soon { color: var(--ink-3); cursor: default; }
+.side-link small { font-size: 11px; font-weight: 700; color: var(--ink-3); background: var(--sand); padding: 1px 7px; border-radius: 6px; white-space: nowrap; }
+@media (min-width: 960px) {
+  .dash-shell { grid-template-columns: 250px 1fr; gap: 40px; }
+  .side-nav { position: sticky; top: 84px; max-height: calc(100vh - 100px); overflow-y: auto; padding-top: 44px; padding-bottom: 24px; }
+}
+/* Narrow screens: the sections become one scrolling row above the page. */
+@media (max-width: 959px) {
+  .side-nav { display: flex; gap: 6px; overflow-x: auto; padding: 14px 0 4px; scrollbar-width: none; }
+  .side-group { display: contents; }
+  .side-group-title { display: none; }
+  .side-nav ul { display: contents; }
+  .side-link { white-space: nowrap; background: var(--surface); }
+  .side-link.is-soon { display: none; }
+  .dash { padding-top: 24px; }
+}
+.billing-retry { margin-top: 36px; max-width: 560px; }
+.billing-retry > .dash-muted { margin: 0 0 16px; }
+/* Office pages: header as wide as the sidebar layout, so the logo lines up with the sidebar. */
+body:has(.dash-shell) nav .wrap { max-width: 1320px; }
+/* The homepage pads every <section> by 80px; office page sections set their own spacing. */
+.dash-section, .billing-retry { padding: 0; }

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { SiteHeader } from "@/components/SiteHeader";
 import { currentOffice } from "@/lib/dal";
 import { T } from "@/lib/i18n";
 import { FREE_CONTRACT_LIMIT } from "@/lib/offices";
@@ -10,19 +9,13 @@ import { BillingForm } from "./BillingForm";
 export default function BillingPage({ searchParams }: PageProps<"/dashboard/billing">) {
   return (
     <>
-      <SiteHeader>
-        <Link href="/dashboard" className="btn btn-text">
-          <T k="import.back" />
-        </Link>
-      </SiteHeader>
-      <main className="wrap dash">
+
         <h1>
           <T k="billing.title" />
         </h1>
         <Suspense fallback={<p className="dash-loading"><T k="dashboard.loading" /></p>}>
           <BillingContent searchParams={searchParams} />
         </Suspense>
-      </main>
     </>
   );
 }
@@ -51,7 +44,23 @@ async function BillingContent({ searchParams }: { searchParams: PageProps<"/dash
             <T k="dashboard.import" />
           </Link>
         </section>
-      ) : (
+      ) : null}
+
+      {/* While payments are in test mode, a paid office (like the demo) can still try checkout.
+          With live keys this is hidden: changing a live plan needs a subscription update instead. */}
+      {office?.paid && testMode && (
+        <section className="billing-retry">
+          <h2 className="dash-h2">
+            <T k="billing.retryTitle" />
+          </h2>
+          <p className="dash-muted">
+            <T k="billing.retryBody" />
+          </p>
+          <BillingForm defaultUnits={office.paidUnits ?? Math.max(1, unitCount)} testMode />
+        </section>
+      )}
+
+      {!office?.paid && (
         <>
           <p className="dash-lede">
             <T k="billing.free" vars={{ limit: String(FREE_CONTRACT_LIMIT) }} />

@@ -10,7 +10,7 @@ export type CheckoutState = { url?: string; error?: "unitsInvalid" | "notConfigu
 // Starts the payment for the office's yearly subscription, priced by number of units, and returns the
 // payment page URL. The browser goes there with a full page load (it's another site, e.g. Stripe Checkout).
 export async function startCheckout(_prev: CheckoutState, form: FormData): Promise<CheckoutState> {
-  const { member } = await currentOffice();
+  const { member, data } = await currentOffice();
   const units = Number(form.get("units"));
   if (!Number.isInteger(units) || units < 1 || units > MAX_UNITS) return { error: "unitsInvalid" };
 
@@ -19,6 +19,8 @@ export async function startCheckout(_prev: CheckoutState, form: FormData): Promi
   let url: string;
   try {
     const payments = await getPaymentProvider();
+    // A paid office checks out again only in test mode (the demo); a live plan change needs a subscription update.
+    if (!payments.testMode && (await data.office())?.paid) return { error: "failed" };
     url = await payments.startCheckout({
       officeId: member.officeId,
       units,
