@@ -8,7 +8,7 @@ const MODEL = "claude-sonnet-5-5";
 
 const SYSTEM = `You read Saudi Ejar unified residential lease contracts (عقد الإيجار الموحد) and return their data for a property management system.
 
-Copy what is printed; do not compute, guess or fill in values. Return null for anything not on the page. The tenant is المستأجر, never the lessor (المؤجر) or the brokerage office. Give dates as YYYY-MM-DD with Western digits: Gregorian dates as printed, and Hijri dates converted from the printed day/month/year without recalculating them from the Gregorian date. Give amounts as plain numbers in SAR. Mark a field's confidence low when the text is unclear, cut off, contradictory, or you had to infer it.`;
+Copy what is printed; do not compute, guess or fill in values. Use an empty string for anything not on the page. The tenant is المستأجر, never the lessor (المؤجر) or the brokerage office. Give dates as YYYY-MM-DD with Western digits: Gregorian dates as printed, and Hijri dates converted from the printed day/month/year without recalculating them from the Gregorian date. Give amounts as digits only in SAR, without commas or currency. Mark a field's confidence low when the text is unclear, cut off, contradictory, or you had to infer it.`;
 
 export class ClaudeExtractor implements ContractExtractor {
   private client: Anthropic;
@@ -47,7 +47,11 @@ export class ClaudeExtractor implements ContractExtractor {
       if (error instanceof Anthropic.RateLimitError || error instanceof Anthropic.InternalServerError) {
         throw new ExtractionError("busy", error.message);
       }
-      if (error instanceof Anthropic.APIError) throw new ExtractionError("failed", `${error.status} ${error.message}`);
+      if (error instanceof Anthropic.APIError) {
+        // Log the API's own explanation, not the whole response body.
+        const reason = (error.error as { error?: { message?: string } } | undefined)?.error?.message ?? error.message;
+        throw new ExtractionError("failed", `${error.status}: ${reason}`);
+      }
       throw new ExtractionError("failed", String(error));
     }
 

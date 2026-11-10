@@ -7,7 +7,7 @@ type Expected = typeof sample1;
 
 // Turns a sample's known answers into what a perfect read would return.
 export function asExtraction(expected: Expected): ExtractedContract {
-  const f = <T>(value: T) => ({ value, confidence: "high" as const });
+  const f = (value: string | number) => ({ value: String(value), confidence: "high" as const });
   return {
     isEjarContract: true,
     contractNumber: f(expected.contractNumber),
@@ -17,7 +17,7 @@ export function asExtraction(expected: Expected): ExtractedContract {
     endDateHijri: f(expected.endDateHijri),
     tenantName: f(expected.tenantName),
     tenantNationality: f(expected.tenantNationality),
-    tenantIdType: f(expected.tenantIdType as "national_id" | "iqama"),
+    tenantIdType: { value: expected.tenantIdType as "national_id" | "iqama", confidence: "high" },
     tenantIdNumber: f(expected.tenantIdNumber),
     tenantMobile: f(expected.tenantMobile),
     propertyCity: f(expected.propertyCity),
@@ -32,8 +32,11 @@ export function asExtraction(expected: Expected): ExtractedContract {
     unitFloor: f(expected.unitFloor),
     unitArea: f(expected.unitArea),
     annualRent: f(expected.annualRent),
-    paymentCycle: f(expected.paymentCycle as "semi_annual" | "quarterly"),
-    installments: { confidence: "high", items: expected.installments },
+    paymentCycle: { value: expected.paymentCycle as "semi_annual" | "quarterly", confidence: "high" },
+    installments: {
+      confidence: "high",
+      items: expected.installments.map((i) => ({ ...i, amount: String(i.amount) })),
+    },
   };
 }
 

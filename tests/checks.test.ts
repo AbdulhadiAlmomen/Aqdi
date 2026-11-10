@@ -50,7 +50,7 @@ describe("drafts from extraction", () => {
     const x = asExtraction(sample1);
     x.tenantIdNumber.value = "109823456"; // 9 digits
     x.startDateHijri.value = "1447-09-25"; // one day off
-    x.installments.items[1].amount = 15000; // payments no longer add up
+    x.installments.items[1].amount = "15000"; // payments no longer add up
     x.tenantMobile = { value: "0552147390", confidence: "low" };
     const { draft, flags } = draftFromExtraction(x);
     expect(flags.tenantId).toContain("idFormat");
@@ -71,6 +71,25 @@ describe("drafts from extraction", () => {
     const { flags } = draftFromExtraction(x);
     expect(flags.tenantId).toEqual(["idOther"]);
     expect(hasBlocking(flags)).toBe(false);
+  });
+
+  it("reads amounts however they're printed", () => {
+    const x = asExtraction(sample1);
+    x.annualRent.value = "32,000.00 ريال";
+    x.installments.items = x.installments.items.map((i) => ({ ...i, amount: "١٦٬٠٠٠" }));
+    const { draft, flags } = draftFromExtraction(x);
+    expect(draft.fields.annualRent).toBe("32000");
+    expect(draft.installments.map((i) => i.amount)).toEqual(["16000", "16000"]);
+    expect(flags).toEqual({});
+  });
+
+  it("treats empty strings as missing", () => {
+    const x = asExtraction(sample1);
+    x.contractNumber.value = "";
+    x.paymentCycle.value = "unknown";
+    const { flags } = draftFromExtraction(x);
+    expect(flags.contractNumber).toContain("missing");
+    expect(flags.paymentCycle).toContain("missing");
   });
 
   it("rejects an end date before the start", () => {

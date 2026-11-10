@@ -14,7 +14,12 @@ const CASES = [
   { file: "samples/sample-2.pdf", expected: sample2 },
 ];
 
-const same = (a: unknown, b: unknown) => String(a ?? "").trim() === String(b ?? "").trim();
+// Numbers compare by value ("16000.00" equals 16000); everything else as trimmed text.
+const same = (a: unknown, b: unknown) => {
+  const [x, y] = [String(a ?? "").trim(), String(b ?? "").trim()];
+  const num = /^[\d.,]+$/;
+  return num.test(x) && num.test(y) && !/^0\d/.test(x) ? Number(x.replace(/,/g, "")) === Number(y.replace(/,/g, "")) : x === y;
+};
 
 // Opt-in only (AQDI_AI_TESTS=1, set by the script), so `npm test` never spends API credit.
 describe.skipIf(!process.env.AQDI_AI_TESTS)("AI reading of the sample contracts", () => {
