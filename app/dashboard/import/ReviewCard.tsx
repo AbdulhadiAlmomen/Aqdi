@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useState, type FormEvent } from "react";
 import { saveContract, type SaveState } from "@/app/actions/import";
 import { DualDate } from "@/components/DualDate";
 import { BLOCKING, type Draft, type Flag, type Flags, type TextField } from "@/lib/contracts/checks";
@@ -92,11 +92,19 @@ export function ReviewCard({ draft, flags: initialFlags, onDiscard }: { draft: D
     </label>
   );
 
+  // Submitted by hand rather than through the form's action prop: React resets a form after an
+  // action, which blanks a controlled <select> even though its value is still in state.
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    startTransition(() => action(form));
+  }
+
   const total = rows.reduce((sum, r) => sum + (Number(r.amount) || 0), 0);
   const hasBlockingNow = Object.values(flags).some((l) => l?.some((f) => BLOCKING.has(f)));
 
   return (
-    <form action={action} className="review">
+    <form onSubmit={submit} className="review">
       <p className="dash-muted">
         <T k={hasBlockingNow || Object.keys(flags).length ? "import.reviewHint" : "import.allGood"} />
       </p>
