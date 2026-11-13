@@ -8,12 +8,13 @@ export function initHome(gsapLib, ScrollTriggerLib) {
     var ac = new AbortController();
     var listen = { signal: ac.signal };
     var observers = [];
-    var ctx = null, motionOn = false, disposed = false;
+    var ctx = null, motionOn = false, disposed = false, flowTimer = null;
     function cleanup() {
       disposed = true;
       ac.abort();
       observers.forEach(function (o) { o.disconnect(); });
       clearTimeout(cupTimer);
+      clearTimeout(flowTimer);
       if (ctx) ctx.revert();
       root.classList.remove('anim');
     }
@@ -90,7 +91,17 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       });
       // Fixed dates and amounts in the import and tenant examples.
       each('[data-iso]', function (el) { el.textContent = formatDate(fromIso(el.getAttribute('data-iso')), root.lang); });
-      each('[data-sar]', function (el) { el.textContent = NUM.format(parseInt(el.getAttribute('data-sar'), 10)) + ' ' + T[root.lang].sar; });
+      // Amounts; costs (data-neg) get a minus sign, kept left-to-right so it stays next to the digits in Arabic.
+      each('[data-sar]', function (el) {
+        var amount = NUM.format(parseInt(el.getAttribute('data-sar'), 10));
+        if (!el.hasAttribute('data-neg')) { el.textContent = amount + ' ' + T[root.lang].sar; return; }
+        el.textContent = '';
+        var num = document.createElement('bdi');
+        num.dir = 'ltr';
+        num.textContent = '−' + amount;
+        el.appendChild(num);
+        el.appendChild(document.createTextNode(' ' + T[root.lang].sar));
+      });
     }
 
     function yearlyTotal(units) {
@@ -277,7 +288,28 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       }, { rootMargin: '0px 0px -30% 0px' });
       each('[data-play]', function (el) { playIo.observe(el); });
       observers.push(playIo);
-      document.getElementById('hero-stage').classList.add('play');
+    }
+
+    // Hero: the repair goes round its steps on a calm loop, only while the hero is on screen and the
+    // tab is visible. With reduced motion it stays on the finished picture (data-s="6" in the markup).
+    var flow = document.getElementById('hero-stage');
+    var FLOW_STEPS = [[0, 900], [1, 1100], [2, 1000], [3, 1300], [4, 1700], [5, 1300], [6, 4000]];
+    var flowIndex = 0, flowSeen = false;
+    function flowTick() {
+      var step = FLOW_STEPS[flowIndex];
+      flow.setAttribute('data-s', String(step[0]));
+      flowIndex = (flowIndex + 1) % FLOW_STEPS.length;
+      flowTimer = setTimeout(flowTick, step[1]);
+    }
+    function flowRun(on) {
+      clearTimeout(flowTimer);
+      if (on && !reduceMotion && !document.hidden) flowTimer = setTimeout(flowTick, 300);
+    }
+    if (!reduceMotion) {
+      var flowIo = new IntersectionObserver(function (entries) { flowSeen = entries[0].isIntersecting; flowRun(flowSeen); }, { threshold: 0.25 });
+      flowIo.observe(flow);
+      observers.push(flowIo);
+      document.addEventListener('visibilitychange', function () { flowRun(flowSeen); }, listen);
     }
 
     // Closing logo draws its lines when it comes into view.

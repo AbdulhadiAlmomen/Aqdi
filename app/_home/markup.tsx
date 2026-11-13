@@ -47,6 +47,46 @@ const AC_ICON = (
   </svg>
 );
 
+const TENANTS_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 11l9-7 9 7"></path>
+    <path d="M5 9.5V20h14V9.5"></path>
+    <path d="M10 20v-5h4v5"></path>
+  </svg>
+);
+
+const TEAM_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="9" cy="8" r="3.2"></circle>
+    <path d="M3 19c.6-3.2 3-5 6-5s5.4 1.8 6 5"></path>
+    <circle cx="17" cy="9" r="2.5"></circle>
+    <path d="M16 14.2c2.4.2 4.3 1.8 4.9 4.8"></path>
+  </svg>
+);
+
+const OWNER_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path>
+  </svg>
+);
+
+// A section that belongs to one of the three people: their name, big, then the owner's question.
+function Who({ icon, ar, en, qAr, qEn }: { icon: ReactNode; ar: string; en: string; qAr: string; qEn: string }) {
+  return (
+    <>
+      <div className="who">
+        <span className="who-ic">{icon}</span>
+        <h2 className="who-name"><L ar={ar} en={en} /></h2>
+      </div>
+      <h3 className="who-q" data-split="">
+        <span lang="ar">{qAr}</span>
+        {" "}
+        <span lang="en">{qEn}</span>
+      </h3>
+    </>
+  );
+}
+
 export function HomeMarkup() {
   return (
     <>
@@ -109,11 +149,12 @@ export function HomeMarkup() {
             </div>
           </header>
 
-          {/* One repair, seen by all three people in order: the tenant sends it, the employee does it,
-              the manager sees the cost logged. */}
-          <div className="flow" id="hero-stage" role="img" aria-label="A tenant sends a repair request from a phone, an employee gets it on their task list and marks it done, and the manager sees the cost logged with its receipt">
+          {/* One repair, seen by all three people in order. home-script.js steps data-s from 0 to 6 on a
+              calm loop while it's on screen; the markup's data-s="6" is the finished picture (no JS, or
+              reduced motion). 1-2 tenant sends · 3 task arrives · 4 in progress · 5 done · 6 cost logged. */}
+          <div className="flow" id="hero-stage" data-s="6" role="img" aria-label="A tenant sends a repair request from a phone, an employee gets it as a task and marks it done, and the manager sees the cost logged with its receipt">
             <div className="flow-grid" aria-hidden="true">
-              <div className="flow-step">
+              <div className="flow-step flow-step-1">
                 <div className="flow-cap">
                   <span className="flow-num">1</span>
                   <span>
@@ -121,69 +162,57 @@ export function HomeMarkup() {
                     <small><L ar="يرسل الطلب مع صورة" en="Sends the request with a photo" /></small>
                   </span>
                 </div>
-                <div className="hv-phone">
-                  <div className="hv-screen">
-                    <div className="hv-app">
-                      <b><L ar="مكتب النور العقاري" en="Al Noor Real Estate" /></b>
-                      <small><L ar="وحدة 4، مبنى ج" en="Unit 4, Building C" /></small>
-                    </div>
-                    <p className="hv-screen-title"><L ar="طلب صيانة" en="Repair request" /></p>
-                    <div className="hv-req">
-                      <span className="hv-ic">{AC_ICON}</span>
-                      <b><L ar="المكيف لا يبرّد" en="AC not cooling" /></b>
-                      <span className="hv-photo"><i></i></span>
-                      <small><L ar="صورة مرفقة" en="Photo attached" /></small>
-                    </div>
-                    <div className="hv-send">
-                      <span className="hv-send-a"><L ar="إرسال الطلب" en="Send request" /></span>
-                      <span className="hv-send-b">{CHECK}<L ar="تم الإرسال" en="Sent" /></span>
-                    </div>
+                <div className="fcard fphone">
+                  <div className="fcard-head">
+                    <b><L ar="طلب صيانة" en="Repair request" /></b>
+                    <small><L ar="وحدة 4، مبنى ج" en="Unit 4, Building C" /></small>
+                  </div>
+                  <div className="freq">
+                    <span className="hv-ic">{AC_ICON}</span>
+                    <b><L ar="المكيف لا يبرّد" en="AC not cooling" /></b>
+                  </div>
+                  <span className="fphoto"><i></i><small><L ar="صورة مرفقة" en="Photo attached" /></small></span>
+                  <div className="fsend">
+                    <span className="fsend-a"><L ar="إرسال الطلب" en="Send request" /></span>
+                    <span className="fsend-b">{CHECK}<L ar="تم الإرسال" en="Sent" /></span>
                   </div>
                 </div>
               </div>
 
               <div className="flow-link flow-link-1"><i></i></div>
 
-              <div className="flow-step">
+              <div className="flow-step flow-step-2">
                 <div className="flow-cap">
                   <span className="flow-num">2</span>
                   <span>
                     <b><L ar="الموظف" en="Staff" /></b>
-                    <small><L ar="يستلم المهمة ويحدّث حالتها" en="Gets the task and updates it" /></small>
+                    <small><L ar="يستلم المهمة وينجزها" en="Gets the task and does it" /></small>
                   </span>
                 </div>
-                <div className="hv-card hv-staff">
-                  <div className="hv-head">
+                <div className="fcard">
+                  <div className="fcard-head">
                     <b><L ar="مهامي اليوم" en="My tasks today" /></b>
                     <small><L ar="فيصل · فني صيانة" en="Faisal · technician" /></small>
                   </div>
-                  <ul className="hv-tasks">
-                    <li className="hv-job">
-                      <span>
-                        <L ar="المكيف، وحدة 4، مبنى ج" en="AC, Unit 4, Building C" />
-                        <small><L ar="طلب من المستأجر" en="Tenant request" /></small>
-                      </span>
-                      <span className="hv-st">
-                        <i className="st-new"><L ar="جديد" en="New" /></i>
-                        <i className="st-prog"><L ar="قيد التنفيذ" en="In progress" /></i>
-                        <i className="st-done">{CHECK}<L ar="تم" en="Done" /></i>
-                      </span>
-                    </li>
-                    <li>
-                      <span><L ar="فحص وحدة 7، مبنى أ" en="Inspection, Unit 7, Building A" /></span>
-                      <span className="pill pill-wait"><L ar="اليوم" en="Today" /></span>
-                    </li>
-                    <li>
-                      <span><L ar="تغيير قفل، وحدة 2، مبنى ب" en="New lock, Unit 2, Building B" /></span>
-                      <span className="pill pill-wait"><L ar="غدًا" en="Tomorrow" /></span>
-                    </li>
-                  </ul>
+                  <div className="ftask">
+                    <b><L ar="المكيف لا يبرّد" en="AC not cooling" /></b>
+                    <small><L ar="وحدة 4، مبنى ج · من المستأجر" en="Unit 4, Building C · from the tenant" /></small>
+                    <span className="fstatus">
+                      <i className="fs-new"><L ar="جديد" en="New" /></i>
+                      <i className="fs-prog"><L ar="قيد التنفيذ" en="In progress" /></i>
+                      <i className="fs-done">{CHECK}<L ar="تم" en="Done" /></i>
+                    </span>
+                  </div>
+                  <div className="ftask ftask-muted">
+                    <b><L ar="فحص وحدة 7" en="Inspect Unit 7" /></b>
+                    <small><L ar="مبنى أ · اليوم" en="Building A · today" /></small>
+                  </div>
                 </div>
               </div>
 
               <div className="flow-link flow-link-2"><i></i></div>
 
-              <div className="flow-step">
+              <div className="flow-step flow-step-3">
                 <div className="flow-cap">
                   <span className="flow-num">3</span>
                   <span>
@@ -191,28 +220,30 @@ export function HomeMarkup() {
                     <small><L ar="يرى التكلفة مسجّلة مع إيصالها" en="Sees the cost logged with its receipt" /></small>
                   </span>
                 </div>
-                <div className="hv-card hv-dash">
-                  <div className="hv-head">
-                    <b><L ar="مكتب النور العقاري" en="Al Noor Real Estate" /></b>
+                <div className="fcard">
+                  <div className="fcard-head">
+                    <b><L ar="تكاليف هذا الشهر" en="Costs this month" /></b>
                     <small data-date="0"></small>
                   </div>
-                  <div className="hv-stats">
-                    <div>
-                      <b data-sar="186500"></b>
-                      <small><L ar="الإيجار المتوقع هذا الشهر" en="Expected rent this month" /></small>
-                    </div>
-                    <div>
-                      <b>4</b>
-                      <small><L ar="مهام مفتوحة" en="Open tasks" /></small>
-                    </div>
-                  </div>
-                  <div className="hv-cost">
+                  <div className="fcost">
                     <span className="hv-ic">{RECEIPT}</span>
                     <span>
-                      <L ar="صيانة المكيف، وحدة 4" en="AC repair, Unit 4" />
-                      <small><L ar="فيصل · إيصال مرفق" en="Faisal · receipt attached" /></small>
+                      <b><L ar="صيانة المكيف" en="AC repair" /></b>
+                      <small><L ar="وحدة 4 · إيصال مرفق" en="Unit 4 · receipt attached" /></small>
                     </span>
-                    <b data-sar="350"></b>
+                    <b className="neg" data-sar="350" data-neg=""></b>
+                  </div>
+                  <div className="fcost fcost-muted">
+                    <span className="hv-ic">{RECEIPT}</span>
+                    <span>
+                      <b><L ar="نظافة المباني" en="Building cleaning" /></b>
+                      <small><L ar="اشتراك شهري" en="Monthly subscription" /></small>
+                    </span>
+                    <b className="neg" data-sar="1200" data-neg=""></b>
+                  </div>
+                  <div className="fexpected">
+                    <small><L ar="الإيجار المتوقع هذا الشهر" en="Expected rent this month" /></small>
+                    <b data-sar="186500"></b>
                   </div>
                 </div>
               </div>
@@ -750,12 +781,13 @@ export function HomeMarkup() {
         <section id="tenants" className="tinted">
           <div className="wrap person">
             <div className="person-text">
-              <span className="eyebrow"><L ar="مستأجروك" en="Your tenants" /></span>
-              <h2 data-split="">
-                <span lang="ar">هل تصل لكل مستأجر؟ وهل من السهل أن تعلن عن صيانة أو فحص أو تغيير ساعات العمل في رمضان؟</span>
-                {" "}
-                <span lang="en">Are you reaching every tenant? Is it easy to announce maintenance, inspections or new working hours in Ramadan?</span>
-              </h2>
+              <Who
+                icon={TENANTS_ICON}
+                ar="مستأجروك"
+                en="Your tenants"
+                qAr="هل تصل لكل مستأجر؟ وهل من السهل أن تعلن عن صيانة، فحص، أو تغيير ساعات العمل في شهر رمضان؟"
+                qEn="Are you reaching every tenant? Is it easy to announce maintenance, an inspection, or new working hours in Ramadan?"
+              />
               <p className="answer" data-reveal="">
                 <L
                   ar="إعلان واحد يصل لمبنى واحد أو لكل المباني. والمستأجر يرسل طلباته وشكاويه، ويجيب على استبيانات قصيرة، ويقيّم المكتب بتقييم خاص لا يراه إلا المكتب، حتى يطوّر خدمته."
@@ -812,48 +844,21 @@ export function HomeMarkup() {
         <section id="team">
           <div className="wrap">
             <div className="person-text person-wide">
-              <span className="eyebrow"><L ar="فريقك" en="Your team" /></span>
-              <h2 data-split="">
-                <span lang="ar">من يعمل على ماذا؟ ومن وافق على هذا الشراء؟</span>
-                {" "}
-                <span lang="en">Who&apos;s doing what? Who approved this purchase?</span>
-              </h2>
+              <Who
+                icon={TEAM_ICON}
+                ar="فريقك"
+                en="Your team"
+                qAr="من يعمل على ماذا؟ ومن وافق على هذا الشراء؟"
+                qEn="Who's doing what? Who approved this purchase?"
+              />
               <p className="answer" data-reveal="">
                 <L
-                  ar="كل طلب صيانة يمر بنفس المسار: الطلب، الموظف المسؤول، الحالة، التكلفة، والنتيجة مع الصور. والمهام تنتقل من المالك إلى المدير إلى الموظف وبين الأقسام، على تقويم يراه الجميع، ولكل مهمة محادثتها، فيتواصل الفريق داخلها بدل المحادثات الشخصية. والمشتريات الكبيرة تذهب للمالك أو المدير للموافقة، ويسجّلها عقدي مباشرة."
-                  en="Every maintenance request follows the same path: request, assigned employee, status, cost and result with photos. Tasks go from owner to manager to employee and between departments, on a calendar everyone sees, and each task has its own conversation, so the team talks there instead of in personal chats. Big purchases go to the owner or manager for approval and are logged right away."
+                  ar="كل طلب صيانة يمر بنفس المسار: الطلب، الموظف المسؤول، الحالة، التكلفة، والنتيجة مع الصور. والمهام تنتقل من المالك إلى المدير إلى الموظف وبين الأقسام، ولكل مهمة من أسندها وموعد تسليمها، على تقويم يراه الجميع، ويضع الموظف علامة عند إنجازها. والمشتريات الكبيرة تذهب للمالك أو المدير للموافقة، ويسجّلها عقدي مباشرة."
+                  en="Every maintenance request follows the same path: request, assigned employee, status, cost and result with photos. Tasks go from owner to manager to employee and between departments, each with who assigned it and when it's due, on a calendar everyone sees; the employee ticks it off when it's done. Big purchases go to the owner or manager for approval and are logged right away."
                 />
               </p>
             </div>
-            <div className="team-grid">
-              {/* A task assigned from owner to manager to employee, and the team talking inside it. */}
-              <div className="mk mk-thread" data-play="" data-reveal="" aria-hidden="true">
-                <div className="mk-head">
-                  <b><L ar="مهمة: تجهيز وحدة 9 لمستأجر جديد" en="Task: get Unit 9 ready for a new tenant" /></b>
-                  <span className="pill pill-wait"><L ar="قبل الخميس" en="By Thursday" /></span>
-                </div>
-                <div className="chain">
-                  <span className="chain-who"><span className="mk-avatar"><L ar="م" en="A" /></span><L ar="المالك" en="Owner" /></span>
-                  <span className="chain-arrow"></span>
-                  <span className="chain-who"><span className="mk-avatar who-k-av"><L ar="خ" en="K" /></span><L ar="خالد · المباني" en="Khalid · buildings" /></span>
-                  <span className="chain-arrow"></span>
-                  <span className="chain-who"><span className="mk-avatar who-f-av"><L ar="ف" en="F" /></span><L ar="فيصل · الصيانة" en="Faisal · maintenance" /></span>
-                </div>
-                <ul className="thread">
-                  <li style={{ "--i": 0 } as CSSProperties}>
-                    <span className="mk-avatar who-k-av"><L ar="خ" en="K" /></span>
-                    <p><b><L ar="خالد" en="Khalid" /></b><L ar="فيصل، نحتاج فحص المكيف والسباكة قبل الخميس." en="Faisal, please check the AC and plumbing before Thursday." /></p>
-                  </li>
-                  <li style={{ "--i": 1 } as CSSProperties}>
-                    <span className="mk-avatar who-f-av"><L ar="ف" en="F" /></span>
-                    <p><b><L ar="فيصل" en="Faisal" /></b><L ar="تم الفحص. المكيف يحتاج تغيير، أرسلت طلب شراء للموافقة." en="Checked. The AC needs replacing; I sent a purchase request for approval." /></p>
-                  </li>
-                  <li style={{ "--i": 2 } as CSSProperties}>
-                    <span className="mk-avatar who-s-av"><L ar="س" en="S" /></span>
-                    <p><b><L ar="سارة · العقود" en="Sara · contracts" /></b><L ar="تمام، أبلغت المستأجر الجديد بموعد الاستلام." en="Great, I told the new tenant when to pick up the keys." /></p>
-                  </li>
-                </ul>
-              </div>
+            <div className="team-grid team-grid-2">
               {/* A maintenance job moving from request to done. */}
               <div className="mk mk-job" data-play="" data-reveal="" aria-hidden="true">
                 <div className="mk-head">
@@ -888,53 +893,46 @@ export function HomeMarkup() {
                 </ol>
               </div>
 
-              {/* A shared calendar, with a purchase waiting for approval. */}
-              <div className="mk mk-cal team-wide" data-play="" data-reveal="" aria-hidden="true">
+              {/* The team calendar: an assigned task with who gave it, the due date, the tick when done,
+                  and the purchase it needed approved. */}
+              <div className="mk mk-cal" data-play="" data-reveal="" aria-hidden="true">
                 <div className="mk-head">
                   <b><L ar="تقويم الفريق · هذا الأسبوع" en="Team calendar · this week" /></b>
                   <small data-date="0"></small>
                 </div>
-                <div className="cal-body">
-                <div className="cal-main">
                 <div className="cal">
                   {[
                     { ar: "الأحد", en: "Sun", items: [{ ar: "فحص وحدة 7", en: "Inspect Unit 7", who: "k" }] },
                     { ar: "الإثنين", en: "Mon", items: [{ ar: "المكيف، وحدة 4", en: "AC, Unit 4", who: "f" }] },
-                    { ar: "الثلاثاء", en: "Tue", items: [{ ar: "تجديد عقد وحدة 9", en: "Renew Unit 9", who: "s" }, { ar: "نظافة مبنى أ", en: "Clean Bldg A", who: "f" }] },
+                    { ar: "الثلاثاء", en: "Tue", items: [{ ar: "تجديد عقد 9", en: "Renew Unit 9", who: "s" }] },
                     { ar: "الأربعاء", en: "Wed", items: [] },
-                    { ar: "الخميس", en: "Thu", items: [{ ar: "صيانة خزان المياه", en: "Water tank", who: "k" }] },
+                    { ar: "الخميس", en: "Thu", items: [{ ar: "تجهيز وحدة 9", en: "Ready Unit 9", who: "f", focus: true }] },
                   ].map((d) => (
                     <div key={d.en} className="cal-day">
                       <span className="cal-name"><L ar={d.ar} en={d.en} /></span>
                       {d.items.map((it) => (
-                        <span key={it.en} className={`cal-ev who-${it.who}`}><L ar={it.ar} en={it.en} /></span>
+                        <span key={it.en} className={`cal-ev who-${it.who}${"focus" in it ? " cal-focus" : ""}`}><L ar={it.ar} en={it.en} /></span>
                       ))}
                     </div>
                   ))}
                 </div>
-                <div className="cal-legend">
-                  <span className="who-k"><L ar="خالد · مدير المباني" en="Khalid · buildings manager" /></span>
-                  <span className="who-f"><L ar="فيصل · الصيانة" en="Faisal · maintenance" /></span>
-                  <span className="who-s"><L ar="سارة · العقود" en="Sara · contracts" /></span>
-                </div>
-                </div>
-                <div className="approval">
-                  <div className="approval-top">
-                    <span className="approval-tag"><L ar="طلب موافقة" en="Approval request" /></span>
-                    <b data-sar="2400"></b>
-                  </div>
-                  <p>
-                    <L ar="شراء مكيف جديد لوحدة 9" en="New AC for Unit 9" />
-                    <small><L ar="من خالد، مدير المباني" en="From Khalid, buildings manager" /></small>
-                  </p>
-                  <div className="approval-actions">
-                    <span className="approval-ask">
-                      <span className="mk-btn"><L ar="موافقة" en="Approve" /></span>
-                      <span className="mk-btn mk-btn-quiet"><L ar="رفض" en="Decline" /></span>
+                <div className="assigned">
+                  <div className="assigned-top">
+                    <span className="tick"><i>{CHECK}</i></span>
+                    <span>
+                      <b><L ar="تجهيز وحدة 9 لمستأجر جديد" en="Get Unit 9 ready for a new tenant" /></b>
+                      <small className="assigned-done"><L ar="أنجزها فيصل" en="Done by Faisal" /></small>
                     </span>
-                    <span className="approval-done">{CHECK}<L ar="وافق المالك، وسجّلها عقدي في التكاليف" en="Approved by the owner · logged in costs" /></span>
                   </div>
-                </div>
+                  <dl className="assigned-meta">
+                    <div><dt><L ar="أسندها" en="Assigned by" /></dt><dd><L ar="خالد، مدير المباني" en="Khalid, buildings manager" /></dd></div>
+                    <div><dt><L ar="إلى" en="To" /></dt><dd><L ar="فيصل، الصيانة" en="Faisal, maintenance" /></dd></div>
+                    <div><dt><L ar="التسليم" en="Due" /></dt><dd><L ar="الخميس" en="Thursday" /></dd></div>
+                  </dl>
+                  <div className="assigned-buy">
+                    <span><L ar="شراء مكيف جديد" en="New AC purchase" /> · <span data-sar="2400"></span></span>
+                    <span className="approved">{CHECK}<L ar="وافق المالك" en="Owner approved" /></span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -945,12 +943,13 @@ export function HomeMarkup() {
         <section id="owner" className="tinted">
           <div className="wrap">
             <div className="person-text person-wide">
-              <span className="eyebrow"><L ar="أنت، المالك أو المدير" en="You, the owner or manager" /></span>
-              <h2 data-split="">
-                <span lang="ar">كم موقع ومحادثة تفتح حتى تعرف وضع مكتبك؟</span>
-                {" "}
-                <span lang="en">How many websites and chats do you open to know where you stand?</span>
-              </h2>
+              <Who
+                icon={OWNER_ICON}
+                ar="أنت، المالك أو المدير"
+                en="You, the owner or manager"
+                qAr="كم منصة ومحادثة تفتح لتعرف كيف يسير مكتبك؟"
+                qEn="How many websites and chats do you open to know where you stand?"
+              />
               <p className="answer" data-reveal="">
                 <L
                   ar="كل تكلفة مسجّلة مع إيصالها: الصيانة والمشتريات والاشتراكات. والإيجار المتوقع لكل شهر يحسبه عقدي تلقائيًا من العقود التي رفعتها."
@@ -974,22 +973,22 @@ export function HomeMarkup() {
                 <li style={{ "--i": 0 } as CSSProperties}>
                   <span className="hv-ic">{RECEIPT}</span>
                   <span><L ar="صيانة المكيف، وحدة 4" en="AC repair, Unit 4" /><small><L ar="صيانة · إيصال" en="Maintenance · receipt" /></small></span>
-                  <b data-sar="350"></b>
+                  <b className="neg" data-sar="350" data-neg=""></b>
                 </li>
                 <li style={{ "--i": 1 } as CSSProperties}>
                   <span className="hv-ic">{RECEIPT}</span>
                   <span><L ar="مكيف جديد، وحدة 9" en="New AC, Unit 9" /><small><L ar="شراء · وافق المالك · إيصال" en="Purchase · approved by owner · receipt" /></small></span>
-                  <b data-sar="2400"></b>
+                  <b className="neg" data-sar="2400" data-neg=""></b>
                 </li>
                 <li style={{ "--i": 2 } as CSSProperties}>
                   <span className="hv-ic">{RECEIPT}</span>
                   <span><L ar="نظافة المباني" en="Building cleaning" /><small><L ar="اشتراك شهري · إيصال" en="Monthly subscription · receipt" /></small></span>
-                  <b data-sar="1200"></b>
+                  <b className="neg" data-sar="1200" data-neg=""></b>
                 </li>
               </ul>
               <div className="costs-total">
                 <span><L ar="مجموع التكاليف" en="Total costs" /></span>
-                <b data-sar="3950"></b>
+                <b className="neg" data-sar="3950" data-neg=""></b>
               </div>
               <div className="expected">
                 <span><L ar="الإيجار المتوقع هذا الشهر" en="Expected rent this month" /></span>
