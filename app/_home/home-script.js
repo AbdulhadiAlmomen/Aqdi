@@ -319,9 +319,7 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       tl.from('nav .wrap', { y: -16, opacity: 0, duration: .7 })
         .call(function () { heroTitle.classList.add('in'); }, null, .1)
         .from('.hero .lede, .hero .cta-row', { opacity: 0, y: 18, filter: 'blur(6px)', duration: .9, stagger: .12 }, .45)
-        .from('.hero .arch', { opacity: 0, scale: .94, duration: 1.2 }, .2)
-        .from('.hero .hv-grid', { opacity: 0, y: 40, duration: 1.1 }, .35);
-      gsap.to('.hero .arch', { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+        .from('#hero-stage', { opacity: 0, y: 40, duration: 1.1 }, .35);
 
       // Section headings blur in word by word.
       each('section [data-split]', function (h) {
