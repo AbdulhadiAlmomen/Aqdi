@@ -1,59 +1,60 @@
-# Aqdi: website message (v3)
+# Aqdi: website message (v3, final)
 
-Updated 13 Nov 2026 by the founder. This replaces the homepage message. Rent payments stay in Ejar (government requirement), so Aqdi never claims to collect rent.
+Updated 13 Nov 2026, agreed with the founder. This replaces the homepage message. Rent payments stay in Ejar (government requirement); Aqdi never claims to collect rent and has no direct Ejar connection. A clear "Open Ejar" link is enough.
 
-## The message in one line
+## Hero
 
-**AR:** عقدي ينظّم شغل مكتبك كله في مكان واحد، ويخلّي مستأجرينك يوصلون لك بسهولة.
-**EN:** Aqdi runs your whole office in one place, and gives your tenants an easy way to reach you.
+**AR**
+> **المستأجر، الموظف، والمدير… في مكان واحد.**
+> تواصل، صيانة، مهام، وتكاليف، كل شي واضح ومسجّل. ارفع عقود إيجار، وعقدي يتكفّل بالباقي.
 
-- For the office, Aqdi is the property management system.
-- For the tenant, Aqdi is the bridge to the office.
-- We solve the office's problems; we don't sell features.
+**EN**
+> **Tenant, staff and manager, in one place.**
+> Communication, maintenance, tasks and costs, everything clear and logged. Upload your Ejar contracts, and Aqdi takes care of the rest.
 
-## How the homepage tells it
+Buttons: ابدأ الآن / تسجيل الدخول · Start now / Log in
 
-Each pillar opens with the question the office owner asks himself, then Aqdi's answer. Keep this pattern.
+## The idea behind the page
 
-### Setup (keep as is, it's the AI feature)
-Upload your Ejar contracts and AI sets up buildings, units and tenants in minutes, with a review screen.
+One office, three people. Each section below the hero belongs to one of them. Each section opens with the question the office owner asks himself, then Aqdi's answer.
 
-### 1. Talking to tenants
-**Question:** Are we reaching every tenant? Is it easy to announce maintenance work, inspections, or Ramadan hours?
-**Answer:** One announcement reaches every tenant in a building, or all buildings. Tenants can also send complaints, rate the office, answer short surveys and leave suggestions, so the office actually hears them.
-**Also here:** waitlists for parking spots and for taking over a lease when it ends.
+## Page order
 
-### 2. Maintenance, from request to result
-**Question:** Are repair jobs organized, clearly assigned and tracked across staff?
-**Answer:** Every request follows the same steps: the tenant's request, the employee it's assigned to, the status, then the cost and the result, with photos.
+### 1. Ready in minutes (AI Ejar import, keep prominent)
+Upload your Ejar contracts. AI sets up buildings, units, tenants and contract dates, and you review anything it isn't sure about.
 
-### 3. The office team
-**Question:** Does everyone know who's doing what, or does the blame keep moving?
-**Answer:** Tasks go from owner to manager to employee, and between departments, on a shared calendar everyone can see. Requests for approval on big purchases go to the owner or manager and are logged straight away.
+### 2. Your tenants
+**Question:** Are you reaching every tenant? Is it easy to announce maintenance, inspections or Ramadan hours?
+**Answer:** One announcement reaches a building or all buildings. Tenants send requests and complaints, rate the office and answer short surveys, so the office hears them. Small detail, not a headline: waitlists for parking and lease takeover.
 
-### 4. Money in one place
-**Question:** How many websites do you open to know where you stand?
-**Answer:** Income (including Ejar) and costs on one dashboard. Every expense and subscription is recorded with its receipt, so nothing gets missed.
-**Honest wording:** Ejar has no public connection yet, so in this version the office uploads its Ejar report and receipts. Don't claim automatic syncing with Ejar or banks.
+### 3. Your team
+**Question:** Who's doing what? Who approved this purchase?
+**Answer:** Every maintenance request follows the same path: request, assigned employee, status, cost and result with photos. Tasks go from owner to manager to employee and between departments, on a calendar everyone sees. Big purchases go to the owner or manager for approval and are logged right away.
 
-### 5. Insights
-**Question:** Where is the money going, and what needs fixing for good?
-**Answer:** Rent compared with other buildings and neighborhoods, items that keep breaking and need replacing, spending per quarter and per year, tenant complaints, and how long tasks take to finish.
+### 4. You (owner or manager)
+**Question:** How many websites and chats do you open to know where you stand?
+**Answer:** Every cost (maintenance, purchases, subscriptions) logged with its receipt. Expected rent each month is calculated automatically from the contracts you uploaded. Insights: rent compared with nearby buildings and neighborhoods, things that keep breaking and need replacing, spending per quarter, tenant complaints, how long tasks take.
+**Honest wording:** show "expected rent", never "rent received" or "paid". Payment status lives in Ejar.
 
-## What to remove from the homepage
-- Any claim that tenants pay rent in Aqdi.
-- The services booking section and "Not a tenant? Book a service". Services are a later plan (below).
-- "Registration opens soon": sign-up is live.
+### 5. Works alongside Ejar
+Contracts and rent payments stay in Ejar. Aqdi gives tenants and staff a one-tap link to it.
 
-## Later (not on the homepage, or only as "coming soon")
+### 6. Pricing
+50 SAR per unit per year for the first 100 units, 40 for units 101 to 300, 30 above 300. No minimum. Prices exclude VAT. All features included.
+
+### 7. Start now
+
+## Remove from the current page
+- Any claim that tenants pay rent in Aqdi or that Aqdi collects or tracks rent payments.
+- The services booking section and "Not a tenant? Book a service".
+- "Registration opens soon" (sign-up is live).
+- Any copy from older messages that contradicts this file.
+
+## Later (not on the website)
 
 | Idea | When we build it |
 | --- | --- |
-| Move-out help: office books trucks or workers for the tenant and earns a fee; later a list of providers on Aqdi where we take a percentage | When tenants request it often in the pilot (for example, a meaningful share of move-outs ask for help) |
-| Direct Ejar connection for payments | Once Aqdi or a partner office is accepted into Ejar's integration program |
-| Bank and accounting connections | When offices ask to stop uploading statements by hand |
-| Owner portal | If owners who don't run the office ask to see their buildings directly |
-
-## For the build
-
-The course version stays as it is (accounts, AI import, Stripe, demo). Pillars 1 to 5 are the product roadmap after that. The homepage can describe them, but the app only needs the AI import working for now.
+| Move-out help: office books trucks or workers and earns a fee; later a provider list where Aqdi takes a percentage | When tenants request it often in the pilot |
+| Bank and accounting connections | When offices ask to stop uploading receipts by hand |
+| Owner portal | If owners who don't run the office ask to see their buildings |
+| Direct Ejar connection | Not planned; a link covers it. Revisit only if offices insist |
