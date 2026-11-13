@@ -859,40 +859,108 @@ export function HomeMarkup() {
               </p>
             </div>
             <div className="team-grid team-grid-2">
-              {/* A maintenance job moving from request to done. */}
-              <div className="mk mk-job" data-play="" data-reveal="" aria-hidden="true">
-                <div className="mk-head">
-                  <b><L ar="طلب صيانة: المكيف، وحدة 4" en="Repair: AC, Unit 4" /></b>
-                  <span className="mk-state">
-                    <i className="st-prog"><L ar="قيد التنفيذ" en="In progress" /></i>
-                    <i className="st-done">{CHECK}<L ar="تم" en="Done" /></i>
-                  </span>
+              {/* The tenant's repair request, step by step (the animation from the earlier homepage). */}
+              <div className="stage-frame repair-frame" data-play="" data-reveal="" aria-hidden="true">
+                <div className="phone repair-phone">
+                  <div className="screen">
+                    <span className="island"></span>
+                    <div className="sbar">
+                      <span>9:41</span>
+                      <span>●●●</span>
+                    </div>
+                      <div className="repair">
+                        <div className="repair-top">
+                          <span lang="ar">طلب صيانة</span>
+                          <span lang="en">Repair request</span>
+                        </div>
+                        <div className="repair-card">
+                          <span className="photo">
+                            <svg viewBox="0 0 48 48" fill="none">
+                              <rect x="5" y="12" width="38" height="16" rx="4" fill="#fff"></rect>
+                              <path d="M10 23h28" stroke="#b9c4ca" strokeWidth="2" strokeLinecap="round"></path>
+                              <path d="M14 33c0 3-2 3-2 6M24 33c0 3-2 3-2 6M34 33c0 3-2 3-2 6" stroke="#8aa0ad" strokeWidth="1.8" strokeLinecap="round"></path>
+                              <circle cx="37" cy="17" r="1.6" fill="#a83f2a"></circle>
+                            </svg>
+                          </span>
+                          <div>
+                            <span className="tag">
+                              <span lang="ar">تكييف</span>
+                              <span lang="en">AC</span>
+                            </span>
+                            {" "}
+                            <b>
+                              <span lang="ar">المكيف لا يبرّد</span>
+                              <span lang="en">AC not cooling</span>
+                            </b>
+                            {" "}
+                            <small>
+                              <span lang="ar">صورة مرفقة · وحدة 3</span>
+                              <span lang="en">Photo attached · Unit 3</span>
+                            </small>
+                          </div>
+                        </div>
+                        <ul className="timeline">
+                          <li style={{ "--i": 0 } as CSSProperties}>
+                            <span className="td"></span>
+                            <span>
+                              <span lang="ar">تم الإرسال</span>
+                              <span lang="en">Submitted</span>
+                              <small>
+                                <span lang="ar">اليوم، 9:41</span>
+                                <span lang="en">Today, 9:41</span>
+                              </small>
+                            </span>
+                          </li>
+                          <li style={{ "--i": 1 } as CSSProperties}>
+                            <span className="td"></span>
+                            <span>
+                              <span lang="ar">تم التعيين للفني</span>
+                              <span lang="en">Assigned to technician</span>
+                              <small>
+                                <span lang="ar">فني المبنى</span>
+                                <span lang="en">Building technician</span>
+                              </small>
+                            </span>
+                          </li>
+                          <li style={{ "--i": 2 } as CSSProperties}>
+                            <span className="td"></span>
+                            <span>
+                              <span lang="ar">قيد التنفيذ</span>
+                              <span lang="en">In progress</span>
+                            </span>
+                          </li>
+                          <li style={{ "--i": 3 } as CSSProperties}>
+                            <span className="td"></span>
+                            <span>
+                              <span lang="ar">تم الإصلاح</span>
+                              <span lang="en">Fixed</span>
+                              <small>
+                                <span lang="ar">مع صورة بعد الإصلاح</span>
+                                <span lang="en">With an after photo</span>
+                              </small>
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="notif">
+                        <span className="wa-ic">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l.9-4.6A8 8 0 1 1 21 12z"></path>
+                          </svg>
+                        </span>
+                        {" "}
+                        <span>
+                          <b>
+                            <span lang="ar">مكتب النور العقاري</span>
+                            <span lang="en">Al Noor Real Estate</span>
+                          </b>
+                          <span lang="ar">تم إصلاح المكيف في وحدتك.</span>
+                          <span lang="en">The AC in your unit has been fixed.</span>
+                        </span>
+                      </div>
+                  </div>
                 </div>
-                <ol className="track">
-                  <li style={{ "--i": 0 } as CSSProperties}>
-                    <b><L ar="الطلب" en="Request" /></b>
-                    <small><L ar="من المستأجر، مع صورة" en="From the tenant, with a photo" /></small>
-                  </li>
-                  <li style={{ "--i": 1 } as CSSProperties}>
-                    <b><L ar="الموظف المسؤول" en="Assigned to" /></b>
-                    <small><L ar="فيصل، فني صيانة" en="Faisal, technician" /></small>
-                  </li>
-                  <li style={{ "--i": 2 } as CSSProperties}>
-                    <b><L ar="الحالة" en="Status" /></b>
-                    <small><L ar="بدأ العمل" en="Work started" /></small>
-                  </li>
-                  <li style={{ "--i": 3 } as CSSProperties}>
-                    <b><L ar="التكلفة" en="Cost" /></b>
-                    <small><span data-sar="350"></span> · <L ar="إيصال مرفق" en="receipt attached" /></small>
-                  </li>
-                  <li style={{ "--i": 4 } as CSSProperties}>
-                    <b><L ar="النتيجة" en="Result" /></b>
-                    <small><L ar="تم الإصلاح، مع صورة قبل وبعد" en="Fixed, with before and after photos" /></small>
-                    <span className="track-photos"><i></i><i className="after"></i></span>
-                  </li>
-                </ol>
               </div>
-
               {/* The team calendar: an assigned task with who gave it, the due date, the tick when done,
                   and the purchase it needed approved. */}
               <div className="mk mk-cal" data-play="" data-reveal="" aria-hidden="true">
