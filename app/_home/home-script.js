@@ -8,14 +8,12 @@ export function initHome(gsapLib, ScrollTriggerLib) {
     var ac = new AbortController();
     var listen = { signal: ac.signal };
     var observers = [];
-    var chipTimer = null, ctx = null, motionOn = false, disposed = false;
+    var ctx = null, motionOn = false, disposed = false;
     function cleanup() {
       disposed = true;
       ac.abort();
       observers.forEach(function (o) { o.disconnect(); });
-      clearInterval(chipTimer);
       clearTimeout(cupTimer);
-      cancelAnimationFrame(totalRaf);
       if (ctx) ctx.revert();
       root.classList.remove('anim');
     }
@@ -36,12 +34,8 @@ export function initHome(gsapLib, ScrollTriggerLib) {
         coffee: ' أقل من سعر كوب قهوة',
         paper: ' أقل من تكلفة الورق والحبر لطباعة عقودك',
         bracketSub: '{units} وحدة = {total} ريال',
-        title: 'عقدي | Aqdi',
-        chips: [
-          ['تم دفع إيجار وحدة 12', 'مدى · 16,000 ريال', 'ok'],
-          ['طلب صيانة جديد', 'وحدة 4، مبنى ج · المكيف', 'warn'],
-          ['وافق المستأجر على التجديد', 'وحدة 9، مبنى ب', 'ok']
-        ]
+        bracketSubOne: 'وحدة واحدة = {total} ريال',
+        title: 'عقدي | Aqdi'
       },
       en: {
         sar: 'SAR',
@@ -50,12 +44,8 @@ export function initHome(gsapLib, ScrollTriggerLib) {
         coffee: ' Less than a cup of coffee',
         paper: ' Less than the paper and ink for printing your contracts',
         bracketSub: '{units} units = {total} SAR',
-        title: 'Aqdi | عقدي',
-        chips: [
-          ['Unit 12 rent paid', 'mada · 16,000 SAR', 'ok'],
-          ['New repair request', 'Unit 4, Building C · AC', 'warn'],
-          ['Renewal accepted', 'Unit 9, Building B', 'ok']
-        ]
+        bracketSubOne: '1 unit = {total} SAR',
+        title: 'Aqdi | عقدي'
       }
     };
 
@@ -101,13 +91,6 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       // Fixed dates and amounts in the import and tenant examples.
       each('[data-iso]', function (el) { el.textContent = formatDate(fromIso(el.getAttribute('data-iso')), root.lang); });
       each('[data-sar]', function (el) { el.textContent = NUM.format(parseInt(el.getAttribute('data-sar'), 10)) + ' ' + T[root.lang].sar; });
-      // Days left on the example tenant's lease, counted from today.
-      each('[data-days-until]', function (el) {
-        var days = Math.max(0, Math.ceil((fromIso(el.getAttribute('data-days-until')) - new Date()) / 864e5));
-        el.textContent = days;
-        var ring = document.getElementById('days-ring');
-        if (ring) ring.style.setProperty('--off', String(100 - Math.min(100, Math.round(days / 365 * 100))));
-      });
     }
 
     function yearlyTotal(units) {
@@ -141,19 +124,6 @@ export function initHome(gsapLib, ScrollTriggerLib) {
     var range = document.getElementById('units-range');
     var unitsInput = document.getElementById('units-num');
     var totalEl = document.getElementById('total-price');
-    var shownTotal = 0, totalRaf = null;
-    // The yearly total counts up or down to the new number instead of jumping.
-    function tweenTotal(to, sar) {
-      cancelAnimationFrame(totalRaf);
-      var from = shownTotal, t0 = performance.now(), dur = reduceMotion || from === to ? 0 : 450;
-      function frame(now) {
-        var p = dur ? Math.min(1, (now - t0) / dur) : 1;
-        shownTotal = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
-        totalEl.textContent = NUM.format(shownTotal) + ' ' + sar;
-        if (p < 1) totalRaf = requestAnimationFrame(frame);
-      }
-      frame(t0);
-    }
     // Each price row shows how many of your units fall in it and what they cost.
     function renderBrackets(units) {
       var rows = document.querySelectorAll('#brackets .bracket');
@@ -161,7 +131,7 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       for (var i = 0; i < rows.length; i++) {
         var inRow = Math.max(0, Math.min(units, BRACKETS[i].upTo) - from);
         rows[i].classList.toggle('on', inRow > 0);
-        rows[i].querySelector('.sub').textContent = inRow > 0 ? fill(T[root.lang].bracketSub, { units: NUM.format(inRow), total: NUM.format(inRow * BRACKETS[i].rate) }) : '';
+        rows[i].querySelector('.sub').textContent = inRow > 0 ? fill(T[root.lang][inRow === 1 ? 'bracketSubOne' : 'bracketSub'], { units: NUM.format(inRow), total: NUM.format(inRow * BRACKETS[i].rate) }) : '';
         from = BRACKETS[i].upTo;
       }
       document.getElementById('brackets').classList.add('live');
@@ -170,14 +140,15 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       var t = T[root.lang];
       var units = Math.floor(parseFloat(unitsInput.value));
       if (!(units > 0)) {
-        cancelAnimationFrame(totalRaf);
         totalEl.textContent = '—';
         document.getElementById('daily').textContent = '';
         return;
       }
       var total = yearlyTotal(units);
       var daily = Math.round(total / 365);
-      tweenTotal(total, t.sar);
+      // The total changes in place, no counting animation: a counter rolling through every digit made
+      // small changes feel like big jumps.
+      totalEl.textContent = NUM.format(total) + ' ' + t.sar;
       renderBrackets(units);
       var dailyEl = document.getElementById('daily');
       // Up to 20 SAR a day compares to a coffee, up to 60 to the paper and ink for printing contracts.
@@ -203,30 +174,19 @@ export function initHome(gsapLib, ScrollTriggerLib) {
         if (cup) cup.classList.add('pop');
       }, 450);
     }
+    // Always start at 1 unit (browsers may restore an old value on reload).
+    unitsInput.value = '1'; range.value = '1';
+    function setUnits(n) {
+      n = Math.max(1, Math.min(100000, Math.round(n) || 1));
+      unitsInput.value = String(n);
+      range.value = String(Math.min(n, +range.max));
+      onUnitsChanged();
+    }
     range.addEventListener('input', function () { unitsInput.value = range.value; onUnitsChanged(); }, listen);
-    unitsInput.addEventListener('input', function () { range.value = Math.min(600, unitsInput.value || 1); onUnitsChanged(); }, listen);
-
-    // Hero notification chip: cycles through a few things that just happened in the office.
-    var chipIndex = 0;
-    var chipText = document.getElementById('chip-text'), chipDot = document.getElementById('chip-dot');
-    function renderChip() {
-      var c = T[root.lang].chips[chipIndex];
-      chipText.innerHTML = '';
-      chipText.appendChild(document.createTextNode(c[0]));
-      var s = document.createElement('small'); s.textContent = c[1]; chipText.appendChild(s);
-      chipDot.style.background = c[2] === 'ok' ? '' : 'var(--amber-bg)';
-      chipDot.style.color = c[2] === 'ok' ? '' : 'var(--amber)';
-    }
-    if (!reduceMotion) {
-      chipTimer = setInterval(function () {
-        chipText.classList.add('out');
-        setTimeout(function () {
-          chipIndex = (chipIndex + 1) % T[root.lang].chips.length;
-          renderChip();
-          chipText.classList.remove('out');
-        }, 260);
-      }, 3800);
-    }
+    unitsInput.addEventListener('input', function () { range.value = String(Math.min(+range.max, unitsInput.value || 1)); onUnitsChanged(); }, listen);
+    unitsInput.addEventListener('blur', function () { setUnits(parseFloat(unitsInput.value)); }, listen);
+    document.getElementById('units-minus').addEventListener('click', function () { setUnits((parseFloat(unitsInput.value) || 1) - 1); }, listen);
+    document.getElementById('units-plus').addEventListener('click', function () { setUnits((parseFloat(unitsInput.value) || 0) + 1); }, listen);
 
     // Stories: the stage shows the scene for whichever step is crossing the reading line.
     each('[data-story]', function (story) {
@@ -263,15 +223,6 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       }, listen);
     });
 
-    // FAQ: answers open smoothly in place.
-    each('.faq-q', function (btn) {
-      btn.addEventListener('click', function () {
-        var item = btn.parentNode, open = !item.classList.contains('open');
-        item.classList.toggle('open', open);
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }, listen);
-    });
-
     // Nav: shadow once scrolled, and a pill that glides to the section you're reading.
     var nav = document.getElementById('nav');
     var pill = document.getElementById('nav-pill');
@@ -292,7 +243,7 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       each('.nav-links a', function (a) { a.classList.toggle('active', a.getAttribute('data-nav') === activeNav); });
       placePill();
     }, { rootMargin: '-40% 0px -55% 0px' });
-    ['how', 'tenants', 'pricing', 'faq'].forEach(function (id) { navIo.observe(document.getElementById(id)); });
+    ['import', 'tenants', 'team', 'owner', 'pricing'].forEach(function (id) { navIo.observe(document.getElementById(id)); });
     observers.push(navIo);
     window.addEventListener('resize', placePill, listen);
 
@@ -303,7 +254,6 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       saveLang(lang);
       renderDates();
       renderPrice();
-      renderChip();
       placePill();
       if (motionOn) try { ScrollTriggerLib.refresh(); } catch {}
     }
@@ -318,6 +268,17 @@ export function initHome(gsapLib, ScrollTriggerLib) {
         requestAnimationFrame(function () { document.body.classList.remove('switching'); });
       }, 180);
     }, listen);
+
+    // Mockups play their motion once, when they come into view. With reduced motion they never get
+    // the class and simply show their finished state.
+    if (!reduceMotion) {
+      var playIo = new IntersectionObserver(function (entries, o) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('play'); o.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -30% 0px' });
+      each('[data-play]', function (el) { playIo.observe(el); });
+      observers.push(playIo);
+      document.getElementById('hero-stage').classList.add('play');
+    }
 
     // Closing logo draws its lines when it comes into view.
     var closing = document.getElementById('closing');
@@ -354,40 +315,12 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       function clear(extra) { return Object.assign({}, CLEAR, extra); }
       var heroTitle = document.querySelector('.hero h1');
 
-      // The hero card keeps one fixed 3D perspective. (Tweening it from 1400 toward 0 made any tilt
-      // blow up near the end of the intro, throwing the card across the screen.)
-      var heroStage = document.getElementById('hero-stage');
-      var mock = heroStage.querySelector('.mock');
-      gsap.set(mock, { transformPerspective: 1400 });
-
       var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
       tl.from('nav .wrap', { y: -16, opacity: 0, duration: .7 })
         .call(function () { heroTitle.classList.add('in'); }, null, .1)
-        .from('.hero .lede, .hero .cta-row, .hero .trust', { opacity: 0, y: 18, filter: 'blur(6px)', duration: .9, stagger: .12 }, .45)
+        .from('.hero .lede, .hero .cta-row', { opacity: 0, y: 18, filter: 'blur(6px)', duration: .9, stagger: .12 }, .45)
         .from('.hero .arch', { opacity: 0, scale: .94, duration: 1.2 }, .2)
-        .from(mock, { opacity: 0, y: 60, rotationX: 12, duration: 1.3 }, .35)
-        .from('.hero .stat', { opacity: 0, y: 14, duration: .7, stagger: .08 }, .85)
-        .from('.hero .row', { opacity: 0, y: 12, duration: .7, stagger: .1 }, 1.05)
-        .from('.hero-chip', { opacity: 0, y: -12, scale: .92, duration: .7, ease: 'back.out(1.8)' }, 1.7);
-      each('.hero .stat b[data-count]', function (b) {
-        var to = parseInt(b.getAttribute('data-count'), 10), suffix = b.getAttribute('data-suffix') || '', o = { v: 0 };
-        tl.to(o, { v: to, duration: 1.4, ease: 'power2.out', onUpdate: function () { b.textContent = Math.round(o.v) + suffix; } }, .9);
-      });
-
-      // Hero dashboard tilts gently toward the pointer, once its intro is done (both move rotationX).
-      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        var tiltReady = false;
-        tl.call(function () { tiltReady = true; }, null, 1.65);
-        var rx = gsap.quickTo(mock, 'rotationX', { duration: .9, ease: 'power3' });
-        var ry = gsap.quickTo(mock, 'rotationY', { duration: .9, ease: 'power3' });
-        heroStage.addEventListener('pointermove', function (e) {
-          if (!tiltReady) return;
-          var r = heroStage.getBoundingClientRect();
-          ry(((e.clientX - r.left) / r.width - .5) * 7);
-          rx(-((e.clientY - r.top) / r.height - .5) * 7);
-        }, listen);
-        heroStage.addEventListener('pointerleave', function () { if (tiltReady) { rx(0); ry(0); } }, listen);
-      }
+        .from('.hero .hv-grid', { opacity: 0, y: 40, duration: 1.1 }, .35);
       gsap.to('.hero .arch', { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
       // Section headings blur in word by word.
@@ -401,11 +334,6 @@ export function initHome(gsapLib, ScrollTriggerLib) {
         start: 'top 90%', once: true,
         onEnter: function (batch) { gsap.to(batch, clear({ duration: 1, ease: 'power3.out', stagger: .09, overwrite: true })); }
       });
-      each('.audience-card .rules li', function (li, i) {
-        gsap.from(li, { opacity: 0, x: root.dir === 'rtl' ? 14 : -14, duration: .7, ease: 'power3.out', delay: (i % 4) * .08 + .25,
-          scrollTrigger: { trigger: li.parentNode, start: 'top 88%', once: true } });
-      });
-
       // Story stages rise in the first time they come into view.
       each('[data-story]', function (story) {
         gsap.from(story.querySelector('.stage-frame'), { opacity: 0, y: 40, scale: .97, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: story, start: 'top 85%', once: true } });
