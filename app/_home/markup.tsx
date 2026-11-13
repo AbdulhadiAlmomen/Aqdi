@@ -33,6 +33,12 @@ const CHECK = (
   </svg>
 );
 
+const CROSS = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
+    <path d="M7 7l10 10M17 7L7 17"></path>
+  </svg>
+);
+
 const RECEIPT = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path>
@@ -149,14 +155,14 @@ export function HomeMarkup() {
             <div className="hstage-card">
               <div className="hs hs-1" aria-hidden="true">
                 <div className="hs-before">
-                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="hs-tag">{CROSS}<L ar="بدون عقدي" en="Without Aqdi" /></span>
                   <span className="bub"><L ar="الدوام في رمضان؟" en="Ramadan hours?" /></span>
                   <span className="bub bub-r"><L ar="متى يفتح المكتب؟" en="When do you open?" /></span>
                   <span className="bub"><L ar="الدوام في رمضان؟" en="Ramadan hours?" /></span>
-                  <span className="hs-pain"><L ar="18 رسالة بنفس السؤال" en="18 messages, same question" /></span>
+                  <span className="hs-pain">{CROSS}<L ar="18 رسالة بنفس السؤال" en="18 messages, same question" /></span>
                 </div>
                 <div className="hs-after">
-                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <span className="hs-tag hs-tag-on">{CHECK}<L ar="مع عقدي" en="With Aqdi" /></span>
                   <div className="hs-card">
                     <small><L ar="إعلان لكل المباني" en="Announcement to all buildings" /></small>
                     <b><L ar="ساعات العمل في رمضان: من 10 صباحًا إلى 4 عصرًا" en="Ramadan hours: 10 am to 4 pm" /></b>
@@ -167,12 +173,12 @@ export function HomeMarkup() {
 
               <div className="hs hs-2" aria-hidden="true">
                 <div className="hs-before">
-                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="hs-tag">{CROSS}<L ar="بدون عقدي" en="Without Aqdi" /></span>
                   <span className="note"><L ar="تسريب في وحدة 12… من استلمه؟" en="Leak in Unit 12… who took it?" /></span>
-                  <span className="hs-pain"><L ar="3 مكالمات فائتة من المستأجر" en="3 missed calls from the tenant" /></span>
+                  <span className="hs-pain">{CROSS}<L ar="3 مكالمات فائتة من المستأجر" en="3 missed calls from the tenant" /></span>
                 </div>
                 <div className="hs-after">
-                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <span className="hs-tag hs-tag-on">{CHECK}<L ar="مع عقدي" en="With Aqdi" /></span>
                   <div className="hs-card">
                     <small><L ar="طلب صيانة · وحدة 12" en="Repair request · Unit 12" /></small>
                     <b><L ar="تسريب ماء تحت المغسلة" en="Water leak under the sink" /></b>
@@ -190,13 +196,13 @@ export function HomeMarkup() {
 
               <div className="hs hs-3" aria-hidden="true">
                 <div className="hs-before">
-                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="hs-tag">{CROSS}<L ar="بدون عقدي" en="Without Aqdi" /></span>
                   <span className="bub"><L ar="من وافق على شراء السخان؟" en="Who approved the water heater?" /></span>
                   <span className="bub bub-r"><L ar="ما أدري، اسأل خالد" en="No idea, ask Khalid" /></span>
-                  <span className="hs-pain"><L ar="ولا أحد متأكد" en="And nobody is sure" /></span>
+                  <span className="hs-pain">{CROSS}<L ar="ولا أحد متأكد" en="And nobody is sure" /></span>
                 </div>
                 <div className="hs-after">
-                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <span className="hs-tag hs-tag-on">{CHECK}<L ar="مع عقدي" en="With Aqdi" /></span>
                   <div className="hs-card">
                     <small><L ar="مهمة · وحدة 3" en="Task · Unit 3" /></small>
                     <b><L ar="شراء سخان جديد" en="Buy a new water heater" /></b>
@@ -208,12 +214,12 @@ export function HomeMarkup() {
 
               <div className="hs hs-4" aria-hidden="true">
                 <div className="hs-before">
-                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="hs-tag">{CROSS}<L ar="بدون عقدي" en="Without Aqdi" /></span>
                   <span className="receipts"><i></i><i></i><i></i></span>
-                  <span className="hs-pain"><L ar="كم صرفنا هذا الشهر؟" en="How much did we spend this month?" /></span>
+                  <span className="hs-pain">{CROSS}<L ar="كم صرفنا هذا الشهر؟" en="How much did we spend this month?" /></span>
                 </div>
                 <div className="hs-after">
-                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <span className="hs-tag hs-tag-on">{CHECK}<L ar="مع عقدي" en="With Aqdi" /></span>
                   <div className="hs-card hs-sum">
                     <span>
                       <small><L ar="التكاليف هذا الشهر · 12 إيصال" en="Costs this month · 12 receipts" /></small>
