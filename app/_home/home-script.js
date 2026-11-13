@@ -290,26 +290,39 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       observers.push(playIo);
     }
 
-    // Hero: the repair goes round its steps on a calm loop, only while the hero is on screen and the
-    // tab is visible. With reduced motion it stays on the finished picture (data-s="6" in the markup).
-    var flow = document.getElementById('hero-stage');
-    var FLOW_STEPS = [[0, 900], [1, 1100], [2, 1000], [3, 1300], [4, 1700], [5, 1300], [6, 4000]];
-    var flowIndex = 0, flowSeen = false;
-    function flowTick() {
-      var step = FLOW_STEPS[flowIndex];
-      flow.setAttribute('data-s', String(step[0]));
-      flowIndex = (flowIndex + 1) % FLOW_STEPS.length;
-      flowTimer = setTimeout(flowTick, step[1]);
+    // Hero: four scenes (communication, maintenance, tasks, costs), each "without Aqdi" then "with
+    // Aqdi". They rotate while the hero is on screen and the tab is visible; the dots switch scenes
+    // too. With reduced motion nothing rotates or animates, but the dots still work.
+    var hero = document.getElementById('hero');
+    var stage = document.getElementById('hero-stage');
+    var dots = document.querySelectorAll('.hs-dot');
+    var scene = 1, heroSeen = false;
+    function showScene(n) {
+      scene = n;
+      stage.setAttribute('data-hs', String(n));
+      hero.setAttribute('data-hs', String(n));
+      for (var i = 0; i < dots.length; i++) {
+        var on = i === n - 1;
+        dots[i].classList.toggle('on', on);
+        dots[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+      }
     }
-    function flowRun(on) {
+    function heroRun(on) {
       clearTimeout(flowTimer);
-      if (on && !reduceMotion && !document.hidden) flowTimer = setTimeout(flowTick, 300);
+      if (on && !reduceMotion && !document.hidden) {
+        flowTimer = setTimeout(function () { showScene(scene % 4 + 1); heroRun(heroSeen); }, 5600);
+      }
     }
+    for (var d = 0; d < dots.length; d++) {
+      dots[d].addEventListener('click', function (e) { showScene(+e.currentTarget.getAttribute('data-go')); heroRun(heroSeen); }, listen);
+    }
+    showScene(1);
     if (!reduceMotion) {
-      var flowIo = new IntersectionObserver(function (entries) { flowSeen = entries[0].isIntersecting; flowRun(flowSeen); }, { threshold: 0.25 });
-      flowIo.observe(flow);
-      observers.push(flowIo);
-      document.addEventListener('visibilitychange', function () { flowRun(flowSeen); }, listen);
+      stage.classList.add('live');
+      var heroIo = new IntersectionObserver(function (entries) { heroSeen = entries[0].isIntersecting; heroRun(heroSeen); }, { threshold: 0.3 });
+      heroIo.observe(stage);
+      observers.push(heroIo);
+      document.addEventListener('visibilitychange', function () { heroRun(heroSeen); }, listen);
     }
 
     // Closing logo draws its lines when it comes into view.

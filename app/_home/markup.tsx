@@ -40,13 +40,6 @@ const RECEIPT = (
   </svg>
 );
 
-const AC_ICON = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="3" y="5" width="18" height="8" rx="2"></rect>
-    <path d="M7 10h10M8 16l-1 3M12 16v3M16 16l1 3"></path>
-  </svg>
-);
-
 const TENANTS_ICON = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M3 11l9-7 9 7"></path>
@@ -121,18 +114,17 @@ export function HomeMarkup() {
       </nav>
       <main>
         <div className="wrap">
-          <header className="hero hero-v3">
+          <header className="hero hero-v3" id="hero" data-hs="1">
             <div className="hero-text">
               <h1 data-split="">
                 <span lang="ar">المستأجر، الموظف، والمدير في مكان واحد.</span>
                 {" "}
                 <span lang="en">Tenant, staff and manager, in one place.</span>
               </h1>
+              {/* Same words as the message; each of the first four lights up with its scene below. */}
               <p className="lede">
-                <L
-                  ar="تواصل، صيانة، مهام، وتكاليف، كل شي واضح ومسجّل. ارفع عقود إيجار، وعقدي يتكفّل بالباقي."
-                  en="Communication, maintenance, tasks and costs, everything clear and logged. Upload your Ejar contracts, and Aqdi takes care of the rest."
-                />
+                <span lang="ar"><i className="lw lw-1">تواصل</i>، <i className="lw lw-2">صيانة</i>، <i className="lw lw-3">مهام</i>، و<i className="lw lw-4">تكاليف</i>، كل شي واضح ومسجّل. ارفع عقود إيجار، وعقدي يتكفّل بالباقي.</span>
+                <span lang="en"><i className="lw lw-1">Communication</i>, <i className="lw lw-2">maintenance</i>, <i className="lw lw-3">tasks</i> and <i className="lw lw-4">costs</i>, everything clear and logged. Upload your Ejar contracts, and Aqdi takes care of the rest.</span>
               </p>
               <div className="cta-row">
                 <Link href="/signup" className="btn btn-primary">
@@ -149,104 +141,103 @@ export function HomeMarkup() {
             </div>
           </header>
 
-          {/* One repair, seen by all three people in order. home-script.js steps data-s from 0 to 6 on a
-              calm loop while it's on screen; the markup's data-s="6" is the finished picture (no JS, or
-              reduced motion). 1-2 tenant sends · 3 task arrives · 4 in progress · 5 done · 6 cost logged. */}
-          <div className="flow" id="hero-stage" data-s="6" role="img" aria-label="A tenant sends a repair request from a phone, an employee gets it as a task and marks it done, and the manager sees the cost logged with its receipt">
-            <div className="flow-grid" aria-hidden="true">
-              <div className="flow-step flow-step-1">
-                <div className="flow-cap">
-                  <span className="flow-num">1</span>
-                  <span>
-                    <b><L ar="المستأجر" en="Tenant" /></b>
-                    <small><L ar="يرسل الطلب مع صورة" en="Sends the request with a photo" /></small>
-                  </span>
+          {/* The hook: four scenes, one per word in the line above (communication, maintenance, tasks,
+              costs). Each shows how it goes without Aqdi, then with it. home-script.js moves data-hs 1→4
+              on a loop while the hero is on screen (and on the dots); without JS, or with reduced motion,
+              scene 1 shows its finished state and the dots still switch scenes. */}
+          <div className="hstage" id="hero-stage" data-hs="1">
+            <div className="hstage-card">
+              <div className="hs hs-1" aria-hidden="true">
+                <div className="hs-before">
+                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="bub"><L ar="الدوام في رمضان؟" en="Ramadan hours?" /></span>
+                  <span className="bub bub-r"><L ar="متى يفتح المكتب؟" en="When do you open?" /></span>
+                  <span className="bub"><L ar="الدوام في رمضان؟" en="Ramadan hours?" /></span>
+                  <span className="hs-pain"><L ar="18 رسالة بنفس السؤال" en="18 messages, same question" /></span>
                 </div>
-                <div className="fcard fphone">
-                  <div className="fcard-head">
-                    <b><L ar="طلب صيانة" en="Repair request" /></b>
-                    <small><L ar="وحدة 4، مبنى ج" en="Unit 4, Building C" /></small>
-                  </div>
-                  <div className="freq">
-                    <span className="hv-ic">{AC_ICON}</span>
-                    <b><L ar="المكيف لا يبرّد" en="AC not cooling" /></b>
-                  </div>
-                  <span className="fphoto"><i></i><small><L ar="صورة مرفقة" en="Photo attached" /></small></span>
-                  <div className="fsend">
-                    <span className="fsend-a"><L ar="إرسال الطلب" en="Send request" /></span>
-                    <span className="fsend-b">{CHECK}<L ar="تم الإرسال" en="Sent" /></span>
+                <div className="hs-after">
+                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <div className="hs-card">
+                    <small><L ar="إعلان لكل المباني" en="Announcement to all buildings" /></small>
+                    <b><L ar="ساعات العمل في رمضان: من 10 صباحًا إلى 4 عصرًا" en="Ramadan hours: 10 am to 4 pm" /></b>
+                    <span className="hs-ok">{CHECK}<L ar="وصل إلى 62 مستأجر" en="Reached 62 tenants" /></span>
                   </div>
                 </div>
               </div>
 
-              <div className="flow-link flow-link-1"><i></i></div>
-
-              <div className="flow-step flow-step-2">
-                <div className="flow-cap">
-                  <span className="flow-num">2</span>
-                  <span>
-                    <b><L ar="الموظف" en="Staff" /></b>
-                    <small><L ar="يستلم المهمة وينجزها" en="Gets the task and does it" /></small>
-                  </span>
+              <div className="hs hs-2" aria-hidden="true">
+                <div className="hs-before">
+                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="note"><L ar="تسريب في وحدة 12… من استلمه؟" en="Leak in Unit 12… who took it?" /></span>
+                  <span className="hs-pain"><L ar="3 مكالمات فائتة من المستأجر" en="3 missed calls from the tenant" /></span>
                 </div>
-                <div className="fcard">
-                  <div className="fcard-head">
-                    <b><L ar="مهامي اليوم" en="My tasks today" /></b>
-                    <small><L ar="فيصل · فني صيانة" en="Faisal · technician" /></small>
-                  </div>
-                  <div className="ftask">
-                    <b><L ar="المكيف لا يبرّد" en="AC not cooling" /></b>
-                    <small><L ar="وحدة 4، مبنى ج · من المستأجر" en="Unit 4, Building C · from the tenant" /></small>
-                    <span className="fstatus">
-                      <i className="fs-new"><L ar="جديد" en="New" /></i>
-                      <i className="fs-prog"><L ar="قيد التنفيذ" en="In progress" /></i>
-                      <i className="fs-done">{CHECK}<L ar="تم" en="Done" /></i>
+                <div className="hs-after">
+                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <div className="hs-card">
+                    <small><L ar="طلب صيانة · وحدة 12" en="Repair request · Unit 12" /></small>
+                    <b><L ar="تسريب ماء تحت المغسلة" en="Water leak under the sink" /></b>
+                    <span className="hs-row">
+                      <span><L ar="ماجد · سبّاك" en="Majed · plumber" /></span>
+                      <span className="hs-st">
+                        <i className="hs-st-new"><L ar="جديد" en="New" /></i>
+                        <i className="hs-st-prog"><L ar="قيد التنفيذ" en="In progress" /></i>
+                        <i className="hs-st-done">{CHECK}<L ar="تم" en="Done" /></i>
+                      </span>
                     </span>
                   </div>
-                  <div className="ftask ftask-muted">
-                    <b><L ar="فحص وحدة 7" en="Inspect Unit 7" /></b>
-                    <small><L ar="مبنى أ · اليوم" en="Building A · today" /></small>
+                </div>
+              </div>
+
+              <div className="hs hs-3" aria-hidden="true">
+                <div className="hs-before">
+                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="bub"><L ar="من وافق على شراء السخان؟" en="Who approved the water heater?" /></span>
+                  <span className="bub bub-r"><L ar="ما أدري، اسأل خالد" en="No idea, ask Khalid" /></span>
+                  <span className="hs-pain"><L ar="ولا أحد متأكد" en="And nobody is sure" /></span>
+                </div>
+                <div className="hs-after">
+                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <div className="hs-card">
+                    <small><L ar="مهمة · وحدة 3" en="Task · Unit 3" /></small>
+                    <b><L ar="شراء سخان جديد" en="Buy a new water heater" /></b>
+                    <span className="hs-meta"><L ar="طلبها ماجد · أسندها خالد · التسليم الأحد" en="Requested by Majed · assigned by Khalid · due Sunday" /></span>
+                    <span className="hs-ok">{CHECK}<L ar="وافق المالك" en="Owner approved" /></span>
                   </div>
                 </div>
               </div>
 
-              <div className="flow-link flow-link-2"><i></i></div>
-
-              <div className="flow-step flow-step-3">
-                <div className="flow-cap">
-                  <span className="flow-num">3</span>
-                  <span>
-                    <b><L ar="المدير" en="Manager" /></b>
-                    <small><L ar="يرى التكلفة مسجّلة مع إيصالها" en="Sees the cost logged with its receipt" /></small>
-                  </span>
+              <div className="hs hs-4" aria-hidden="true">
+                <div className="hs-before">
+                  <span className="hs-tag"><L ar="بدون عقدي" en="Without Aqdi" /></span>
+                  <span className="receipts"><i></i><i></i><i></i></span>
+                  <span className="hs-pain"><L ar="كم صرفنا هذا الشهر؟" en="How much did we spend this month?" /></span>
                 </div>
-                <div className="fcard">
-                  <div className="fcard-head">
-                    <b><L ar="تكاليف هذا الشهر" en="Costs this month" /></b>
-                    <small data-date="0"></small>
-                  </div>
-                  <div className="fcost">
-                    <span className="hv-ic">{RECEIPT}</span>
+                <div className="hs-after">
+                  <span className="hs-tag hs-tag-on"><L ar="مع عقدي" en="With Aqdi" /></span>
+                  <div className="hs-card hs-sum">
                     <span>
-                      <b><L ar="صيانة المكيف" en="AC repair" /></b>
-                      <small><L ar="وحدة 4 · إيصال مرفق" en="Unit 4 · receipt attached" /></small>
+                      <small><L ar="التكاليف هذا الشهر · 12 إيصال" en="Costs this month · 12 receipts" /></small>
+                      <b className="neg" data-sar="3950" data-neg=""></b>
                     </span>
-                    <b className="neg" data-sar="350" data-neg=""></b>
-                  </div>
-                  <div className="fcost fcost-muted">
-                    <span className="hv-ic">{RECEIPT}</span>
                     <span>
-                      <b><L ar="نظافة المباني" en="Building cleaning" /></b>
-                      <small><L ar="اشتراك شهري" en="Monthly subscription" /></small>
+                      <small><L ar="الإيجار المتوقع" en="Expected rent" /></small>
+                      <b data-sar="186500"></b>
                     </span>
-                    <b className="neg" data-sar="1200" data-neg=""></b>
-                  </div>
-                  <div className="fexpected">
-                    <small><L ar="الإيجار المتوقع هذا الشهر" en="Expected rent this month" /></small>
-                    <b data-sar="186500"></b>
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="hs-dots">
+              {[
+                { ar: "تواصل", en: "Communication" },
+                { ar: "صيانة", en: "Maintenance" },
+                { ar: "مهام", en: "Tasks" },
+                { ar: "تكاليف", en: "Costs" },
+              ].map((w, i) => (
+                <button key={w.en} type="button" className="hs-dot" data-go={i + 1}>
+                  <L ar={w.ar} en={w.en} />
+                </button>
+              ))}
             </div>
           </div>
         </div>
