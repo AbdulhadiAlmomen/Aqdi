@@ -9,6 +9,12 @@ export type CheckoutInput = {
   cancelUrl: string;
 };
 
+// The one-time $1 live payment check (demo account only). Never touches the subscription or plan.
+export const DEMO_CHARGE = { cents: 100, currency: "usd" } as const;
+export const DEMO_CHARGE_KIND = "demo_charge";
+export type DemoChargeInput = { officeId: string; email: string; successUrl: string; cancelUrl: string };
+export type DemoCharge = { officeId: string; cents: number; currency: string };
+
 export type Payment = { officeId: string; units: number; customerId: string | null; subscriptionId: string | null };
 
 export type WebhookOutcome = ({ kind: "paid" } & Payment) | { kind: "cancelled"; officeId: string } | { kind: "ignored" };
@@ -20,6 +26,9 @@ export interface PaymentProvider {
   startCheckout(input: CheckoutInput): Promise<string>;
   // The finished checkout behind a session id, or null if it isn't paid.
   confirmCheckout(sessionId: string): Promise<Payment | null>;
+  // The $1 live payment check: where to pay, and the paid charge behind a session id (or null).
+  startDemoCharge(input: DemoChargeInput): Promise<string>;
+  confirmDemoCharge(sessionId: string): Promise<DemoCharge | null>;
   // A verified webhook call, turned into what it means for an office. Throws if the signature is wrong.
   parseWebhook(body: string, signature: string | null): Promise<WebhookOutcome>;
 }

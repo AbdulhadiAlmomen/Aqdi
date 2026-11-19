@@ -233,5 +233,13 @@
   "legal.privacy.4.h": "Cookies",
   "legal.privacy.4.p": "We use one cookie to keep you signed in and one to remember your language. No advertising or tracking cookies.",
   "legal.privacy.5.h": "Your rights",
-  "legal.privacy.5.p": "You can ask to see, correct or delete your data at any time by emailing us. We keep data while your office's account is active and delete it on request."
+  "legal.privacy.5.p": "You can ask to see, correct or delete your data at any time by emailing us. We keep data while your office's account is active and delete it on request.",
+  "billing.demo.eyebrow": "Demo account only",
+  "billing.demo.title": "Live payment check: $1",
+  "billing.demo.body": "A one-time $1 payment through Stripe, to show a real payment from start to finish. It doesn't change the office's plan and doesn't renew.",
+  "billing.demo.pay": "Pay $1 with Stripe",
+  "billing.demo.live": "This is a real payment: $1 will be charged to your card. It can be refunded from the Stripe dashboard.",
+  "billing.demo.success": "The $1 payment went through. You'll find it in Stripe under Payments.",
+  "billing.demo.cancelled": "The $1 payment wasn't completed. You can try again.",
+  "billing.demo.failed": "We couldn't confirm the $1 payment."
 }

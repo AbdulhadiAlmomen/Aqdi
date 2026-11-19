@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { currentOffice } from "@/lib/dal";
 import { getPaymentProvider, PaymentsNotConfigured } from "@/lib/payments/provider";
+import { isDemoAccount } from "@/lib/demo-account";
 import { MAX_UNITS } from "@/lib/pricing";
 
 export type CheckoutState = { url?: string; error?: "unitsInvalid" | "notConfigured" | "failed" };
@@ -34,4 +35,28 @@ export async function startCheckout(_prev: CheckoutState, form: FormData): Promi
     return { error: "failed" };
   }
   return { url };
+}
+
+// The one-time $1 live payment check. Only the demo account can start it; it never changes the plan.
+export async function startDemoCharge(_prev: CheckoutState, _form: FormData): Promise<CheckoutState> {
+  void _prev;
+  void _form;
+  const { member } = await currentOffice();
+  if (!isDemoAccount(member.email)) return { error: "failed" };
+  const h = await headers();
+  const origin = h.get("origin") ?? `${h.get("x-forwarded-proto") ?? "https"}://${h.get("host")}`;
+  try {
+    const payments = await getPaymentProvider();
+    const url = await payments.startDemoCharge({
+      officeId: member.officeId,
+      email: member.email,
+      successUrl: `${origin}/api/payments/demo-return?session_id={SESSION_ID}`,
+      cancelUrl: `${origin}/dashboard/billing?status=demo_cancelled`,
+    });
+    return { url };
+  } catch (error) {
+    if (error instanceof PaymentsNotConfigured) return { error: "notConfigured" };
+    console.error("demo charge could not start", error);
+    return { error: "failed" };
+  }
 }

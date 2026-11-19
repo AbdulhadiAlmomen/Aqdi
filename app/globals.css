@@ -851,3 +851,8 @@ html[lang="en"] .legal h1 { line-height: 1.1; }
 .legal-agree a { color: var(--palm); font-weight: 700; }
 .billing-agree { max-width: 520px; }
 footer .legal-links { margin-top: 0; }
+
+/* The $1 live payment check (demo account) */
+.demo-charge { display: grid; gap: 10px; justify-items: start; max-width: 560px; margin-top: 28px; }
+.demo-charge-form { display: grid; gap: 12px; justify-items: start; margin-top: 6px; }
+.demo-live { margin: 0; padding: 10px 14px; border-radius: 12px; background: var(--red-bg); color: var(--red); font-size: 14px; font-weight: 700; }

@@ -1,4 +1,4 @@
-import type { PaymentProvider } from "./provider";
+import { DEMO_CHARGE, type PaymentProvider } from "./provider";
 
 // Local work and browser tests without Stripe (AQDI_MOCK_PAYMENTS=1): checkout "succeeds" at once by
 // sending the visitor straight to the success URL with a made-up session id.
@@ -10,6 +10,13 @@ export const mockPayments: PaymentProvider = {
   async confirmCheckout(sessionId) {
     const match = /^mock_(.+)_(\d+)$/.exec(sessionId);
     return match ? { officeId: match[1], units: Number(match[2]), customerId: null, subscriptionId: null } : null;
+  },
+  async startDemoCharge({ officeId, successUrl }) {
+    return successUrl.replace("{SESSION_ID}", encodeURIComponent(`mockdemo_${officeId}`));
+  },
+  async confirmDemoCharge(sessionId) {
+    const match = /^mockdemo_(.+)$/.exec(sessionId);
+    return match ? { officeId: match[1], cents: DEMO_CHARGE.cents, currency: DEMO_CHARGE.currency } : null;
   },
   async parseWebhook() {
     return { kind: "ignored" };

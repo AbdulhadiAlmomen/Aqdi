@@ -9,8 +9,9 @@ import type { Db } from "../db/index.ts";
 import { accounts, buildings, contracts, installments, memberships, offices, tenants, units, users } from "../db/schema.ts";
 import { hashPassword, verifyPassword } from "./password.ts";
 
-export const DEMO_EMAIL = "demo@demo.com";
-export const DEMO_PASSWORD = "password123!";
+import { DEMO_EMAIL, DEMO_PASSWORD } from "./demo-account.ts";
+
+export { DEMO_EMAIL, DEMO_PASSWORD };
 export const DEMO_OFFICE_NAME = "مكتب تجريبي · Demo Office";
 const DEMO_NAME = "Demo Admin";
 

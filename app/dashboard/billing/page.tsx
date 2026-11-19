@@ -5,7 +5,9 @@ import { RichT } from "@/components/Legal";
 import { messages, T } from "@/lib/i18n";
 import { FREE_CONTRACT_LIMIT } from "@/lib/offices";
 import { getPaymentProvider } from "@/lib/payments/provider";
+import { isDemoAccount } from "@/lib/demo-account";
 import { BillingForm } from "./BillingForm";
+import { DemoChargeForm } from "./DemoChargeForm";
 
 export default function BillingPage({ searchParams }: PageProps<"/dashboard/billing">) {
   return (
@@ -23,7 +25,7 @@ export default function BillingPage({ searchParams }: PageProps<"/dashboard/bill
 
 async function BillingContent({ searchParams }: { searchParams: PageProps<"/dashboard/billing">["searchParams"] }) {
   const { status } = await searchParams;
-  const { data } = await currentOffice();
+  const { member, data } = await currentOffice();
   const [office, unitCount] = await Promise.all([data.office(), data.unitCount()]);
   const testMode = await getPaymentProvider().then((p) => p.testMode).catch(() => false);
 
@@ -32,6 +34,9 @@ async function BillingContent({ searchParams }: { searchParams: PageProps<"/dash
       {status === "paid" && <p className="notice notice-ok"><T k="billing.success" /></p>}
       {status === "cancelled" && <p className="notice"><T k="billing.cancelled" /></p>}
       {status === "failed" && <p className="form-error"><T k="billing.verifyFailed" /></p>}
+      {status === "demo_paid" && <p className="notice notice-ok"><T k="billing.demo.success" /></p>}
+      {status === "demo_cancelled" && <p className="notice"><T k="billing.demo.cancelled" /></p>}
+      {status === "demo_failed" && <p className="form-error"><T k="billing.demo.failed" /></p>}
 
       {office?.paid ? (
         <section className="dash-card billing-paid">
@@ -68,6 +73,22 @@ async function BillingContent({ searchParams }: { searchParams: PageProps<"/dash
           </p>
           <BillingForm defaultUnits={Math.max(1, unitCount)} testMode={testMode} />
         </>
+      )}
+
+      {/* The one-time $1 live payment check, offered on the demo account only. */}
+      {isDemoAccount(member.email) && (
+        <section className="dash-card demo-charge">
+          <p className="dash-eyebrow">
+            <T k="billing.demo.eyebrow" />
+          </p>
+          <p className="dash-big">
+            <T k="billing.demo.title" />
+          </p>
+          <p className="dash-muted">
+            <T k="billing.demo.body" />
+          </p>
+          <DemoChargeForm testMode={testMode} />
+        </section>
       )}
 
       {(!office?.paid || testMode) && (
