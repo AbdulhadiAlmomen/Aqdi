@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { currentOffice } from "@/lib/dal";
-import { T } from "@/lib/i18n";
+import { RichT } from "@/components/Legal";
+import { messages, T } from "@/lib/i18n";
 import { FREE_CONTRACT_LIMIT } from "@/lib/offices";
 import { getPaymentProvider } from "@/lib/payments/provider";
 import { BillingForm } from "./BillingForm";
@@ -67,6 +68,18 @@ async function BillingContent({ searchParams }: { searchParams: PageProps<"/dash
           </p>
           <BillingForm defaultUnits={Math.max(1, unitCount)} testMode={testMode} />
         </>
+      )}
+
+      {(!office?.paid || testMode) && (
+        <p className="legal-agree billing-agree">
+          <RichT
+            k="legal.agree.billing"
+            parts={{
+              refunds: (l) => <Link href="/refunds">{messages[l]["legal.link.refunds"]}</Link>,
+              terms: (l) => <Link href="/terms">{messages[l]["legal.link.terms"]}</Link>,
+            }}
+          />
+        </p>
       )}
     </>
   );

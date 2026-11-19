@@ -4,6 +4,7 @@
 // without it, or with reduced motion, every mockup shows its finished state.
 import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
+import { LegalLinks } from "@/components/Legal";
 import { T } from "@/lib/i18n";
 
 // One piece of text in both languages.
@@ -1267,6 +1268,7 @@ export function HomeMarkup() {
             {" "}
             <span className="founder">Abdulhadi Almomen</span>
           </div>
+          <LegalLinks />
           <div>
             © 2026
             {" "}
