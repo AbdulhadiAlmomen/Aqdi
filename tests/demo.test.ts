@@ -14,14 +14,14 @@ describe("demo account seed", () => {
   });
   afterAll(() => t.close());
 
-  it("creates a verified, paid demo office with sample data", async () => {
+  it("creates a verified demo office on the free plan, with sample data", async () => {
     expect(await seedDemo(t.db, today)).toEqual({ userCreated: true, passwordReset: false, officeCreated: true, sampleDataAdded: true });
     const [user] = await t.db.select().from(users).where(eq(users.email, DEMO_EMAIL));
     expect(user.emailVerified).toBe(true);
     const member = (await findMembership(t.db, user.id))!;
     expect(member).toMatchObject({ officeName: DEMO_OFFICE_NAME, role: "admin" });
     const office = forOffice(t.db, member.officeId);
-    expect(await office.office()).toMatchObject({ paid: true, paidUnits: 10 });
+    expect(await office.office()).toMatchObject({ paid: false, paidUnits: null });
     expect((await office.buildingsOverview()).length).toBe(2);
     expect(await office.unitCount()).toBe(10);
     const list = await office.contracts();
@@ -57,14 +57,15 @@ describe("demo account seed", () => {
     expect((await office.contracts()).length).toBe(6);
   });
 
-  it("repairs the password and paid status if they were changed", async () => {
+  it("repairs the password, and puts a paid demo office back on the free plan", async () => {
     const [user] = await t.db.select().from(users).where(eq(users.email, DEMO_EMAIL));
     await t.db.update(accounts).set({ password: "not-a-hash" }).where(eq(accounts.userId, user.id));
     const officeId = (await findMembership(t.db, user.id))!.officeId;
-    const { markOfficeCancelled } = await import("@/lib/billing");
-    await markOfficeCancelled(t.db, officeId);
-    expect((await seedDemo(t.db, today)).passwordReset).toBe(true);
+    const { markOfficePaid } = await import("@/lib/billing");
+    await markOfficePaid(t.db, { officeId, units: 25, customerId: "cus_1", subscriptionId: "sub_1" });
     expect((await forOffice(t.db, officeId).office())?.paid).toBe(true);
+    expect((await seedDemo(t.db, today)).passwordReset).toBe(true);
+    expect(await forOffice(t.db, officeId).office()).toMatchObject({ paid: false, paidUnits: null, stripeSubscriptionId: null });
     const auth = createAuth(t.db);
     expect((await auth.api.signInEmail({ body: { email: DEMO_EMAIL, password: DEMO_PASSWORD } })).user.email).toBe(DEMO_EMAIL);
   });

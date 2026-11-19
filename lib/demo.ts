@@ -1,7 +1,11 @@
-// The demo account: demo@demo.com / password123!, a paid office with made-up buildings, units and
+// The demo account: demo@demo.com / password123!, an office with made-up buildings, units and
 // contracts. seedDemo() is safe to run any number of times (it runs on every production build):
-// it makes sure the login works and the office is paid, and adds the sample data only to an empty
-// office, so anything imported during a demo stays.
+// it makes sure the login works and the office is on the free plan, and adds the sample data only to
+// an empty office, so anything imported during a demo stays.
+//
+// The demo office used to be paid (unlimited AI imports) for grading. With grading done, it is a
+// free office like any other: its password is public, and unlimited imports would spend the
+// Anthropic budget. It already holds more contracts than the free limit, so AI imports stay off.
 //
 // Imports use relative paths with extensions so Node can run this file directly (scripts/seed-demo.mts).
 import { and, count, eq } from "drizzle-orm";
@@ -96,7 +100,7 @@ export async function seedDemo(db: Db, today = new Date()): Promise<DemoSeedResu
     result.passwordReset = true;
   }
 
-  // 3. Its own office, admin role, paid.
+  // 3. Its own office, admin role, on the free plan.
   let [member] = await db.select({ officeId: memberships.officeId }).from(memberships).where(eq(memberships.userId, user.id)).limit(1);
   if (!member) {
     member = await db.transaction(async (tx) => {
@@ -107,8 +111,10 @@ export async function seedDemo(db: Db, today = new Date()): Promise<DemoSeedResu
     result.officeCreated = true;
   }
   const officeId = member.officeId;
-  const unitTotal = BUILDINGS.reduce((n, b) => n + b.units.length, 0);
-  await db.update(offices).set({ name: DEMO_OFFICE_NAME, paid: true, paidUnits: unitTotal }).where(and(eq(offices.id, officeId), eq(offices.paid, false)));
+  await db
+    .update(offices)
+    .set({ name: DEMO_OFFICE_NAME, paid: false, paidUnits: null, paidAt: null, stripeCustomerId: null, stripeSubscriptionId: null })
+    .where(eq(offices.id, officeId));
   await db.update(offices).set({ name: DEMO_OFFICE_NAME }).where(eq(offices.id, officeId));
 
   // 4. Sample data, only into an empty office.
