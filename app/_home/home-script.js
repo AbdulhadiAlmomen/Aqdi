@@ -262,20 +262,22 @@ export function initHome(gsapLib, ScrollTriggerLib) {
       root.lang = lang;
       root.dir = lang === 'ar' ? 'rtl' : 'ltr';
       document.title = T[lang].title;
-      saveLang(lang);
       renderDates();
       renderPrice();
       placePill();
       if (motionOn) try { ScrollTriggerLib.refresh(); } catch {}
     }
+    // On load: the saved choice, or the browser's language on a first visit (not saved, so it keeps
+    // following the browser until the visitor picks one with the switch).
     setLang(readLang());
+    function chooseLang(lang) { saveLang(lang); setLang(lang); }
     // Switching language fades the page out and back so the layout flip isn't jarring.
     document.getElementById('lang-toggle').addEventListener('click', function () {
       var next = root.lang === 'ar' ? 'en' : 'ar';
-      if (reduceMotion) { setLang(next); return; }
+      if (reduceMotion) { chooseLang(next); return; }
       document.body.classList.add('switching');
       setTimeout(function () {
-        setLang(next);
+        chooseLang(next);
         requestAnimationFrame(function () { document.body.classList.remove('switching'); });
       }, 180);
     }, listen);
